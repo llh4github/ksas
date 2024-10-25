@@ -9,4 +9,6 @@ dependencies {
     compileOnly(libs.slf4j.api)
     compileOnly(libs.logback.core)
     compileOnly(libs.logback.classic)
+
+    implementation(libs.yitter.idgenerator)
 }
