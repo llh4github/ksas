@@ -1,0 +1,71 @@
+[versions]
+jdk = "21"
+kotlin = "2.0.10"
+ksp = "2.0.10-1.0.24"
+springBoot = "3.3.4"
+graalvm-plugin = "0.10.3"
+
+slf4j = "2.0.9"
+logback = "1.4.14"
+oshaiKotlinLogging = "5.1.0"
+
+easyexcel = "3.3.3"
+jjwt = "0.12.6"
+
+junit5 = "5.11.0"
+kotest = "5.9.0"
+
+knife4j = "4.4.0"
+swagger3 = "2.2.19"
+# see Compatibility Table:  https://detekt.dev/docs/introduction/compatibility/
+detekt = "1.23.7"
+dokka = "1.9.20"
+
+# 目前还没发1.0版本
+jimmer = "+"
+
+[libraries]
+kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin" }
+kotlin-noarg = { module = "org.jetbrains.kotlin:kotlin-noarg", version.ref = "kotlin" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+easyexcel = { module = "com.alibaba:easyexcel", version.ref = "easyexcel" }
+apache-compress = { module = "org.apache.commons:commons-compress", version = "1.25.0" }
+apache-pool2 = { module = "org.apache.commons:commons-pool2", version = "2.12.0" }
+apache-io = { module = "commons-io:commons-io", version = "2.15.1" }
+yitter-idgenerator = { module = "com.github.yitter:yitter-idgenerator", version = "1.0.6" }
+
+# kotlin日志适配库
+# https://github.com/oshai/kotlin-logging
+oshai-kotlinLogging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "oshaiKotlinLogging" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+springBoot-gradle = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "springBoot" }
+graalvm-native = { module = "org.graalvm.buildtools:native-gradle-plugin", version.ref = "graalvm-plugin" }
+
+# see: https://github.com/jwtk/jjwt
+jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" } # use runtime
+jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" } # use runtime
+
+knife4j-openapi3 = { module = "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter", version.ref = "knife4j" }
+swagger-models = { module = "io.swagger.core.v3:swagger-models", version.ref = "swagger3" }
+swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations", version.ref = "swagger3" }
+dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
+kotest = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+
+jimmer-starter = { module = "org.babyfish.jimmer:jimmer-spring-boot-starter", version.ref = "jimmer" }
+jimmer-core = { module = "org.babyfish.jimmer:jimmer-core", version.ref = "jimmer" }
+jimmer-sql-kotlin = { module = "org.babyfish.jimmer:jimmer-sql-kotlin", version.ref = "jimmer" }
+jimmer-ksp = { module = "org.babyfish.jimmer:jimmer-ksp", version.ref = "jimmer" }
+
+[plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
