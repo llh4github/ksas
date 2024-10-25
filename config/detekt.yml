@@ -5,3 +5,27 @@ naming:
 style:
   WildcardImport:
     active: false
+  MagicNumber:
+    excludes: [ '**/test/**', '**/*Test.kt', '**/*Spec.kt' ]
+    ignorePropertyDeclaration: true
+    ignoreAnnotation: true
+    ignoreEnums: true
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+      - '10'
+      - '100'
+      - '1000'
+
+complexity:
+  active: true
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 20
+    thresholdInClasses: 15
+
+empty-blocks:
+  EmptyClassBlock:
+    active: false
