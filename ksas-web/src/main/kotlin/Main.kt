@@ -1,4 +1,4 @@
-package io.github.llh4github.smmtemplate
+package io.github.llh4github.ksas
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,4 +1,4 @@
-package io.github.llh4github.smmtemplate
+package io.github.llh4github.ksas
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

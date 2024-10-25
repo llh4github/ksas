@@ -1,6 +1,6 @@
-package io.github.llh4github.smmtemplate.api
+package io.github.llh4github.ksas.api
 
-import io.github.llh4github.smmtemplate.commons.JsonWrapper
+import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag

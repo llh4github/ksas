@@ -1,4 +1,4 @@
-package io.github.llh4github.smmtemplate.commons
+package io.github.llh4github.ksas.commons
 
 import io.swagger.v3.oas.annotations.media.Schema
 

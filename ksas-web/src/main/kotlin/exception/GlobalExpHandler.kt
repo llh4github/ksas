@@ -1,6 +1,6 @@
-package io.github.llh4github.smmtemplate.exception
+package io.github.llh4github.ksas.exception
 
-import io.github.llh4github.smmtemplate.commons.JsonWrapper
+import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice

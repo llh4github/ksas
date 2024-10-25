@@ -12,5 +12,5 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     implementation(libs.knife4j.openapi3)
-    implementation(project(":mod-commons"))
+    implementation(project(":ksas-commons"))
 }
