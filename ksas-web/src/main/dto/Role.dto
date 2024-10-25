@@ -1,0 +1,6 @@
+export io.github.llh4github.ksas.dbmodel.auth.Role
+
+input RoleAddInput{
+    title
+    code
+}

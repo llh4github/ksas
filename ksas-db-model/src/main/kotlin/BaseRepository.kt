@@ -8,6 +8,7 @@ import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
 import org.babyfish.jimmer.sql.kt.ast.mutation.KMutableDelete
 import org.babyfish.jimmer.sql.kt.ast.mutation.KMutableUpdate
+import org.babyfish.jimmer.sql.kt.ast.mutation.KSimpleSaveResult
 import org.babyfish.jimmer.sql.kt.ast.query.KConfigurableRootQuery
 import org.babyfish.jimmer.sql.kt.ast.query.KMutableRootQuery
 import kotlin.reflect.KClass
@@ -17,6 +18,7 @@ abstract class BaseRepository<E : BaseModel>(
     private val sqlClient: KSqlClient
 ) {
     abstract val entityType: KClass<E>
+
     fun <R> createQuery(
         block: KMutableRootQuery<E>.() -> KConfigurableRootQuery<E, R>
     ): KConfigurableRootQuery<E, R> =
@@ -31,6 +33,17 @@ abstract class BaseRepository<E : BaseModel>(
         block: KMutableDelete<E>.() -> Unit
     ): KExecutable<Int> =
         sqlClient.createDelete(entityType, block)
+
+    //region save or insert method
+
+    fun insert(entity: E): KSimpleSaveResult<E> {
+        return sqlClient.insert(entity)
+    }
+    fun update(entity: E): KSimpleSaveResult<E> {
+        return sqlClient.update(entity)
+    }
+
+    //endregion
 
     //region query method
 
