@@ -10,3 +10,4 @@ spring:
 
 jimmer:
   language: kotlin
+  show-sql: true
