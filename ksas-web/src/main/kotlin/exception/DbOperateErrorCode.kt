@@ -3,7 +3,7 @@ package io.github.llh4github.ksas.exception
 import org.babyfish.jimmer.error.ErrorFamily
 
 @ErrorFamily
-enum class CommonModuleErrorCode {
+enum class DbOperateErrorCode {
     /**
      * 新增数据失败
      */
@@ -13,4 +13,9 @@ enum class CommonModuleErrorCode {
      * 更新数据失败
      */
     UPDATE_FAILED,
+
+    /**
+     * 删除数据失败
+     */
+    DELETE_FAILED,
 }

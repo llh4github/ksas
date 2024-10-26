@@ -13,4 +13,11 @@ interface RoleService : BaseService<Role> {
      */
     fun addUnique(entity: Input<Role>): Role
 
+    /**
+     * 根据ID更新角色
+     *
+     * `role.code` 存在时则抛出异常
+     */
+    fun checkAndUpdateById(entity: Input<Role>): Role
+
 }

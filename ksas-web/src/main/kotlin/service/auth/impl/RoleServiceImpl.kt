@@ -10,6 +10,7 @@ import org.babyfish.jimmer.Input
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.ne
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.reflect.KClass
@@ -30,6 +31,24 @@ class RoleServiceImpl(
         if (count > 0) {
             throw RoleModuleException.roleCodeExist(message = "角色编码已存在", roleCode = model.code)
         }
-        return insert(model).modifiedEntity
+        val rs = insert(model)
+        checkAddResult(rs)
+        return rs.modifiedEntity
+    }
+
+    @Transactional
+    override fun checkAndUpdateById(entity: Input<Role>): Role {
+        val model = entity.toEntity()
+        val count = createQuery {
+            where(table.code eq model.code)
+            where(table.id ne model.id)
+            select(count(table.id))
+        }.fetchOne()
+        if (count > 0) {
+            throw RoleModuleException.roleCodeExist(message = "角色编码已存在", roleCode = model.code)
+        }
+        val rs = update(model)
+        checkUpdateDbResult(rs)
+        return rs.modifiedEntity
     }
 }
