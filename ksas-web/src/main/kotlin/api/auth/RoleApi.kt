@@ -23,7 +23,7 @@ class RoleApi(private val roleService: RoleService) {
     @PostMapping
     @Operation(summary = "新增角色")
     fun add(@RequestBody input: RoleAddInput): JsonWrapper<Role> {
-        val rs = roleService.save(input.toEntity())
+        val rs = roleService.addUnique(input)
         return JsonWrapper.ok(rs)
     }
 }

@@ -2,6 +2,7 @@ package io.github.llh4github.ksas.exception
 
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.babyfish.jimmer.error.CodeBasedRuntimeException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
@@ -14,7 +15,19 @@ class GlobalExpHandler {
     fun handleException(e: NoResourceFoundException): JsonWrapper<String> {
         val path = e.resourcePath
         logger.error(e) { "访问不存在的资源: $path" }
-        return JsonWrapper.fail(data = "资源不存在: $path", code = "NOT_FOUND", msg = "NO_RESOURCE")
+        return JsonWrapper.fail(
+            data = "资源不存在: $path",
+            code = "NOT_FOUND", msg = "NO_RESOURCE"
+        )
+    }
+
+    @ExceptionHandler(CodeBasedRuntimeException::class)
+    fun handleException(e: CodeBasedRuntimeException): JsonWrapper<Map<String, Any?>> {
+        return JsonWrapper.fail(
+            data = e.fields, code = e.code,
+            module = e.family,
+            msg = e.message ?: "请求处理异常"
+        )
     }
 
     @ExceptionHandler(RuntimeException::class)

@@ -8,6 +8,8 @@ data class JsonWrapper<T>(
     val code: String = "200",
     @Schema(title = "响应消息")
     val msg: String = "OK",
+    @Schema(title = "业务模块名", example = "通常在请求异常时有值")
+    val module: String? = null,
     @Schema(title = "响应数据")
     val data: T? = null,
 ) {
@@ -28,8 +30,13 @@ data class JsonWrapper<T>(
         }
 
         @JvmStatic
-        fun <T> fail(code: String = "9999", msg: String = "未知错误", data: T? = null): JsonWrapper<T> {
-            return JsonWrapper(code = code, msg = msg, data = data)
+        fun <T> fail(
+            code: String = "9999",
+            msg: String = "未知错误",
+            module: String = "系统",
+            data: T? = null
+        ): JsonWrapper<T> {
+            return JsonWrapper(code = code, module = module, msg = msg, data = data)
         }
     }
 }

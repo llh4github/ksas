@@ -47,23 +47,6 @@ abstract class BaseRepository<E : BaseModel>(
 
     //region query method
 
-    /**
-     * 数据是否存在。true: 存在
-     */
-    fun exist(id: Long): Boolean {
-        return createQuery {
-            where(table.getId<Long>() eq id)
-            select(table)
-        }.fetchUnlimitedCount() > 0
-    }
-
-    /**
-     * 数据是否不存在。true: 不存在
-     */
-    fun notExist(id: Long): Boolean {
-        return !exist(id)
-    }
-
     fun findById(id: Long, fetcher: Fetcher<E>? = null): E? {
         return if (fetcher !== null) {
             sqlClient.findById(fetcher, id)
