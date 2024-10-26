@@ -1,6 +1,35 @@
 export io.github.llh4github.ksas.dbmodel.auth.Role
 
+import jakarta.validation.constraints.NotEmpty
+import org.hibernate.validator.constraints.Length
+import jakarta.validation.constraints.Min
+import io.github.llh4github.ksas.commons.PageQueryParam
+
 input RoleAddInput{
+    @Length(min = 1, max = 50, message = "title长度必须在{min}-{max}个字符之间")
+    @NotEmpty(message = "title不能为空")
     title
+
+    @Length(min = 1, max = 50, message = "code长度必须在{min}-{max}个字符之间")
+    @NotEmpty(message = "code不能为空")
     code
+}
+
+input RoleUpdateInput{
+    @Min(1, message = "id必须大于0")
+    id
+
+    @Length(min = 1, max = 50, message = "title长度必须在{min}-{max}个字符之间")
+    @NotEmpty(message = "title不能为空")
+    title
+
+    @Length(min = 1, max = 50, message = "code长度必须在{min}-{max}个字符之间")
+    @NotEmpty(message = "code不能为空")
+    code
+}
+
+specification RoleQuerySpec {
+    like/i^$(title)
+    like/i^$(code)
+    pageParam: PageQueryParam
 }
