@@ -4,4 +4,5 @@ plugins {
 
 rootProject.name = "ksas"
 include("ksas-commons")
+include("ksas-db-model")
 include("ksas-web")

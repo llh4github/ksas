@@ -13,8 +13,11 @@ dependencies {
     implementation(libs.jimmer.starter)
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
     implementation(libs.knife4j.openapi3)
-    implementation(project(":ksas-commons"))
     runtimeOnly("org.postgresql:postgresql")
+
+    ksp(libs.jimmer.ksp)
+
+    implementation(project(":ksas-commons"))
+    implementation(project(":ksas-db-model"))
 }
