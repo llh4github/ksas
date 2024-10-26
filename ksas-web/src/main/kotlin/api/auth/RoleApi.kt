@@ -3,9 +3,11 @@ package io.github.llh4github.ksas.api.auth
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.llh4github.ksas.dbmodel.auth.Role
 import io.github.llh4github.ksas.dbmodel.auth.dto.RoleAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.RoleUpdateInput
 import io.github.llh4github.ksas.service.auth.RoleService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -22,8 +24,15 @@ class RoleApi(private val roleService: RoleService) {
 
     @PostMapping
     @Operation(summary = "新增角色")
-    fun add(@RequestBody input: RoleAddInput): JsonWrapper<Role> {
+    fun add(@RequestBody @Validated input: RoleAddInput): JsonWrapper<Role> {
         val rs = roleService.addUnique(input)
+        return JsonWrapper.ok(rs)
+    }
+
+    @PutMapping
+    @Operation(summary = "更新角色")
+    fun update(@RequestBody @Validated input: RoleUpdateInput): JsonWrapper<Role> {
+        val rs = roleService.checkAndUpdateById(input)
         return JsonWrapper.ok(rs)
     }
 }
