@@ -1,8 +1,11 @@
 package io.github.llh4github.ksas.api.auth
 
 import io.github.llh4github.ksas.commons.JsonWrapper
+import io.github.llh4github.ksas.commons.PageQueryParam
+import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.Role
 import io.github.llh4github.ksas.dbmodel.auth.dto.RoleAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.RoleQuerySpec
 import io.github.llh4github.ksas.dbmodel.auth.dto.RoleUpdateInput
 import io.github.llh4github.ksas.service.auth.RoleService
 import io.swagger.v3.oas.annotations.Operation
@@ -33,6 +36,13 @@ class RoleApi(private val roleService: RoleService) {
     @Operation(summary = "更新角色")
     fun update(@RequestBody @Validated input: RoleUpdateInput): JsonWrapper<Role> {
         val rs = roleService.checkAndUpdateById(input)
+        return JsonWrapper.ok(rs)
+    }
+
+    @PostMapping("page")
+    @Operation(summary = "分页查询")
+    fun page(@RequestBody query: RoleQuerySpec): JsonWrapper<PageResult<Role>> {
+        val rs = roleService.pageQuery(query, query.pageParam)
         return JsonWrapper.ok(rs)
     }
 }

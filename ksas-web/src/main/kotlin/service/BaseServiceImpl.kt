@@ -1,10 +1,13 @@
 package io.github.llh4github.ksas.service
 
+import io.github.llh4github.ksas.commons.PageQueryParamTrait
+import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.BaseModel
 import io.github.llh4github.ksas.dbmodel.BaseRepository
 import io.github.llh4github.ksas.exception.DbOperateException
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.mutation.KSimpleSaveResult
+import org.babyfish.jimmer.sql.kt.ast.query.KConfigurableRootQuery
 import org.springframework.transaction.annotation.Transactional
 
 abstract class BaseServiceImpl<E : BaseModel>(
@@ -45,5 +48,14 @@ abstract class BaseServiceImpl<E : BaseModel>(
         if (!rs.isModified) {
             throw DbOperateException.deleteFailed(message = message)
         }
+    }
+
+    protected fun <R> KConfigurableRootQuery<E, R>.fetchCustomPage(pageParam: PageQueryParamTrait): PageResult<R> {
+        val rs = fetchPage(pageParam.pageNum(), pageParam.pageSize)
+        return PageResult(
+            totalRowCount = rs.totalRowCount,
+            totalPage = rs.totalPageCount,
+            records = rs.rows
+        )
     }
 }
