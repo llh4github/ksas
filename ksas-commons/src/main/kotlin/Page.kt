@@ -28,9 +28,9 @@ interface PageQueryParamTrait {
 @Schema(title = "默认分页参数类")
 open class PageQueryParam : PageQueryParamTrait {
 
-    @get:Schema(title = "页码")
+    @get:Schema(title = "页码", example = "1")
     override val pageIndex: Int = 1
 
-    @Schema(title = "页大小")
+    @Schema(title = "页大小", example = "10")
     override val pageSize: Int = 10
 }
