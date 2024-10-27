@@ -34,25 +34,33 @@ abstract class BaseServiceImpl<E : BaseModel>(
         return findById(id)
     }
 
-    protected fun checkAddResult(rs: KSimpleSaveResult<*>, message: String = "新增数据失败") {
+    protected fun checkAddResult(
+        rs: KSimpleSaveResult<*>, message: String = "新增数据失败"
+    ) {
         if (!rs.isModified) {
             throw DbOperateException.addFailed(message = message)
         }
     }
 
-    protected fun checkUpdateDbResult(rs: KSimpleSaveResult<*>, message: String = "更新数据失败") {
+    protected fun checkUpdateDbResult(
+        rs: KSimpleSaveResult<*>, message: String = "更新数据失败"
+    ) {
         if (!rs.isModified) {
             throw DbOperateException.updateFailed(message = message)
         }
     }
 
-    protected fun checkDeleteDbResult(rs: KSimpleSaveResult<*>, message: String = "删除数据失败") {
+    protected fun checkDeleteDbResult(
+        rs: KSimpleSaveResult<*>, message: String = "删除数据失败"
+    ) {
         if (!rs.isModified) {
             throw DbOperateException.deleteFailed(message = message)
         }
     }
 
-    protected fun <R> KConfigurableRootQuery<E, R>.fetchCustomPage(pageParam: PageQueryParamTrait): PageResult<R> {
+    protected fun <R> KConfigurableRootQuery<E, R>.fetchCustomPage(
+        pageParam: PageQueryParamTrait
+    ): PageResult<R> {
         val rs = fetchPage(pageParam.pageNum(), pageParam.pageSize)
         return PageResult(
             totalRowCount = rs.totalRowCount,

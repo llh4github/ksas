@@ -33,3 +33,7 @@ specification RoleQuerySpec {
     like/i^$(code)
     pageParam: PageQueryParam
 }
+
+RoleBaseView{
+    #allScalars
+}

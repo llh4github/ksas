@@ -3,6 +3,13 @@ package io.github.llh4github.ksas.service
 import io.github.llh4github.ksas.dbmodel.BaseModel
 import org.babyfish.jimmer.Input
 
+/**
+ * 通用业务方法
+ */
+interface CommonOperate<E : BaseModel> :
+    UniqueDataUpsert<E> {
+}
+
 interface UniqueDataUpsert<E : BaseModel> {
 
     /**
