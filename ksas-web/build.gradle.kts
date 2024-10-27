@@ -16,6 +16,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation(libs.knife4j.openapi3)
     runtimeOnly("org.postgresql:postgresql")
+    implementation(libs.jjwt.api)
+    implementation(libs.jjwt.impl)
+    implementation(libs.jjwt.jackson)
 
     ksp(libs.jimmer.ksp)
 
