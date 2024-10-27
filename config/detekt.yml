@@ -18,6 +18,9 @@ style:
       - '10'
       - '100'
       - '1000'
+  MaxLineLength:
+    active: true
+    maxLineLength: 80
 
 complexity:
   active: true

@@ -36,7 +36,10 @@ data class JsonWrapper<T>(
             module: String = "系统",
             data: T? = null
         ): JsonWrapper<T> {
-            return JsonWrapper(code = code, module = module, msg = msg, data = data)
+            return JsonWrapper(
+                code = code, module = module,
+                msg = msg, data = data
+            )
         }
     }
 }
