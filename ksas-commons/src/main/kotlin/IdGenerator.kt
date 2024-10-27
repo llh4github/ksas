@@ -3,17 +3,21 @@ package io.github.llh4github.ksas.commons
 import com.github.yitter.contract.IdGeneratorOptions
 import com.github.yitter.idgen.YitIdHelper
 
-object IdGenerator {
+object IdGenerator : IdGeneratorTrait {
 
-    fun nextId(): Long = YitIdHelper.nextId()
-
-    fun nextIdStr(): String = YitIdHelper.nextId().toString()
+    override fun nextId(): Long = YitIdHelper.nextId()
 
     fun configGenerator(property: IdGeneratorProperty) {
         val options = IdGeneratorOptions(property.workerId)
         options.SeqBitLength = property.seqBitLength
         YitIdHelper.setIdGenerator(options)
     }
+}
+
+interface IdGeneratorTrait {
+    fun nextId(): Long
+
+    fun nextIdStr(): String = nextId().toString()
 }
 
 open class IdGeneratorProperty {
