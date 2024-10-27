@@ -54,6 +54,11 @@ class JwtUtil(
         return builder.compact()
     }
 
+    /**
+     * 解析token。
+     *
+     * @return 解析失败返回null
+     */
     @Suppress("TooGenericExceptionCaught")
     fun parse(jwt: String): DefaultClaims? {
         return try {
@@ -64,6 +69,11 @@ class JwtUtil(
         }
     }
 
+    /**
+     * 验证token是否有效
+     *
+     * @return 验证失败返回false
+     */
     @Suppress("TooGenericExceptionCaught")
     fun isValid(jwt: String): Boolean {
         return try {
