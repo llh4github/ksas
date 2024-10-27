@@ -9,8 +9,10 @@ import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.mutation.KSimpleSaveResult
 import org.babyfish.jimmer.sql.kt.ast.query.KConfigurableRootQuery
 import org.springframework.transaction.annotation.Transactional
+import kotlin.reflect.KClass
 
 abstract class BaseServiceImpl<E : BaseModel>(
+    override val entityType: KClass<E>,
     private val sqlClient: KSqlClient
 ) : BaseRepository<E>(sqlClient), BaseService<E> {
 
