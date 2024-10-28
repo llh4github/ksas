@@ -39,6 +39,7 @@ abstract class BaseRepository<E : BaseModel>(
     fun insert(entity: E): KSimpleSaveResult<E> {
         return sqlClient.insert(entity)
     }
+
     fun update(entity: E): KSimpleSaveResult<E> {
         return sqlClient.update(entity)
     }
@@ -69,7 +70,9 @@ abstract class BaseRepository<E : BaseModel>(
             sqlClient.findByIds(entityType, ids)
         }
 
-    fun <S : View<E>> findByIds(staticType: KClass<S>, ids: List<Long>): List<S> {
+    fun <S : View<E>> findByIds(
+        staticType: KClass<S>, ids: List<Long>
+    ): List<S> {
         return createQuery {
             where(table.getId<Long>() valueIn ids)
             select(table.fetch(staticType))

@@ -22,7 +22,8 @@ class JwtUtil(
 
     object JwtKeys {
         const val USER_ID_KEY = "userid"
-        val USER_ID: Parameter<String> = Parameters.string(USER_ID_KEY, "USER_ID")
+        val USER_ID: Parameter<String> =
+            Parameters.string(USER_ID_KEY, "USER_ID")
     }
 
     /**
@@ -37,7 +38,10 @@ class JwtUtil(
         Jwts.parser().verifyWith(secretKey).build()
     }
 
-    fun createToken(type: JwtType = JwtType.ACCESS, block: (JwtKeys) -> Map<String, Any>): String {
+    fun createToken(
+        type: JwtType = JwtType.ACCESS,
+        block: (JwtKeys) -> Map<String, Any>
+    ): String {
         val expire = if (type == JwtType.ACCESS) {
             property.tokenExpireTime.accessExpireTime
         } else {

@@ -22,7 +22,9 @@ class GlobalExpHandler {
     }
 
     @ExceptionHandler(CodeBasedRuntimeException::class)
-    fun handleException(e: CodeBasedRuntimeException): JsonWrapper<Map<String, Any?>> {
+    fun handleException(
+        e: CodeBasedRuntimeException
+    ): JsonWrapper<Map<String, Any?>> {
         return JsonWrapper.fail(
             data = e.fields, code = e.code,
             module = e.family,

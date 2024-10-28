@@ -4,7 +4,7 @@ import io.github.llh4github.ksas.commons.PageQueryParam
 import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.Role
 import io.github.llh4github.ksas.dbmodel.auth.code
-import io.github.llh4github.ksas.dbmodel.auth.dto.RoleQuerySpec
+import io.github.llh4github.ksas.dbmodel.auth.dto.RoleBaseView
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.exception.RoleModuleException
 import io.github.llh4github.ksas.service.BaseServiceImpl
@@ -17,13 +17,11 @@ import org.babyfish.jimmer.sql.kt.ast.expression.ne
 import org.babyfish.jimmer.sql.kt.ast.query.specification.KSpecification
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.reflect.KClass
 
 @Service
 class RoleServiceImpl(
     private val sqlClient: KSqlClient,
-) : BaseServiceImpl<Role>(sqlClient), RoleService {
-    override val entityType: KClass<Role> = Role::class
+) : BaseServiceImpl<Role>(Role::class, sqlClient), RoleService {
 
     @Transactional
     override fun addUnique(entity: Input<Role>): Role {
@@ -33,7 +31,10 @@ class RoleServiceImpl(
             select(count(table.id))
         }.fetchOne()
         if (count > 0) {
-            throw RoleModuleException.roleCodeExist(message = "角色编码已存在", roleCode = model.code)
+            throw RoleModuleException.roleCodeExist(
+                message = "角色编码已存在",
+                roleCode = model.code
+            )
         }
         val rs = insert(model)
         checkAddResult(rs)
@@ -49,7 +50,10 @@ class RoleServiceImpl(
             select(count(table.id))
         }.fetchOne()
         if (count > 0) {
-            throw RoleModuleException.roleCodeExist(message = "角色编码已存在", roleCode = model.code)
+            throw RoleModuleException.roleCodeExist(
+                message = "角色编码已存在",
+                roleCode = model.code
+            )
         }
         val rs = update(model)
         checkUpdateDbResult(rs)
@@ -57,11 +61,12 @@ class RoleServiceImpl(
     }
 
     override fun pageQuery(
-        querySpec: KSpecification<Role>, pageQueryParam: PageQueryParam
-    ): PageResult<Role> {
+        querySpec: KSpecification<Role>,
+        pageQueryParam: PageQueryParam
+    ): PageResult<RoleBaseView> {
         return createQuery {
             where(querySpec)
-            select(table)
+            select(table.fetch(RoleBaseView::class))
         }.fetchCustomPage(pageQueryParam)
     }
 }

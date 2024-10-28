@@ -1,3 +1,5 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
     id("org.jetbrains.kotlin.jvm")
     id("io.gitlab.arturbosch.detekt")
@@ -39,6 +41,10 @@ detekt {
     allRules = false // activate all available (even unstable) rules.
     config.setFrom("$rootDir/config/detekt.yml")
 //    baseline = file("$rootDir/config/baseline.xml")
+}
+
+tasks.withType<Detekt>().configureEach {
+    exclude("**/build/generated/**")
 }
 
 tasks.named<Test>("test") {

@@ -18,11 +18,15 @@ interface BaseModel {
     @JsonConverter(LongToStringConverter::class) // 避免前端溢出
     val id: Long
 
-    @get:Schema(title = "创建时间", description = "创建时间", example = "2021-11-11 01:01:01")
+    @get:Schema(
+        title = "创建时间", description = "创建时间", example = "2021-11-11 01:01:01"
+    )
     @get:JsonFormat(pattern = DatetimeConstant.DATE_TIME_FORMAT)
     val createdTime: LocalDateTime?
 
-    @get:Schema(title = "更新时间", description = "更新时间", example = "2021-01-01 00:00:00")
+    @get:Schema(
+        title = "更新时间", description = "更新时间", example = "2021-01-01 00:00:00"
+    )
     @get:JsonFormat(pattern = DatetimeConstant.DATE_TIME_FORMAT)
     val updatedTime: LocalDateTime?
 }
