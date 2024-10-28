@@ -9,9 +9,11 @@ import io.github.llh4github.ksas.dbmodel.auth.dto.UserQuerySpec
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateInput
 import io.github.llh4github.ksas.service.auth.UserService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
+@Tag(name = "用户管理接口")
 @RestController
 @RequestMapping("auth/user")
 class UserApi(private val userService: UserService) {
