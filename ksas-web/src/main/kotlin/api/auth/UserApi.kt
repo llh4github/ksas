@@ -1,8 +1,11 @@
 package io.github.llh4github.ksas.api.auth
 
 import io.github.llh4github.ksas.commons.JsonWrapper
+import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserBaseView
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserQuerySpec
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateInput
 import io.github.llh4github.ksas.service.auth.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -33,6 +36,15 @@ class UserApi(private val userService: UserService) {
         @RequestBody @Validated input: UserUpdateInput
     ): JsonWrapper<User> {
         val rs = userService.checkAndUpdateById(input)
+        return JsonWrapper.ok(rs)
+    }
+
+    @PostMapping("page")
+    @Operation(summary = "分页查询")
+    fun page(
+        @RequestBody query: UserQuerySpec
+    ): JsonWrapper<PageResult<UserBaseView>> {
+        val rs = userService.pageQuery(query, query.pageParam)
         return JsonWrapper.ok(rs)
     }
 }
