@@ -1,3 +1,8 @@
+config:
+  validation: true
+  warningsAsErrors: false
+  excludes: 'build/*'
+
 naming:
   InvalidPackageDeclaration:
     active: false
