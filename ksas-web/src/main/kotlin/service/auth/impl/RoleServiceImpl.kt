@@ -32,7 +32,8 @@ class RoleServiceImpl(
         }.fetchOne()
         if (count > 0) {
             throw RoleModuleException.roleCodeExist(
-                message = "角色编码已存在", roleCode = model.code
+                message = "角色编码已存在",
+                roleCode = model.code
             )
         }
         val rs = insert(model)
@@ -50,7 +51,8 @@ class RoleServiceImpl(
         }.fetchOne()
         if (count > 0) {
             throw RoleModuleException.roleCodeExist(
-                message = "角色编码已存在", roleCode = model.code
+                message = "角色编码已存在",
+                roleCode = model.code
             )
         }
         val rs = update(model)
@@ -59,7 +61,8 @@ class RoleServiceImpl(
     }
 
     override fun pageQuery(
-        querySpec: KSpecification<Role>, pageQueryParam: PageQueryParam
+        querySpec: KSpecification<Role>,
+        pageQueryParam: PageQueryParam
     ): PageResult<RoleBaseView> {
         return createQuery {
             where(querySpec)

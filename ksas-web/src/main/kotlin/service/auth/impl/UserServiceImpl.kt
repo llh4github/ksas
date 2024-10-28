@@ -25,7 +25,8 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
         }.fetchOne().let {
             if (it > 0) {
                 throw UserModuleException.usernameExists(
-                    message = "用户名已存在", username = model.username
+                    message = "用户名已存在",
+                    username = model.username
                 )
             }
         }
@@ -44,7 +45,8 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
         }.fetchOne().let {
             if (it > 0) {
                 throw UserModuleException.usernameExists(
-                    message = "用户名已存在", username = model.username
+                    message = "用户名已存在",
+                    username = model.username
                 )
             }
         }

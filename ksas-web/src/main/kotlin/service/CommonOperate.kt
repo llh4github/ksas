@@ -7,8 +7,8 @@ import org.babyfish.jimmer.Input
  * 通用业务方法
  */
 interface CommonOperate<E : BaseModel> :
-    UniqueDataUpsert<E> {
-}
+    UniqueDataUpsert<E>
+
 
 interface UniqueDataUpsert<E : BaseModel> {
 
