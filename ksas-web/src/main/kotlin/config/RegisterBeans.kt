@@ -8,6 +8,8 @@ import org.babyfish.jimmer.sql.meta.DatabaseNamingStrategy
 import org.babyfish.jimmer.sql.runtime.DefaultDatabaseNamingStrategy
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
@@ -31,4 +33,6 @@ class RegisterBeans {
     fun databaseNamingStrategy(): DatabaseNamingStrategy =
         DefaultDatabaseNamingStrategy.LOWER_CASE
 
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 }
