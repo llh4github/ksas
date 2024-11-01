@@ -1,9 +1,11 @@
 package io.github.llh4github.ksas.library
 
+import io.github.llh4github.ksas.bo.AccountAuthBo
 import io.github.llh4github.ksas.commons.LongIdGenerator
 import io.github.llh4github.ksas.commons.property.JwtType
 import io.github.llh4github.ksas.commons.property.WebSecurityProperty
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.impl.DefaultClaims
 import io.jsonwebtoken.impl.lang.Parameter
@@ -92,13 +94,29 @@ class JwtService(
 
     /**
      * 从JWT中获取用户id
-     *
-     * 此方法应当在验证token有效性之后调用，否则可能抛出异常
      * @return jwt中的subject字段
      */
-    fun getUserId(jwt: String): Long {
-        val claims = parser.parse(jwt).payload as DefaultClaims
-        return claims.get(userIdParameter).toLong()
+    fun validAndGetUserId(jwt: String): Long? {
+        return validAndClaims(jwt)?.get(userIdParameter)?.toLong()
+    }
+
+
+    /**
+     * 验证并获取用户名
+     * @return jwt中的subject字段
+     */
+    fun validAndGetUsername(jwt: String): String? {
+        return validAndClaims(jwt)?.subject
+    }
+
+    fun validAndAuthBo(jwt: String): AccountAuthBo? {
+        val claims = validAndClaims(jwt) ?: return null
+        val bo = AccountAuthBo(
+            claims.get(userIdParameter).toLong(),
+            claims.subject
+        )
+        bo.isAuthenticated = true
+        return bo
     }
 
     /**
@@ -106,8 +124,17 @@ class JwtService(
      *
      * @return 验证失败返回false
      */
-    @Suppress("TooGenericExceptionCaught")
     fun isValid(jwt: String): Boolean {
+        return validAndClaims(jwt) != null
+    }
+
+    /**
+     * 验证token是否有效，并返回claims
+     *
+     * @return 验证失败返回null
+     */
+    @Suppress("TooGenericExceptionCaught")
+    private fun validAndClaims(jwt: String): DefaultClaims? {
         return try {
             val claims = parser.parse(jwt).payload as DefaultClaims
             val jwtId = claims.id
@@ -118,12 +145,13 @@ class JwtService(
                 logger.debug {
                     "token验证失败，与缓存中的JWT对不上。缓存key为: $key ,输入的jwt为: $jwt"
                 }
-                return false
+                return null
             }
-            true
+            claims
         } catch (e: RuntimeException) {
             logger.warn(e) { "token验证出错: $jwt" }
-            false
+            null
         }
     }
+
 }
