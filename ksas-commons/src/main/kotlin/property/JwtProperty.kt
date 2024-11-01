@@ -7,15 +7,14 @@ import kotlin.time.Duration
 import kotlin.time.toJavaDuration
 
 
+/**
+ * JWT生成配置
+ */
 class JwtProperty {
     /**
      * 签发人。通常是访问域名。
      */
     var issuer: String = "ksas-web"
-
-    var tokenHeaderName = "Authorization"
-
-    var tokenHeaderPrefix = "Bearer "
 
     /**
      * 令牌秘钥
@@ -29,10 +28,6 @@ class JwtProperty {
      */
     var tokenExpireTime: TokenExpireTime = TokenExpireTime()
 
-    /**
-     * 缓存key前缀
-     */
-    var cacheKeyPrefix: String = "ksas:jwt:"
 
 }
 
