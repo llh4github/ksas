@@ -3,7 +3,7 @@ package io.github.llh4github.ksas.commons
 import com.github.yitter.contract.IdGeneratorOptions
 import com.github.yitter.idgen.YitIdHelper
 
-object IdGenerator : IdGeneratorTrait {
+object IdGenerator : LongIdGenerator {
 
     override fun nextId(): Long = YitIdHelper.nextId()
 
@@ -14,7 +14,7 @@ object IdGenerator : IdGeneratorTrait {
     }
 }
 
-interface IdGeneratorTrait {
+interface LongIdGenerator {
     fun nextId(): Long
 
     fun nextIdStr(): String = nextId().toString()

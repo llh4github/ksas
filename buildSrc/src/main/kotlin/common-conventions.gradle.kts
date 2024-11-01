@@ -5,7 +5,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
-val libs : VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 repositories {
     mavenCentral()
@@ -44,7 +44,7 @@ detekt {
 }
 
 tasks.withType<Detekt>().configureEach {
-    exclude("**/build/generated/**")
+    exclude("**/build/generated/**", "**.kts")
 }
 
 tasks.named<Test>("test") {
