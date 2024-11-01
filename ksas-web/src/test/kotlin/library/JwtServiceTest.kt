@@ -7,23 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class JwtUtilTest {
+class JwtServiceTest {
 
     @Autowired
-    private lateinit var jwtUtil: JwtUtil
+    private lateinit var jwtService: JwtService
 
     @Test
     fun `create and valid jwt`() {
-        val userId = "bbaacc"
-        val token = jwtUtil.createToken { keys ->
-            mapOf<String, Any>(keys.USER_ID_KEY to userId)
+        val token = jwtService.createToken("Tom", 114514L) { keys ->
+            mapOf<String, Any>(keys.ROLES_KEY to listOf("admin"))
         }
-        val valid = jwtUtil.isValid(token)
+        val valid = jwtService.isValid(token)
         assertTrue(valid)
-        jwtUtil.parse(token)?.let {
-            val uid = it[JwtUtil.JwtKeys.USER_ID] as String
-            println(uid)
-            assertEquals(userId, uid)
-        }
+        val uid = jwtService.getUserId(token)
+        assertEquals(114514L, uid)
     }
 }

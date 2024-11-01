@@ -28,6 +28,8 @@ class WebSecurityProperty {
 
     /**
      * 缓存Jwt键名前缀
+     *
+     * 不以冒号结尾
      */
-    var cacheJwtPrefix: String = "ksas:jwt:"
+    var cacheJwtPrefix: String = "ksas:jwt"
 }
