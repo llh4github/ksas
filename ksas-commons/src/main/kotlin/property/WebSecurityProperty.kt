@@ -22,11 +22,6 @@ class WebSecurityProperty {
     var jwtHeaderPrefix = "Bearer "
 
     /**
-     * 是否启用API文档
-     */
-    var enableApiDoc = false
-
-    /**
      * 缓存Jwt键名前缀
      *
      * 不以冒号结尾
