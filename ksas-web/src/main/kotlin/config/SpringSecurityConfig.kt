@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.config
 
+import io.github.llh4github.ksas.commons.property.WebSecurityProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component
 class SpringSecurityConfig(
     val property: WebSecurityProperty
 ) {
-
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
@@ -25,7 +25,7 @@ class SpringSecurityConfig(
     @Bean
     @Suppress("SpreadOperator")
     fun webSecurityCustomizer(): WebSecurityCustomizer {
-        val annoUrls = property.annoUrls.toTypedArray()
+        val annoUrls = property.anonUrls.toTypedArray()
         return WebSecurityCustomizer { web: WebSecurity ->
             web.ignoring().requestMatchers(*annoUrls)
         }
