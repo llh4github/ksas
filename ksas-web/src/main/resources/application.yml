@@ -11,3 +11,11 @@ spring:
 jimmer:
   language: kotlin
   show-sql: true
+ksas:
+  security:
+    anon-urls:
+        - /swagger-ui.html
+        - /swagger-ui/**
+        - /v3/api-docs/**
+        - /doc.html
+
