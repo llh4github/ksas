@@ -56,7 +56,7 @@ class JwtService(
         subject: String,
         userId: Long,
         type: JwtType = JwtType.ACCESS,
-        block: (JwtKeys) -> Map<String, Any>
+        block: (JwtKeys) -> Map<String, Any> = { emptyMap() }
     ): String {
         val expireTime = if (type == JwtType.ACCESS) {
             jwtProperty.tokenExpireTime.accessExpireTime
@@ -73,11 +73,13 @@ class JwtService(
         val builder = Jwts.builder()
             .id(idStr)
             .subject(subject)
-            .claims(block(JwtKeys))
             .issuer(jwtProperty.issuer)
             .issuedAt(Date())
             .signWith(secretKey)
             .expiration(expireTime)
+        block(JwtKeys).takeIf { it.isNotEmpty() }.let {
+            builder.claims(it)
+        }
         builder.claim(userIdKey, userId.toString())
         builder.header().add("typ", type.name)
         val jwt = builder.compact()
