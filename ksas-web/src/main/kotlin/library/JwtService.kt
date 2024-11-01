@@ -30,7 +30,7 @@ class JwtService(
         Parameters.string("userid", "UserID")
 
     object JwtKeys {
-        const val ROLES_KEY = "role"
+        const val ROLES_KEY = "roles"
     }
 
     /**
