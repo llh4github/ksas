@@ -13,8 +13,8 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Component
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.crypto.SecretKey
+import kotlin.time.toJavaDuration
 
 @Component
 class JwtService(
@@ -58,10 +58,15 @@ class JwtService(
         type: JwtType = JwtType.ACCESS,
         block: (JwtKeys) -> Map<String, Any>
     ): String {
-        val expire = if (type == JwtType.ACCESS) {
+        val expireTime = if (type == JwtType.ACCESS) {
             jwtProperty.tokenExpireTime.accessExpireTime
         } else {
             jwtProperty.tokenExpireTime.refreshExpireTime
+        }
+        val expiration = if (type == JwtType.ACCESS) {
+            jwtProperty.tokenExpireTime.access
+        } else {
+            jwtProperty.tokenExpireTime.refresh
         }
 
         val idStr = idGenerator.nextIdStr()
@@ -72,18 +77,13 @@ class JwtService(
             .issuer(jwtProperty.issuer)
             .issuedAt(Date())
             .signWith(secretKey)
-            .expiration(expire)
+            .expiration(expireTime)
         builder.claim(userIdKey, userId.toString())
         builder.header().add("typ", type.name)
         val jwt = builder.compact()
 
         val key = "${webProperty.cacheJwtPrefix}:$subject:$idStr"
-        redisTemplate.opsForValue().set(
-            key,
-            jwt,
-            expire.time - System.currentTimeMillis(),
-            TimeUnit.MILLISECONDS
-        )
+        redisTemplate.opsForValue().set(key, jwt, expiration.toJavaDuration())
         return jwt
     }
 
