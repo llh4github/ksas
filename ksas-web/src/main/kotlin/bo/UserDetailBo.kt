@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails
 /**
  * 用户详情业务对象。用于Spring Security的用户认证
  */
-class UseDetailBo(private val user: User) : UserDetails {
+class UserDetailBo(private val user: User) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf()
     }

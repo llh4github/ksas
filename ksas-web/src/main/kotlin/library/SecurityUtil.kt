@@ -21,6 +21,13 @@ object SecurityUtil {
     }
 
     /**
+     * 清除登录信息
+     */
+    fun clearLoginInfo() {
+        SecurityContextHolder.clearContext()
+    }
+
+    /**
      * 获取当前用户名
      */
     fun username(): String {
