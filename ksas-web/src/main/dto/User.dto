@@ -46,3 +46,11 @@ UserBaseView{
     #allScalars
     -password
 }
+
+UserLoginView{
+    @NotEmpty(message = "用户名不能为空")
+    username
+
+    @NotEmpty(message = "密码不能为空")
+    password
+}
