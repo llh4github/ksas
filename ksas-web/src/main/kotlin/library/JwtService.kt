@@ -5,7 +5,6 @@ import io.github.llh4github.ksas.commons.LongIdGenerator
 import io.github.llh4github.ksas.commons.property.JwtType
 import io.github.llh4github.ksas.commons.property.WebSecurityProperty
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.impl.DefaultClaims
 import io.jsonwebtoken.impl.lang.Parameter
@@ -91,6 +90,14 @@ class JwtService(
         return jwt
     }
 
+    fun banJwt(jwt: String) {
+        // 如果jwt无效，则不需要禁用
+        val claims = validAndClaims(jwt) ?: return
+        val jwtId = claims.id
+        val subject = claims.subject
+        val key = "${webProperty.cacheJwtPrefix}:$subject:$jwtId"
+        redisTemplate.delete(key)
+    }
 
     /**
      * 从JWT中获取用户id
