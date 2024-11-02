@@ -21,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserServiceImpl(private val sqlClient: KSqlClient) :
-    BaseServiceImpl<User>(User::class, sqlClient), UserService {
+    BaseServiceImpl<User>(User::class, sqlClient),
+    UserService {
 
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
