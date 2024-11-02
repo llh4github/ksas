@@ -18,8 +18,9 @@ class JwtServiceTest {
         }
         val valid = jwtService.isValid(token)
         assertTrue(valid)
-        val uid = jwtService.getUserId(token)
-        assertEquals(114514L, uid)
+        jwtService.validAndGetUserId(token)?.let {
+            assertEquals(114514L, it)
+        } ?: fail("validAndGetUserId return null")
     }
 
     @Test
