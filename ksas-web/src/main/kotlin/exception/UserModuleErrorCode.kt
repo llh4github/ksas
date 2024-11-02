@@ -7,4 +7,8 @@ import org.babyfish.jimmer.error.ErrorField
 enum class UserModuleErrorCode {
     @ErrorField(name = "username", type = String::class)
     USERNAME_EXISTS,
+
+    USERNAME_NO_EXISTS,
+
+    PASSWORD_ERROR,
 }
