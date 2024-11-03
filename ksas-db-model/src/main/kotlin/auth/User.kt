@@ -1,6 +1,5 @@
 package io.github.llh4github.ksas.dbmodel.auth
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import io.github.llh4github.ksas.dbmodel.BaseModel
 import io.swagger.v3.oas.annotations.media.Schema
 import org.babyfish.jimmer.sql.Entity
@@ -15,7 +14,6 @@ interface User : BaseModel {
     @get:Schema(description = "用户名")
     val username: String
 
-    @get:JsonIgnore
     @get:Schema(description = "密码")
     val password: String
 

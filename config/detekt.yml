@@ -22,10 +22,11 @@ style:
       - '2'
       - '10'
       - '100'
+      - '200'
       - '1000'
   MaxLineLength:
     active: true
-    maxLineLength: 80
+    maxLineLength: 100
 
 complexity:
   active: true

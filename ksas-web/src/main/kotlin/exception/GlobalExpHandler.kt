@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.exception
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.babyfish.jimmer.error.CodeBasedRuntimeException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
@@ -10,6 +11,20 @@ import org.springframework.web.servlet.resource.NoResourceFoundException
 @RestControllerAdvice
 class GlobalExpHandler {
     private val logger = KotlinLogging.logger {}
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleException(e: MethodArgumentNotValidException): JsonWrapper<Map<String, String?>> {
+        logger.debug(e) { "接口参数校验失败" }
+        val map = e.bindingResult.fieldErrors
+            .filter { it.field.isNotEmpty() && it.defaultMessage != null }
+            .associate { it.field to it.defaultMessage }
+        return JsonWrapper.fail(
+            data = map,
+            code = "VALIDATION_ERROR",
+            module = "API_PARAMS_VALIDATION",
+            msg = "参数校验失败"
+        )
+    }
 
     @ExceptionHandler(NoResourceFoundException::class)
     fun handleException(e: NoResourceFoundException): JsonWrapper<String> {

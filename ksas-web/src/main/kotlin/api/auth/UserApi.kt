@@ -6,7 +6,6 @@ import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserBaseView
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserQuerySpec
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateInput
 import io.github.llh4github.ksas.service.auth.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -29,15 +28,6 @@ class UserApi(private val userService: UserService) {
     @Operation(summary = "新增用户")
     fun add(@RequestBody @Validated input: UserAddInput): JsonWrapper<User> {
         val rs = userService.addUnique(input)
-        return JsonWrapper.ok(rs)
-    }
-
-    @PutMapping
-    @Operation(summary = "更新用户")
-    fun update(
-        @RequestBody @Validated input: UserUpdateInput
-    ): JsonWrapper<User> {
-        val rs = userService.checkAndUpdateById(input)
         return JsonWrapper.ok(rs)
     }
 
