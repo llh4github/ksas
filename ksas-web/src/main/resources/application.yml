@@ -19,4 +19,5 @@ ksas:
         - /v3/api-docs/**
         - /doc.html
         - /login
+        - /favicon.ico
 
