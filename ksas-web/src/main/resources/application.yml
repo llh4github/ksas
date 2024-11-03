@@ -18,4 +18,5 @@ ksas:
         - /swagger-ui/**
         - /v3/api-docs/**
         - /doc.html
+        - /login
 
