@@ -18,7 +18,12 @@ class GlobalExpHandler {
         val map = e.bindingResult.fieldErrors
             .filter { it.field.isNotEmpty() && it.defaultMessage != null }
             .associate { it.field to it.defaultMessage }
-        return JsonWrapper.fail(data = map, code = "VALIDATION_ERROR", msg = "参数校验失败")
+        return JsonWrapper.fail(
+            data = map,
+            code = "VALIDATION_ERROR",
+            module = "API_PARAMS_VALIDATION",
+            msg = "参数校验失败"
+        )
     }
 
     @ExceptionHandler(NoResourceFoundException::class)
