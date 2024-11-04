@@ -85,3 +85,16 @@ COMMENT ON COLUMN "public"."auth_endpoint_perm"."updated_time" IS '更新时间'
 COMMENT ON COLUMN "public"."auth_endpoint_perm"."updated_by_user_id" IS '更新者ID';
 COMMENT ON COLUMN "public"."auth_endpoint_perm"."created_by_user_id" IS '创建者ID';
 COMMENT ON TABLE "public"."auth_endpoint_perm" IS '接口权限表';
+
+CREATE TABLE "public"."link_role_endpoint" (
+   "role_id" int8 NOT NULL,
+   "endpoint_id" int8 NOT NULL,
+   CONSTRAINT "link_role_endpoint_pkey" PRIMARY KEY ("role_id", "endpoint_id"),
+   CONSTRAINT "link_role_endpoint_endpoint_id_fkey" FOREIGN KEY ("endpoint_id") REFERENCES "public"."auth_endpoint_perm" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION,
+   CONSTRAINT "link_role_endpoint_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."auth_role" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION
+)
+;
+
+ALTER TABLE "public"."link_role_endpoint"    OWNER TO "postgres";
+COMMENT ON COLUMN "public"."link_role_endpoint"."role_id" IS '角色表ID';
+COMMENT ON COLUMN "public"."link_role_endpoint"."endpoint_id" IS '接口权限表ID';

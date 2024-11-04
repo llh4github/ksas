@@ -15,3 +15,8 @@ INSERT INTO "public"."link_user_role" ("role_id", "user_id") VALUES (2, 114514);
 INSERT INTO "public"."auth_endpoint_perm" ("id", "title", "path", "perm_code", "method", "remark", "created_time", "updated_time", "updated_by_user_id", "created_by_user_id") VALUES (1, '角色列表', '/auth/role/page', 'auth:role:page', 'POST', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO "public"."auth_endpoint_perm" ("id", "title", "path", "perm_code", "method", "remark", "created_time", "updated_time", "updated_by_user_id", "created_by_user_id") VALUES (2, '新增角色', '/auth/role', 'auth:role:create', 'POST', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO "public"."auth_endpoint_perm" ("id", "title", "path", "perm_code", "method", "remark", "created_time", "updated_time", "updated_by_user_id", "created_by_user_id") VALUES (3, '角色详情', '/auth/role', 'auth:role:detail', 'GET', NULL, NULL, NULL, NULL, NULL);
+
+INSERT INTO "public"."link_role_endpoint" ("role_id", "endpoint_id") VALUES (1, 1);
+INSERT INTO "public"."link_role_endpoint" ("role_id", "endpoint_id") VALUES (1, 2);
+INSERT INTO "public"."link_role_endpoint" ("role_id", "endpoint_id") VALUES (1, 3);
+INSERT INTO "public"."link_role_endpoint" ("role_id", "endpoint_id") VALUES (2, 1);

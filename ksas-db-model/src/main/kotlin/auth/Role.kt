@@ -1,10 +1,7 @@
 package io.github.llh4github.ksas.dbmodel.auth
 
 import io.github.llh4github.ksas.dbmodel.BaseModel
-import org.babyfish.jimmer.sql.Entity
-import org.babyfish.jimmer.sql.Key
-import org.babyfish.jimmer.sql.ManyToMany
-import org.babyfish.jimmer.sql.Table
+import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "auth_role")
@@ -17,4 +14,12 @@ interface Role : BaseModel {
 
     @ManyToMany(mappedBy = "roles")
     val users: List<User>
+
+    @ManyToMany
+    @JoinTable(
+        name = "link_role_endpoint",
+        joinColumnName = "role_id",
+        inverseJoinColumnName = "endpoint_id"
+    )
+    val endpointPerms: List<EndpointPerm>
 }
