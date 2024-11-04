@@ -42,3 +42,20 @@ COMMENT ON COLUMN "public"."auth_user"."created_time" IS '创建时间';
 COMMENT ON COLUMN "public"."auth_user"."updated_time" IS '更新时间';
 COMMENT ON COLUMN "public"."auth_user"."updated_by_user_id" IS '更新者ID';
 COMMENT ON COLUMN "public"."auth_user"."created_by_user_id" IS '创建者ID';
+
+
+CREATE TABLE "public"."link_user_role" (
+   "role_id" int8 NOT NULL,
+   "user_id" int8 NOT NULL,
+   CONSTRAINT "link_user_role_pkey" PRIMARY KEY ("role_id", "user_id"),
+   CONSTRAINT "link_user_role_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."auth_role" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION,
+   CONSTRAINT "link_user_role_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION
+)
+;
+
+ALTER TABLE "public"."link_user_role"
+    OWNER TO "postgres";
+
+COMMENT ON COLUMN "public"."link_user_role"."role_id" IS '角色表ID';
+COMMENT ON COLUMN "public"."link_user_role"."user_id" IS '用户表ID';
+
