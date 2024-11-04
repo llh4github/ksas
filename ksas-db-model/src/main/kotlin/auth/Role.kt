@@ -22,4 +22,13 @@ interface Role : BaseModel {
         inverseJoinColumnName = "endpoint_id"
     )
     val endpointPerms: List<EndpointPerm>
+
+
+    @ManyToMany
+    @JoinTable(
+        name = "link_role_page_router",
+        joinColumnName = "role_id",
+        inverseJoinColumnName = "page_router_id"
+    )
+    val pageRouters:List<PageRouter>
 }

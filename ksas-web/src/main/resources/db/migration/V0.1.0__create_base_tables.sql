@@ -49,8 +49,8 @@ CREATE TABLE "public"."link_user_role" (
    "role_id" int8 NOT NULL,
    "user_id" int8 NOT NULL,
    CONSTRAINT "link_user_role_pkey" PRIMARY KEY ("role_id", "user_id"),
-   CONSTRAINT "link_user_role_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."auth_role" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION,
-   CONSTRAINT "link_user_role_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION
+   CONSTRAINT "link_user_role_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."auth_role" ("id") ON DELETE CASCADE ON UPDATE NO ACTION,
+   CONSTRAINT "link_user_role_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION
 )
 ;
 COMMENT ON TABLE "public"."link_user_role" IS '用户-角色关联表';
@@ -91,8 +91,8 @@ CREATE TABLE "public"."link_role_endpoint" (
    "role_id" int8 NOT NULL,
    "endpoint_id" int8 NOT NULL,
    CONSTRAINT "link_role_endpoint_pkey" PRIMARY KEY ("role_id", "endpoint_id"),
-   CONSTRAINT "link_role_endpoint_endpoint_id_fkey" FOREIGN KEY ("endpoint_id") REFERENCES "public"."auth_endpoint_perm" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION,
-   CONSTRAINT "link_role_endpoint_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."auth_role" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION
+   CONSTRAINT "link_role_endpoint_endpoint_id_fkey" FOREIGN KEY ("endpoint_id") REFERENCES "public"."auth_endpoint_perm" ("id") ON DELETE CASCADE ON UPDATE NO ACTION,
+   CONSTRAINT "link_role_endpoint_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."auth_role" ("id") ON DELETE CASCADE ON UPDATE NO ACTION
 )
 ;
 
@@ -100,3 +100,46 @@ COMMENT ON TABLE "public"."link_role_endpoint" IS '角色-接口权限关联表'
 ALTER TABLE "public"."link_role_endpoint"    OWNER TO "postgres";
 COMMENT ON COLUMN "public"."link_role_endpoint"."role_id" IS '角色表ID';
 COMMENT ON COLUMN "public"."link_role_endpoint"."endpoint_id" IS '接口权限表ID';
+
+
+CREATE TABLE "public"."auth_page_router" (
+ "id" INT8 NOT NULL,
+ "title" TEXT COLLATE "pg_catalog"."default" NOT NULL,
+ "path" TEXT COLLATE "pg_catalog"."default" NOT NULL,
+ "name" TEXT COLLATE "pg_catalog"."default" NOT NULL,
+ "redirect" TEXT COLLATE "pg_catalog"."default",
+ "icon" TEXT COLLATE "pg_catalog"."default",
+ "showLink" BOOL NOT NULL DEFAULT TRUE,
+ "rank" INT2 NOT NULL DEFAULT 1,
+ "created_time" TIMESTAMP ( 6 ),
+ "updated_time" TIMESTAMP ( 6 ),
+ "updated_by_user_id" INT8,
+ "created_by_user_id" INT8,
+ CONSTRAINT "auth_page_router_pkey" PRIMARY KEY ( "id" ),
+ CONSTRAINT "auth_page_router_name_key" UNIQUE ( "name" )
+);
+ALTER TABLE "public"."auth_page_router" OWNER TO "postgres";
+COMMENT ON COLUMN "public"."auth_page_router"."id" IS '主键ID';
+COMMENT ON COLUMN "public"."auth_page_router"."title" IS '菜单名称';
+COMMENT ON COLUMN "public"."auth_page_router"."path" IS '角色代码';
+COMMENT ON COLUMN "public"."auth_page_router"."name" IS '路由名称（必须保持唯一）';
+COMMENT ON COLUMN "public"."auth_page_router"."redirect" IS '路由重定向（默认跳转地址）';
+COMMENT ON COLUMN "public"."auth_page_router"."icon" IS '菜单图标';
+COMMENT ON COLUMN "public"."auth_page_router"."showLink" IS '是否在菜单中显示';
+COMMENT ON COLUMN "public"."auth_page_router"."rank" IS ' 菜单排序，值越高排的越后（只针对顶级路由）';
+COMMENT ON COLUMN "public"."auth_page_router"."created_time" IS '创建时间';
+COMMENT ON COLUMN "public"."auth_page_router"."updated_time" IS '更新时间';
+COMMENT ON COLUMN "public"."auth_page_router"."updated_by_user_id" IS '更新者ID';
+COMMENT ON COLUMN "public"."auth_page_router"."created_by_user_id" IS '创建者ID';
+COMMENT ON TABLE "public"."auth_page_router" IS '页面路由表';
+
+CREATE TABLE "public"."link_role_page_router" (
+  "role_id" INT8 NOT NULL,
+  "page_router_id" INT8 NOT NULL,
+  CONSTRAINT "link_role_page_router_page_router_id_fkey" FOREIGN KEY ( "page_router_id" ) REFERENCES "public"."auth_page_router" ( "id" ) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT "link_role_page_router_role_id_fkey" FOREIGN KEY ( "role_id" ) REFERENCES "public"."auth_role" ( "id" ) ON DELETE CASCADE ON UPDATE NO ACTION
+);
+ALTER TABLE "public"."link_role_page_router" OWNER TO "postgres";
+COMMENT ON COLUMN "public"."link_role_page_router"."role_id" IS '角色表ID';
+COMMENT ON COLUMN "public"."link_role_page_router"."page_router_id" IS '页面路由表ID';
+COMMENT ON TABLE "public"."link_role_page_router" IS '角色-页面路由关联表';
