@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.dbmodel.auth
 import io.github.llh4github.ksas.dbmodel.BaseModel
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Key
+import org.babyfish.jimmer.sql.ManyToMany
 import org.babyfish.jimmer.sql.Table
 
 @Entity
@@ -13,4 +14,7 @@ interface Role : BaseModel {
 
     @Key
     val code: String
+
+    @ManyToMany(mappedBy = "users")
+    val roles: List<User>
 }
