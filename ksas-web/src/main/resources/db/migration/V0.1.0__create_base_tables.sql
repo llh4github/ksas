@@ -10,7 +10,7 @@ CREATE TABLE "public"."auth_role" (
   CONSTRAINT "auth_role_code_key" UNIQUE ("code")
 )
 ;
-COMMENT ON TABLE "public"."auth_user" IS '角色表';
+COMMENT ON TABLE "public"."auth_role" IS '角色表';
 ALTER TABLE "public"."auth_role"  OWNER TO "postgres";
 COMMENT ON COLUMN "public"."auth_role"."id" IS '主键ID';
 COMMENT ON COLUMN "public"."auth_role"."title" IS '角色名称';
@@ -53,6 +53,7 @@ CREATE TABLE "public"."link_user_role" (
    CONSTRAINT "link_user_role_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION
 )
 ;
+COMMENT ON TABLE "public"."link_user_role" IS '用户-角色关联表';
 ALTER TABLE "public"."link_user_role"  OWNER TO "postgres";
 COMMENT ON COLUMN "public"."link_user_role"."role_id" IS '角色表ID';
 COMMENT ON COLUMN "public"."link_user_role"."user_id" IS '用户表ID';
@@ -95,6 +96,7 @@ CREATE TABLE "public"."link_role_endpoint" (
 )
 ;
 
+COMMENT ON TABLE "public"."link_role_endpoint" IS '角色-接口权限关联表';
 ALTER TABLE "public"."link_role_endpoint"    OWNER TO "postgres";
 COMMENT ON COLUMN "public"."link_role_endpoint"."role_id" IS '角色表ID';
 COMMENT ON COLUMN "public"."link_role_endpoint"."endpoint_id" IS '接口权限表ID';
