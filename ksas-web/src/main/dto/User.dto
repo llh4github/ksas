@@ -63,5 +63,8 @@ UserAuthView{
     password
     roles{
         code
+        endpointPerms{
+           permCode
+        }
     }
 }
