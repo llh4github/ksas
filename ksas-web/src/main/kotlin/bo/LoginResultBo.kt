@@ -23,5 +23,5 @@ data class LoginResultBo(
     @Schema(description = "角色code列表")
     val roles: List<String> = emptyList(),
     @Schema(description = "权限列表")
-    val perms: List<String> = emptyList(),
+    val permissions: List<String> = emptyList(),
 )

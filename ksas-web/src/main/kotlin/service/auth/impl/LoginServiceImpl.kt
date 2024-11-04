@@ -45,7 +45,7 @@ class LoginServiceImpl(
             refreshToken = refresh,
             expire = expire,
             roles = user.roles.map { it.code },
-            perms = user.roles.flatMap { it.endpointPerms }.map { it.permCode }
+            permissions = user.roles.flatMap { it.endpointPerms }.map { it.permCode }
         )
     }
 
