@@ -46,19 +46,30 @@ class JwtService(
         Jwts.parser().verifyWith(secretKey).build()
     }
 
-    /**
-     * 创建并缓存jwt
-     *
-     * @param subject jwt签发对象，为用户名
-     * @param type jwt类型
-     * @param block jwt内容,不宜过多
-     */
+
     fun createToken(
         subject: String,
         userId: Long,
         type: JwtType = JwtType.ACCESS,
         block: (JwtKeys) -> Map<String, Any> = { emptyMap() }
     ): String {
+        return createExpireToken(subject, userId, type, block).first
+    }
+
+    /**
+     * 创建并缓存jwt
+     *
+     * @param subject jwt签发对象，为用户名
+     * @param type jwt类型
+     * @param block jwt内容,不宜过多
+     * @return jwt和过期时间
+     */
+    fun createExpireToken(
+        subject: String,
+        userId: Long,
+        type: JwtType = JwtType.ACCESS,
+        block: (JwtKeys) -> Map<String, Any> = { emptyMap() }
+    ): Pair<String, Date> {
         val expireTime = if (type == JwtType.ACCESS) {
             jwtProperty.tokenExpireTime.accessExpireTime
         } else {
@@ -87,7 +98,7 @@ class JwtService(
 
         val key = "${webProperty.cacheJwtPrefix}:$subject:$idStr"
         redisTemplate.opsForValue().set(key, jwt, expiration.toJavaDuration())
-        return jwt
+        return Pair(jwt, expireTime)
     }
 
     fun banJwt(jwt: String) {

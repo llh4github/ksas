@@ -38,7 +38,7 @@ class LoginServiceImpl(
                 message = LOGIN_FAIL_MSG
             )
         }
-        val access = jwtService.createToken(user.username, user.id, JwtType.ACCESS)
+        val (access, expire) = jwtService.createExpireToken(user.username, user.id, JwtType.ACCESS)
         val refresh = jwtService.createToken(user.username, user.id, JwtType.REFRESH)
 
         return LoginResultBo(
@@ -46,6 +46,7 @@ class LoginServiceImpl(
             username = user.username,
             accessToken = access,
             refreshToken = refresh,
+            expire = expire,
         )
     }
 
