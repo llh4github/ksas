@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.bo
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*
 
@@ -17,6 +18,7 @@ data class LoginResultBo(
      * 访问凭证过期时间。减少前端计算
      */
     @Schema(description = "访问凭证过期时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     val expire: Date,
     @Schema(description = "角色code列表")
     val roles: List<String> = emptyList(),
