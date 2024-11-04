@@ -17,5 +17,9 @@ data class LoginResultBo(
      * 访问凭证过期时间。减少前端计算
      */
     @Schema(description = "访问凭证过期时间")
-    val expire: Date
+    val expire: Date,
+    @Schema(description = "角色code列表")
+    val roles: List<String> = emptyList(),
+    @Schema(description = "权限列表")
+    val perms: List<String> = emptyList(),
 )

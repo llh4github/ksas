@@ -4,6 +4,7 @@ import io.github.llh4github.ksas.bo.LoginResultBo
 import io.github.llh4github.ksas.bo.LogoutParam
 import io.github.llh4github.ksas.commons.property.JwtType
 import io.github.llh4github.ksas.dbmodel.auth.User
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserAuthView
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserLoginView
 import io.github.llh4github.ksas.dbmodel.auth.username
 import io.github.llh4github.ksas.exception.UserModuleException
@@ -29,7 +30,7 @@ class LoginServiceImpl(
     override fun login(view: UserLoginView): LoginResultBo {
         val user = createQuery {
             where(table.username eq view.username)
-            select(table)
+            select(table.fetch(UserAuthView::class))
         }.fetchOneOrNull() ?: throw UserModuleException.usernameNoExists(
             message = LOGIN_FAIL_MSG
         )
@@ -47,6 +48,7 @@ class LoginServiceImpl(
             accessToken = access,
             refreshToken = refresh,
             expire = expire,
+            roles = user.roles.map { it.code }
         )
     }
 
