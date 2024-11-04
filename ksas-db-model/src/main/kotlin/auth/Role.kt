@@ -15,6 +15,6 @@ interface Role : BaseModel {
     @Key
     val code: String
 
-    @ManyToMany(mappedBy = "users")
-    val roles: List<User>
+    @ManyToMany(mappedBy = "roles")
+    val users: List<User>
 }
