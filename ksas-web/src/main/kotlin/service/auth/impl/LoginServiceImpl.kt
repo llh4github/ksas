@@ -31,13 +31,9 @@ class LoginServiceImpl(
         val user = createQuery {
             where(table.username eq view.username)
             select(table.fetch(UserAuthView::class))
-        }.fetchOneOrNull() ?: throw UserModuleException.usernameNoExists(
-            message = LOGIN_FAIL_MSG
-        )
+        }.fetchOneOrNull() ?: throw UserModuleException.loginFailed(message = LOGIN_FAIL_MSG)
         if (!passwordEncoder.matches(view.password, user.password)) {
-            throw UserModuleException.passwordError(
-                message = LOGIN_FAIL_MSG
-            )
+            throw UserModuleException.loginFailed(message = LOGIN_FAIL_MSG)
         }
         val (access, expire) = jwtService.createExpireToken(user.username, user.id, JwtType.ACCESS)
         val refresh = jwtService.createToken(user.username, user.id, JwtType.REFRESH)
