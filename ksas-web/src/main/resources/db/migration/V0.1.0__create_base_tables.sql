@@ -143,3 +143,16 @@ ALTER TABLE "public"."link_role_page_router" OWNER TO "postgres";
 COMMENT ON COLUMN "public"."link_role_page_router"."role_id" IS '角色表ID';
 COMMENT ON COLUMN "public"."link_role_page_router"."page_router_id" IS '页面路由表ID';
 COMMENT ON TABLE "public"."link_role_page_router" IS '角色-页面路由关联表';
+
+CREATE TABLE "public"."link_router_endpoint" (
+ "router_id" INT8 NOT NULL,
+ "endpoint_id" INT8 NOT NULL,
+ CONSTRAINT "link_router_endpoint_pkey" PRIMARY KEY ( "router_id", "endpoint_id" ),
+ CONSTRAINT "link_router_endpoint_endpoint_id_fkey" FOREIGN KEY ( "endpoint_id" ) REFERENCES "public"."auth_endpoint_perm" ( "id" ) ON DELETE RESTRICT ON UPDATE NO ACTION,
+ CONSTRAINT "link_router_endpoint_router_id_fkey" FOREIGN KEY ( "router_id" ) REFERENCES "public"."auth_page_router" ( "id" ) ON DELETE RESTRICT ON UPDATE NO ACTION
+);
+ALTER TABLE "public"."link_router_endpoint" OWNER TO "postgres";
+COMMENT ON COLUMN "public"."link_router_endpoint"."router_id" IS '前端页面路由表ID';
+COMMENT ON COLUMN "public"."link_router_endpoint"."endpoint_id" IS '接口权限表ID';
+COMMENT ON TABLE "public"."link_router_endpoint" IS '前端页面路由-接口权限关联表';
+

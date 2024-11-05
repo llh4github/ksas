@@ -1,9 +1,7 @@
 package io.github.llh4github.ksas.dbmodel.auth
 
 import io.github.llh4github.ksas.dbmodel.BaseModel
-import org.babyfish.jimmer.sql.Entity
-import org.babyfish.jimmer.sql.Key
-import org.babyfish.jimmer.sql.Table
+import org.babyfish.jimmer.sql.*
 
 /**
  * 页面路由表
@@ -44,4 +42,11 @@ interface PageRouter : BaseModel {
      */
     val rank: Int
 
+    @ManyToMany
+    @JoinTable(
+        name = "link_router_endpoint",
+        joinColumnName = "router_id",
+        inverseJoinColumnName = "endpoint_id"
+    )
+    val endpoints: List<EndpointPerm>
 }
