@@ -9,4 +9,6 @@ enum class UserModuleErrorCode {
     USERNAME_EXISTS,
 
     LOGIN_FAILED,
+
+    JWT_INVALID,
 }
