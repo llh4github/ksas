@@ -111,6 +111,7 @@ CREATE TABLE "public"."auth_page_router" (
  "icon" TEXT COLLATE "pg_catalog"."default",
  "showLink" BOOL NOT NULL DEFAULT TRUE,
  "rank" INT2 NOT NULL DEFAULT 1,
+ "parent_id" INT8,
  "created_time" TIMESTAMP ( 6 ),
  "updated_time" TIMESTAMP ( 6 ),
  "updated_by_user_id" INT8,

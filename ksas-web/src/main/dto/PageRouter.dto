@@ -1,0 +1,21 @@
+export io.github.llh4github.ksas.dbmodel.auth.PageRouter
+
+PageRouterTreeView{
+    id
+    path
+    name
+    redirect
+    endpoints{
+        permCode
+    }
+
+    children{
+        id
+        path
+        name
+        redirect
+        endpoints{
+            permCode
+        }
+    }
+}
