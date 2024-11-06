@@ -5,6 +5,7 @@ PageRouterTreeView{
     path
     name
     redirect
+    meta
     endpoints{
         permCode
     }
@@ -14,6 +15,7 @@ PageRouterTreeView{
         path
         name
         redirect
+        meta
         endpoints{
             permCode
         }
