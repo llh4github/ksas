@@ -21,7 +21,7 @@ INSERT INTO "public"."link_role_endpoint" ("role_id", "endpoint_id") VALUES (1, 
 INSERT INTO "public"."link_role_endpoint" ("role_id", "endpoint_id") VALUES (1, 3);
 INSERT INTO "public"."link_role_endpoint" ("role_id", "endpoint_id") VALUES (2, 1);
 
-INSERT INTO "public"."auth_page_router" ("id", "title", "path", "name", "redirect", "icon", "showLink", "rank", "created_time", "updated_time", "updated_by_user_id", "created_by_user_id") VALUES (1, '角色列表', 'views/role/index', 'ROLE_PAGE', NULL, NULL, 't', '1', NULL, NULL, NULL, NULL);
+INSERT INTO "public"."auth_page_router" ("id", "title", "path", "name", "redirect", "icon", show_link, "rank", "created_time", "updated_time", "updated_by_user_id", "created_by_user_id") VALUES (1, '角色列表', '/views/role/index', 'ROLE_PAGE', NULL, NULL, 't', '1', NULL, NULL, NULL, NULL);
 
 INSERT INTO "public"."link_router_endpoint" ("router_id", "endpoint_id") VALUES (1, 1);
 INSERT INTO "public"."link_router_endpoint" ("router_id", "endpoint_id") VALUES (1, 2);

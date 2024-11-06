@@ -109,7 +109,7 @@ CREATE TABLE "public"."auth_page_router" (
  "name" TEXT COLLATE "pg_catalog"."default" NOT NULL,
  "redirect" TEXT COLLATE "pg_catalog"."default",
  "icon" TEXT COLLATE "pg_catalog"."default",
- "showLink" BOOL NOT NULL DEFAULT TRUE,
+ "show_link" BOOL NOT NULL DEFAULT TRUE,
  "rank" INT2 NOT NULL DEFAULT 1,
  "parent_id" INT8,
  "created_time" TIMESTAMP ( 6 ),
@@ -126,7 +126,7 @@ COMMENT ON COLUMN "public"."auth_page_router"."path" IS '角色代码';
 COMMENT ON COLUMN "public"."auth_page_router"."name" IS '路由名称（必须保持唯一）';
 COMMENT ON COLUMN "public"."auth_page_router"."redirect" IS '路由重定向（默认跳转地址）';
 COMMENT ON COLUMN "public"."auth_page_router"."icon" IS '菜单图标';
-COMMENT ON COLUMN "public"."auth_page_router"."showLink" IS '是否在菜单中显示';
+COMMENT ON COLUMN "public"."auth_page_router".show_link IS '是否在菜单中显示';
 COMMENT ON COLUMN "public"."auth_page_router"."rank" IS ' 菜单排序，值越高排的越后（只针对顶级路由）';
 COMMENT ON COLUMN "public"."auth_page_router"."created_time" IS '创建时间';
 COMMENT ON COLUMN "public"."auth_page_router"."updated_time" IS '更新时间';
