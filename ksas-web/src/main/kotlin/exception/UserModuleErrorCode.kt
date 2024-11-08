@@ -8,7 +8,7 @@ enum class UserModuleErrorCode {
     @ErrorField(name = "username", type = String::class)
     USERNAME_EXISTS,
 
-    USERNAME_NO_EXISTS,
+    LOGIN_FAILED,
 
-    PASSWORD_ERROR,
+    JWT_INVALID,
 }

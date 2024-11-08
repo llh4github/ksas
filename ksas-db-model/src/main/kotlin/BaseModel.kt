@@ -3,8 +3,6 @@ package io.github.llh4github.ksas.dbmodel
 import com.fasterxml.jackson.annotation.JsonFormat
 import io.github.llh4github.ksas.commons.DatetimeConstant
 import io.swagger.v3.oas.annotations.media.Schema
-import org.babyfish.jimmer.jackson.JsonConverter
-import org.babyfish.jimmer.jackson.LongToStringConverter
 import org.babyfish.jimmer.sql.GeneratedValue
 import org.babyfish.jimmer.sql.Id
 import org.babyfish.jimmer.sql.MappedSuperclass
@@ -15,7 +13,7 @@ interface BaseModel {
 
     @Id
     @GeneratedValue(generatorType = TableIdGenerator::class)
-    @JsonConverter(LongToStringConverter::class) // 避免前端溢出
+//    @JsonConverter(LongToStringConverter::class)
     val id: Long
 
     @get:Schema(

@@ -2,6 +2,7 @@ package io.github.llh4github.ksas.api.auth
 
 import io.github.llh4github.ksas.bo.LoginResultBo
 import io.github.llh4github.ksas.bo.LogoutParam
+import io.github.llh4github.ksas.bo.RefreshJwtBo
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserLoginView
 import io.github.llh4github.ksas.service.auth.LoginService
@@ -24,6 +25,15 @@ class LoginApi(private val loginService: LoginService) {
         @RequestBody @Validated view: UserLoginView
     ): JsonWrapper<LoginResultBo> {
         val rs = loginService.login(view)
+        return JsonWrapper.ok(rs)
+    }
+
+    @Operation(summary = "刷新凭证接口")
+    @PostMapping("token/refresh")
+    fun refreshToken(
+        @RequestBody @Validated param: RefreshJwtBo
+    ): JsonWrapper<LoginResultBo> {
+        val rs = loginService.refreshToken(param)
         return JsonWrapper.ok(rs)
     }
 

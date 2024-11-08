@@ -8,7 +8,6 @@ import io.github.llh4github.ksas.library.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
@@ -22,12 +21,19 @@ class SpringSecurityConfig(
     private val jwtService: JwtService,
     private val objectMapper: ObjectMapper,
 ) {
+
     @Bean
+    @Suppress("SpreadOperator")
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        val annoUrls = property.anonUrls.toTypedArray()
         http.csrf { it.disable() }
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
             .logout { it.disable() }
+            .authorizeHttpRequests {
+                it.requestMatchers(*annoUrls).permitAll()
+                    .anyRequest().authenticated()
+            }
             .exceptionHandling {
                 it.accessDeniedHandler(jsonAccessDeniedHandler(objectMapper))
                 it.authenticationEntryPoint(jsonAuthenticationEntryPoint(objectMapper))
@@ -41,14 +47,13 @@ class SpringSecurityConfig(
         return http.build()
     }
 
-    @Bean
-    @Suppress("SpreadOperator")
-    fun webSecurityCustomizer(): WebSecurityCustomizer {
-        val annoUrls = property.anonUrls.toTypedArray()
-        return WebSecurityCustomizer { web ->
-            web.ignoring().requestMatchers(*annoUrls)
-        }
-    }
+//    @Bean
+//    fun webSecurityCustomizer(): WebSecurityCustomizer {
+//        val annoUrls = property.anonUrls.toTypedArray()
+//        return WebSecurityCustomizer { web ->
+//            web.ignoring().requestMatchers(*annoUrls)
+//        }
+//    }
 }
 
 

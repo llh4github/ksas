@@ -2,8 +2,10 @@ package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.bo.LoginResultBo
 import io.github.llh4github.ksas.bo.LogoutParam
+import io.github.llh4github.ksas.bo.RefreshJwtBo
 import io.github.llh4github.ksas.commons.property.JwtType
 import io.github.llh4github.ksas.dbmodel.auth.User
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserAuthView
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserLoginView
 import io.github.llh4github.ksas.dbmodel.auth.username
 import io.github.llh4github.ksas.exception.UserModuleException
@@ -27,18 +29,25 @@ class LoginServiceImpl(
     private lateinit var passwordEncoder: PasswordEncoder
 
     override fun login(view: UserLoginView): LoginResultBo {
-        val user = createQuery {
-            where(table.username eq view.username)
-            select(table)
-        }.fetchOneOrNull() ?: throw UserModuleException.usernameNoExists(
-            message = LOGIN_FAIL_MSG
-        )
+        val user = findUserAuthView(view.username)
         if (!passwordEncoder.matches(view.password, user.password)) {
-            throw UserModuleException.passwordError(
-                message = LOGIN_FAIL_MSG
-            )
+            throw UserModuleException.loginFailed(message = LOGIN_FAIL_MSG)
         }
-        val access = jwtService.createToken(user.username, user.id, JwtType.ACCESS)
+        return createJwtResult(user)
+    }
+
+    /**
+     * 根据用户名查找。查找不到则抛出异常。
+     */
+    private fun findUserAuthView(username: String): UserAuthView {
+        return createQuery {
+            where(table.username eq username)
+            select(table.fetch(UserAuthView::class))
+        }.fetchOneOrNull() ?: throw UserModuleException.loginFailed(message = LOGIN_FAIL_MSG)
+    }
+
+    private fun createJwtResult(user: UserAuthView): LoginResultBo {
+        val (access, expire) = jwtService.createExpireToken(user.username, user.id, JwtType.ACCESS)
         val refresh = jwtService.createToken(user.username, user.id, JwtType.REFRESH)
 
         return LoginResultBo(
@@ -46,6 +55,9 @@ class LoginServiceImpl(
             username = user.username,
             accessToken = access,
             refreshToken = refresh,
+            expire = expire,
+            roles = user.roles.map { it.code },
+            permissions = user.roles.flatMap { it.endpointPerms }.map { it.permCode }
         )
     }
 
@@ -54,6 +66,18 @@ class LoginServiceImpl(
         jwtService.banJwt(param.accessToken)
         jwtService.banJwt(param.refreshToken)
         return true
+    }
+
+    override fun refreshToken(param: RefreshJwtBo): LoginResultBo {
+        val username =
+            jwtService.validAndGetUsername(param.refreshToken)
+                ?: throw UserModuleException.jwtInvalid("登录凭证不合法")
+
+        val user = findUserAuthView(username)
+        val rs = createJwtResult(user)
+        jwtService.banJwt(param.accessToken)
+        jwtService.banJwt(param.refreshToken)
+        return rs
     }
 }
 
