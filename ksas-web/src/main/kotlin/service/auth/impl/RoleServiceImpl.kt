@@ -55,7 +55,7 @@ class RoleServiceImpl(
                 roleCode = model.code
             )
         }
-        val rs = update(model)
+        val rs = sqlClient.update(model)
         testUpdateDbResult(rs)
         return rs.modifiedEntity
     }

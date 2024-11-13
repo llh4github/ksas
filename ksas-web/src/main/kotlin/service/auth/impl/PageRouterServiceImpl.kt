@@ -36,7 +36,7 @@ class PageRouterServiceImpl(
                 throw DbCommonException.dataExists("页面路由名称已存在", null, "name", model.name)
             }
         }
-        val rs = insert(model)
+        val rs = sqlClient.insert(model)
         testAddDbResult(rs)
         return rs.modifiedEntity
     }
@@ -53,7 +53,7 @@ class PageRouterServiceImpl(
                 throw DbCommonException.dataExists("页面路由名称已存在", null, "name", model.name)
             }
         }
-        val rs = update(model)
+        val rs = sqlClient.update(model)
         testUpdateDbResult(rs)
         return rs.modifiedEntity
     }
