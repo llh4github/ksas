@@ -1,11 +1,8 @@
 package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.bo.UserDetailBo
-import io.github.llh4github.ksas.commons.PageQueryParam
-import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserBaseView
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.username
 import io.github.llh4github.ksas.exception.DbCommonException
@@ -17,7 +14,6 @@ import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ne
-import org.babyfish.jimmer.sql.kt.ast.query.specification.KSpecification
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -35,6 +31,7 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
 
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
+
     override fun checkUnique(entity: User) {
         createQuery {
             where(table.username eq entity.username)
@@ -44,7 +41,6 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
             select(count(table.id))
         }.fetchOne().let {
             if (it > 0) {
-
                 throw DbCommonException.dataExists(
                     message = "用户名已存在",
                     fieldName = "code",
@@ -74,13 +70,4 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
         return UserDetailBo(user)
     }
 
-    override fun pageQuery(
-        querySpec: KSpecification<User>,
-        pageQueryParam: PageQueryParam
-    ): PageResult<UserBaseView> {
-        return createQuery {
-            where(querySpec)
-            select(table.fetch(UserBaseView::class))
-        }.fetchCustomPage(pageQueryParam)
-    }
 }

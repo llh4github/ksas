@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.service
 
+import io.github.llh4github.ksas.commons.PageQueryParam
 import io.github.llh4github.ksas.commons.PageQueryParamTrait
 import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.BaseModel
@@ -15,11 +16,14 @@ import org.babyfish.jimmer.sql.kt.ast.mutation.KMutableUpdate
 import org.babyfish.jimmer.sql.kt.ast.mutation.KSimpleSaveResult
 import org.babyfish.jimmer.sql.kt.ast.query.KConfigurableRootQuery
 import org.babyfish.jimmer.sql.kt.ast.query.KMutableRootQuery
+import org.babyfish.jimmer.sql.kt.ast.query.specification.KSpecification
+import org.babyfish.jimmer.sql.kt.ast.table.makeOrders
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 import kotlin.reflect.KClass
 
+@Suppress("TooManyFunctions")
 abstract class BaseServiceImpl<E : BaseModel>(
     private val entityType: KClass<E>,
     private val sqlClient: KSqlClient
@@ -80,6 +84,19 @@ abstract class BaseServiceImpl<E : BaseModel>(
 
     override fun getByIds(ids: List<Long>): List<E> {
         return sqlClient.findByIds(entityType, ids)
+    }
+
+    override fun <S : View<E>> pageQuery(
+        staticType: KClass<S>,
+        querySpec: KSpecification<E>,
+        pageQueryParam: PageQueryParam,
+        sortField: String,
+    ): PageResult<S> {
+        return createQuery {
+            orderBy(table.makeOrders(sortField))
+            where(querySpec)
+            select(table.fetch(staticType))
+        }.fetchCustomPage(pageQueryParam)
     }
 
     override fun removeByIds(ids: List<Long>): Boolean {
