@@ -49,7 +49,7 @@ jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
 jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" } # use runtime
 jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" } # use runtime
 
-validator = {module = "org.hibernate.validtor:hibernate-validator", version.ref = "validator" }
+validator = {module = "org.hibernate.validator:hibernate-validator", version.ref = "validator" }
 
 knife4j-openapi3 = { module = "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter", version.ref = "knife4j" }
 swagger-models = { module = "io.swagger.core.v3:swagger-models", version.ref = "swagger3" }
