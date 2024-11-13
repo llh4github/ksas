@@ -99,6 +99,24 @@ abstract class BaseServiceImpl<E : BaseModel>(
         }.fetchCustomPage(pageQueryParam)
     }
 
+    override fun <S : View<E>> listQuery(
+        staticType: KClass<S>,
+        querySpec: KSpecification<E>,
+        pageQueryParam: PageQueryParam,
+        sortField: String,
+        limit: Int?,
+    ): List<S> {
+        val condition = createQuery {
+            orderBy(table.makeOrders(sortField))
+            where(querySpec)
+            select(table.fetch(staticType))
+        }
+        if (limit == null) {
+            return condition.execute()
+        }
+        return condition.limit(limit).execute()
+    }
+
     override fun removeByIds(ids: List<Long>): Boolean {
         val rs = sqlClient.deleteById(entityType, ids)
         testDeleteDbResult(rs)
