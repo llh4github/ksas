@@ -37,7 +37,7 @@ class PageRouterServiceImpl(
             }
         }
         val rs = insert(model)
-        checkAddResult(rs)
+        testAddDbResult(rs)
         return rs.modifiedEntity
     }
 
@@ -54,7 +54,7 @@ class PageRouterServiceImpl(
             }
         }
         val rs = update(model)
-        checkUpdateDbResult(rs)
+        testUpdateDbResult(rs)
         return rs.modifiedEntity
     }
 }

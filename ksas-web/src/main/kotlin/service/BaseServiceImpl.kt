@@ -19,14 +19,14 @@ abstract class BaseServiceImpl<E : BaseModel>(
     @Transactional
     override fun updateById(entity: E): E {
         val rs = update(entity)
-        checkUpdateDbResult(rs)
+        testUpdateDbResult(rs)
         return rs.modifiedEntity
     }
 
     @Transactional
     override fun save(entity: E): E {
         val rs = insert(entity)
-        checkAddResult(rs)
+        testAddDbResult(rs)
         return rs.modifiedEntity
     }
 
@@ -34,24 +34,39 @@ abstract class BaseServiceImpl<E : BaseModel>(
         return findById(id)
     }
 
-    protected fun checkAddResult(
-        rs: KSimpleSaveResult<*>, message: String = "新增数据失败"
+    /**
+     * 检查新增数据结果. 如果新增数据失败, 则抛出异常
+     * @throws DbOperateException 新增数据失败
+     */
+    protected fun testAddDbResult(
+        rs: KSimpleSaveResult<*>,
+        message: String = "新增数据失败"
     ) {
         if (!rs.isModified) {
             throw DbOperateException.addFailed(message = message)
         }
     }
 
-    protected fun checkUpdateDbResult(
-        rs: KSimpleSaveResult<*>, message: String = "更新数据失败"
+    /**
+     * 检查更新数据结果. 如果更新数据失败, 则抛出异常
+     * @throws DbOperateException 更新数据失败
+     */
+    protected fun testUpdateDbResult(
+        rs: KSimpleSaveResult<*>,
+        message: String = "更新数据失败"
     ) {
         if (!rs.isModified) {
             throw DbOperateException.updateFailed(message = message)
         }
     }
 
-    protected fun checkDeleteDbResult(
-        rs: KSimpleSaveResult<*>, message: String = "删除数据失败"
+    /**
+     * 检查删除数据结果. 如果删除数据失败, 则抛出异常
+     * @throws DbOperateException 删除数据失败
+     */
+    protected fun testDeleteDbResult(
+        rs: KSimpleSaveResult<*>,
+        message: String = "删除数据失败"
     ) {
         if (!rs.isModified) {
             throw DbOperateException.deleteFailed(message = message)

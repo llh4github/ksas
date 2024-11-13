@@ -49,7 +49,7 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
             password = passwordEncoder.encode(input.password)
         }
         val rs = insert(model)
-        checkAddResult(rs)
+        testAddDbResult(rs)
         return rs.modifiedEntity
     }
 
