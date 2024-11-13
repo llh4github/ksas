@@ -8,12 +8,15 @@ import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserBaseView
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.username
-import io.github.llh4github.ksas.exception.UserModuleException
+import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
+import io.github.llh4github.ksas.service.CommonOperate
 import io.github.llh4github.ksas.service.auth.UserService
+import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.ne
 import org.babyfish.jimmer.sql.kt.ast.query.specification.KSpecification
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
@@ -26,31 +29,41 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserServiceImpl(private val sqlClient: KSqlClient) :
     BaseServiceImpl<User>(User::class, sqlClient),
-    UserService, UserDetailsService {
+    UserService,
+    CommonOperate<User>,
+    UserDetailsService {
 
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
-
-    @Transactional
-    override fun addUnique(input: UserAddInput): User {
+    override fun checkUnique(entity: User) {
         createQuery {
-            where(table.username eq input.username)
+            where(table.username eq entity.username)
+            if (isLoaded(entity, User::id)) {
+                where(table.id ne entity.id)
+            }
             select(count(table.id))
         }.fetchOne().let {
             if (it > 0) {
-                throw UserModuleException.usernameExists(
+
+                throw DbCommonException.dataExists(
                     message = "用户名已存在",
-                    username = input.username
+                    fieldName = "code",
+                    fieldValue = entity.username,
                 )
             }
         }
+    }
 
+    @Transactional
+    override fun addUnique(input: UserAddInput): User {
         val model = input.toEntity {
             password = passwordEncoder.encode(input.password)
         }
-        val rs = sqlClient.insert(model)
-        testAddDbResult(rs)
-        return rs.modifiedEntity
+        return checkUnique(model) {
+            val rs = sqlClient.insert(model)
+            testAddDbResult(rs)
+            rs.modifiedEntity
+        }
     }
 
     override fun loadUserByUsername(username: String): UserDetails {
