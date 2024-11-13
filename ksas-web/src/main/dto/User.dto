@@ -1,38 +1,17 @@
 export io.github.llh4github.ksas.dbmodel.auth.User
 
-import jakarta.validation.constraints.NotEmpty
-import org.hibernate.validator.constraints.Length
-import jakarta.validation.constraints.Min
 import io.github.llh4github.ksas.commons.PageQueryParam
 
 input UserAddInput{
-    @Length(min = 1, max = 50, message = "用户名长度必须在{min}-{max}个字符之间")
-    @NotEmpty(message = "用户名不能为空")
     username
-
-    @Length(min = 1, max = 50, message = "密码长度必须在{min}-{max}个字符之间")
-    @NotEmpty(message = "密码不能为空")
-    password: String
-
-    @Length(min = 1, max = 20, message = "昵称长度必须在{min}-{max}个字符之间")
-    @NotEmpty(message = "昵称不能为空")
+    password
     nickname
 }
 
 input UserUpdateInput{
-    @Min(1, message = "id必须大于0")
     id
-
-    @Length(min = 1, max = 50, message = "用户名长度必须在{min}-{max}个字符之间")
-    @NotEmpty(message = "用户名不能为空")
     username
-
-    @Length(min = 1, max = 50, message = "密码长度必须在{min}-{max}个字符之间")
-    @NotEmpty(message = "密码不能为空")
     password
-
-    @Length(min = 1, max = 20, message = "昵称长度必须在{min}-{max}个字符之间")
-    @NotEmpty(message = "昵称不能为空")
     nickname
 }
 
@@ -48,14 +27,9 @@ UserBaseView{
 }
 
 UserLoginView{
-    @NotEmpty(message = "用户名不能为空")
-    @Length(min = 1, max = 50, message = "用户名长度必须在{min}-{max}个字符之间")
     username
-
-    @NotEmpty(message = "密码不能为空")
     password
 }
-
 
 UserAuthView{
     id

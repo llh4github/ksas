@@ -9,7 +9,8 @@ slf4j = "2.0.9"
 logback = "1.4.14"
 oshaiKotlinLogging = "5.1.0"
 
-easyexcel = "3.3.3"
+# 注意与springboot版本对应
+validator = "8.0.1.Final"
 jjwt = "0.12.6"
 
 junit5 = "5.11.0"
@@ -28,7 +29,6 @@ jimmer = "+"
 kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin" }
 kotlin-noarg = { module = "org.jetbrains.kotlin:kotlin-noarg", version.ref = "kotlin" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-easyexcel = { module = "com.alibaba:easyexcel", version.ref = "easyexcel" }
 apache-compress = { module = "org.apache.commons:commons-compress", version = "1.25.0" }
 apache-pool2 = { module = "org.apache.commons:commons-pool2", version = "2.12.0" }
 apache-io = { module = "commons-io:commons-io", version = "2.15.1" }
@@ -48,6 +48,8 @@ graalvm-native = { module = "org.graalvm.buildtools:native-gradle-plugin", versi
 jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
 jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" } # use runtime
 jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" } # use runtime
+
+validator = {module = "org.hibernate.validator:hibernate-validator", version.ref = "validator" }
 
 knife4j-openapi3 = { module = "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter", version.ref = "knife4j" }
 swagger-models = { module = "io.swagger.core.v3:swagger-models", version.ref = "swagger3" }
