@@ -1,13 +1,14 @@
 package io.github.llh4github.ksas.api.auth
 
 import io.github.llh4github.ksas.commons.JsonWrapper
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterTreeView
+import io.github.llh4github.ksas.commons.PageResult
+import io.github.llh4github.ksas.dbmodel.auth.PageRouter
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.PageRouterService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.*
 
 /**
  * 页面路由API
@@ -22,6 +23,26 @@ class PageRouterApi(
     @GetMapping("/allTree")
     fun allRouterTree(): JsonWrapper<List<PageRouterTreeView>> {
         val rs = pageRouterService.allRouterTree()
+        return JsonWrapper.ok(rs)
+    }
+
+    @Operation(summary = "分页查询")
+    @PostMapping("/page")
+    fun pageQuery(@RequestBody spec: PageRouterQuerySpec): PageResult<PageRouterListView> {
+        return pageRouterService.pageQuery(PageRouterListView::class, spec, spec.pageParam)
+    }
+
+    @Operation(summary = "新增页面路由")
+    @PostMapping
+    fun add(@RequestBody @Valid input: PageRouterAddInput): JsonWrapper<PageRouter> {
+        val rs = pageRouterService.addUnique(input)
+        return JsonWrapper.ok(rs)
+    }
+
+    @Operation(summary = "更新页面路由")
+    @PutMapping
+    fun update(@RequestBody @Valid input: PageRouterUpdateInput): JsonWrapper<PageRouter> {
+        val rs = pageRouterService.updateUnique(input)
         return JsonWrapper.ok(rs)
     }
 }

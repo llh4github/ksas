@@ -1,7 +1,9 @@
 package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.dbmodel.auth.PageRouter
+import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterAddInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterTreeView
+import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterUpdateInput
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.name
 import io.github.llh4github.ksas.exception.DbCommonException
@@ -11,6 +13,7 @@ import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PageRouterServiceImpl(
@@ -33,37 +36,22 @@ class PageRouterServiceImpl(
         }
     }
 
-//    @Transactional
+    @Transactional
+    override fun addUnique(input: PageRouterAddInput): PageRouter {
+        val entity = input.toEntity()
+        return checkUnique(entity) {
+            val rs = sqlClient.insert(entity)
+            testAddDbResult(rs)
+            rs.modifiedEntity
+        }
+    }
 
-//    override fun addUnique(entity: Input<PageRouter>): PageRouter {
-//        val model = entity.toEntity()
-//        createQuery {
-//            where(table.name eq model.name)
-//            select(count(table.id))
-//        }.fetchOne().let {
-//            if (it > 0) {
-//                throw DbCommonException.dataExists("页面路由名称已存在", null, "name", model.name)
-//            }
-//        }
-//        val rs = sqlClient.insert(model)
-//        testAddDbResult(rs)
-//        return rs.modifiedEntity
-//    }
-//
-//    @Transactional
-//    override fun checkAndUpdateById(entity: Input<PageRouter>): PageRouter {
-//        val model = entity.toEntity()
-//        createQuery {
-//            where(table.id ne model.id)
-//            where(table.name eq model.name)
-//            select(count(table.id))
-//        }.fetchOne().let {
-//            if (it > 0) {
-//                throw DbCommonException.dataExists("页面路由名称已存在", null, "name", model.name)
-//            }
-//        }
-//        val rs = sqlClient.update(model)
-//        testUpdateDbResult(rs)
-//        return rs.modifiedEntity
-//    }
+    override fun updateUnique(input: PageRouterUpdateInput): PageRouter {
+        val entity = input.toEntity()
+        return checkUnique(entity) {
+            val rs = sqlClient.update(entity)
+            testUpdateDbResult(rs)
+            rs.modifiedEntity
+        }
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.util.matcher.RegexRequestMatcher
 import org.springframework.stereotype.Component
 
 @Component
@@ -32,6 +33,7 @@ class SpringSecurityConfig(
             .logout { it.disable() }
             .authorizeHttpRequests {
                 it.requestMatchers(*annoUrls).permitAll()
+                    .requestMatchers(RegexRequestMatcher("^.*\\.(css|js)$", null)).permitAll()
                     .anyRequest().authenticated()
             }
             .exceptionHandling {
