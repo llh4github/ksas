@@ -1,20 +1,18 @@
 package io.github.llh4github.ksas.service.auth.impl
 
-import io.github.llh4github.ksas.commons.PageQueryParam
-import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.Role
 import io.github.llh4github.ksas.dbmodel.auth.code
-import io.github.llh4github.ksas.dbmodel.auth.dto.RoleBaseView
+import io.github.llh4github.ksas.dbmodel.auth.dto.RoleAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.RoleUpdateInput
 import io.github.llh4github.ksas.dbmodel.auth.id
-import io.github.llh4github.ksas.exception.RoleModuleException
+import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.auth.RoleService
-import org.babyfish.jimmer.Input
+import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ne
-import org.babyfish.jimmer.sql.kt.ast.query.specification.KSpecification
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,50 +21,41 @@ class RoleServiceImpl(
     private val sqlClient: KSqlClient,
 ) : BaseServiceImpl<Role>(Role::class, sqlClient), RoleService {
 
-    @Transactional
-    override fun addUnique(entity: Input<Role>): Role {
-        val model = entity.toEntity()
+    override fun checkUnique(entity: Role) {
         val count = createQuery {
-            where(table.code eq model.code)
+            where(table.code eq entity.code)
+            if (isLoaded(entity, Role::id)) {
+                where(table.id ne entity.id)
+            }
             select(count(table.id))
         }.fetchOne()
         if (count > 0) {
-            throw RoleModuleException.roleCodeExist(
+            throw DbCommonException.dataExists(
                 message = "角色编码已存在",
-                roleCode = model.code
+                fieldName = "code",
+                fieldValue = entity.code,
             )
         }
-        val rs = insert(model)
-        checkAddResult(rs)
-        return rs.modifiedEntity
     }
 
     @Transactional
-    override fun checkAndUpdateById(entity: Input<Role>): Role {
-        val model = entity.toEntity()
-        val count = createQuery {
-            where(table.code eq model.code)
-            where(table.id ne model.id)
-            select(count(table.id))
-        }.fetchOne()
-        if (count > 0) {
-            throw RoleModuleException.roleCodeExist(
-                message = "角色编码已存在",
-                roleCode = model.code
-            )
+    override fun addUnique(input: RoleAddInput): Role {
+        val model = input.toEntity()
+        return checkUnique(model) {
+            val rs = sqlClient.insert(model)
+            testAddDbResult(rs)
+            rs.modifiedEntity
         }
-        val rs = update(model)
-        checkUpdateDbResult(rs)
-        return rs.modifiedEntity
     }
 
-    override fun pageQuery(
-        querySpec: KSpecification<Role>,
-        pageQueryParam: PageQueryParam
-    ): PageResult<RoleBaseView> {
-        return createQuery {
-            where(querySpec)
-            select(table.fetch(RoleBaseView::class))
-        }.fetchCustomPage(pageQueryParam)
+    @Transactional
+    override fun checkAndUpdateById(input: RoleUpdateInput): Role {
+        val model = input.toEntity()
+        return checkUnique(model) {
+            val rs = sqlClient.update(model)
+            testUpdateDbResult(rs)
+            rs.modifiedEntity
+        }
     }
+
 }

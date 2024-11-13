@@ -7,22 +7,22 @@ import org.babyfish.jimmer.Input
  * 通用业务方法
  */
 interface CommonOperate<E : BaseModel> :
-    UniqueDataUpsert<E>
+    UniqueDataChecker<E>
 
 
-interface UniqueDataUpsert<E : BaseModel> {
+interface UniqueDataChecker<E : BaseModel> {
 
-    /**
-     * 新增实体
-     *
-     * `entity` 的唯一键存在时则抛出异常
-     */
-    fun addUnique(entity: Input<E>): E
+    fun checkUnique(entity: Input<E>) = checkUnique(entity.toEntity())
 
     /**
-     * 根据ID更新实体
-     *
-     * `entity` 的唯一键存在时则抛出异常
+     * 检查唯一性，如果不唯一则抛出异常。
+     * 只考虑主要字段的唯一性，其他字段的唯一性需要在具体的业务方法中处理
      */
-    fun checkAndUpdateById(entity: Input<E>): E
+    fun checkUnique(entity: E)
+
+    fun checkUnique(entity: E, block: () -> E): E {
+        checkUnique(entity)
+        return block()
+    }
+
 }

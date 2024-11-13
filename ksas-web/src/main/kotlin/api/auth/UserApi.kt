@@ -36,7 +36,7 @@ class UserApi(private val userService: UserService) {
     fun page(
         @RequestBody query: UserQuerySpec
     ): JsonWrapper<PageResult<UserBaseView>> {
-        val rs = userService.pageQuery(query, query.pageParam)
+        val rs = userService.pageQuery(UserBaseView::class, query, query.pageParam)
         return JsonWrapper.ok(rs)
     }
 }

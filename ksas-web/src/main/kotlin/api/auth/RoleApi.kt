@@ -46,7 +46,7 @@ class RoleApi(private val roleService: RoleService) {
     fun page(
         @RequestBody query: RoleQuerySpec
     ): JsonWrapper<PageResult<RoleBaseView>> {
-        val rs = roleService.pageQuery(query, query.pageParam)
+        val rs = roleService.pageQuery(RoleBaseView::class, query, query.pageParam)
         return JsonWrapper.ok(rs)
     }
 }
