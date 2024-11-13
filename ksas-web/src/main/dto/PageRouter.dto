@@ -11,6 +11,7 @@ PageRouterTreeView{
     name
     redirect
     meta
+    @com.fasterxml.jackson.annotation.JsonIgnore
     endpoints{
         permCode
     }
@@ -21,6 +22,8 @@ PageRouterTreeView{
         name
         redirect
         meta
+
+        @com.fasterxml.jackson.annotation.JsonIgnore
         endpoints{
             permCode
         }
