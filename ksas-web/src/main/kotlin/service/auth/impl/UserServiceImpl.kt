@@ -52,14 +52,10 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
 
     @Transactional
     override fun addUnique(input: UserAddInput): User {
-        val model = input.toEntity {
+        val entity = input.toEntity {
             password = passwordEncoder.encode(input.password)
         }
-        return checkUnique(model) {
-            val rs = sqlClient.insert(model)
-            testAddDbResult(rs)
-            rs.modifiedEntity
-        }
+        return addUniqueData(entity, sqlClient)
     }
 
     override fun loadUserByUsername(username: String): UserDetails {

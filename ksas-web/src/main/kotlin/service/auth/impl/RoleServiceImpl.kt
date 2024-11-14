@@ -40,22 +40,15 @@ class RoleServiceImpl(
 
     @Transactional
     override fun addUnique(input: RoleAddInput): Role {
-        val model = input.toEntity()
-        return checkUnique(model) {
-            val rs = sqlClient.insert(model)
-            testAddDbResult(rs)
-            rs.modifiedEntity
-        }
+        val entity = input.toEntity()
+        return addUniqueData(entity, sqlClient)
+
     }
 
     @Transactional
     override fun checkAndUpdateById(input: RoleUpdateInput): Role {
-        val model = input.toEntity()
-        return checkUnique(model) {
-            val rs = sqlClient.update(model)
-            testUpdateDbResult(rs)
-            rs.modifiedEntity
-        }
+        val entity = input.toEntity()
+        return updateUniqueData(entity, sqlClient)
     }
 
 }

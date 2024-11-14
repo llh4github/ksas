@@ -45,21 +45,14 @@ class EndpointPermServiceImpl(
 
     @Transactional
     override fun addUnique(input: EndpointPermAddInput): EndpointPerm {
-        val model = input.toEntity()
-        return checkUnique(model) {
-            val rs = sqlClient.insert(model)
-            testAddDbResult(rs)
-            rs.modifiedEntity
-        }
+        val entity = input.toEntity()
+        return addUniqueData(entity, sqlClient)
+
     }
 
     @Transactional
     override fun updateUnique(input: EndpointPermUpdateInput): EndpointPerm {
-        val model = input.toEntity()
-        return checkUnique(model) {
-            val rs = sqlClient.update(model)
-            testUpdateDbResult(rs)
-            rs.modifiedEntity
-        }
+        val entity = input.toEntity()
+        return updateUniqueData(entity, sqlClient)
     }
 }
