@@ -1,0 +1,44 @@
+export io.github.llh4github.ksas.dbmodel.auth.EndpointPerm
+
+import io.github.llh4github.ksas.commons.PageQueryParam
+
+EndpointPermBaseView{
+    id
+    title
+    path
+    method
+    remark
+    permCode
+    createdByUser{
+        id
+        username
+    }
+    updatedByUser{
+        id
+        username
+    }
+}
+
+input EndpointPermAddInput{
+    title
+    path
+    method
+    remark
+    permCode
+}
+
+input EndpointPermUpdateInput{
+    id
+    title
+    path
+    method
+    remark
+    permCode
+}
+
+specification EndpointPermQuerySpec{
+    like/i^$(path)
+    like/i^$(title)
+    like/i^$(permCode)
+    pageParam: PageQueryParam
+}
