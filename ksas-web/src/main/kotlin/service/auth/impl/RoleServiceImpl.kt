@@ -7,6 +7,7 @@ import io.github.llh4github.ksas.dbmodel.auth.dto.RoleUpdateInput
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
+import io.github.llh4github.ksas.service.CommonOperate
 import io.github.llh4github.ksas.service.auth.RoleService
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class RoleServiceImpl(
     private val sqlClient: KSqlClient,
-) : BaseServiceImpl<Role>(Role::class, sqlClient), RoleService {
+) : BaseServiceImpl<Role>(Role::class, sqlClient), CommonOperate<Role>, RoleService {
 
     override fun checkUnique(entity: Role) {
         val count = createQuery {
