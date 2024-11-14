@@ -24,12 +24,6 @@ interface UniqueDataChecker<E : BaseModel> {
      */
     fun checkUnique(entity: E)
 
-    @Deprecated("")
-    fun checkUnique(entity: E, block: () -> E): E {
-        checkUnique(entity)
-        return block()
-    }
-
     fun addUniqueData(entity: E, sqlClient: KSqlClient): E {
         checkUnique(entity)
         val rs = sqlClient.update(entity)
