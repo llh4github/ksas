@@ -13,18 +13,7 @@ PageRouterTreeView{
         permCode
     }
 
-    children{
-        id
-        path
-        name
-        redirect
-        meta
-
-        @com.fasterxml.jackson.annotation.JsonIgnore
-        endpoints{
-            permCode
-        }
-    }
+    children*
 }
 
 input PageRouterAddInput{
@@ -35,6 +24,9 @@ input PageRouterAddInput{
     redirect
     icon
     id(parent)
+    endpoints{
+        id
+    }
 }
 
 input PageRouterUpdateInput{
@@ -46,6 +38,9 @@ input PageRouterUpdateInput{
     redirect
     icon
     id(parent)
+    endpoints{
+        id
+    }
 }
 
 specification PageRouterQuerySpec {
