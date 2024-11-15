@@ -12,22 +12,14 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "auth_page_router")
 interface PageRouter : BaseModel {
-    /**
-     * 路由路径
-     */
+
     @get:Schema(description = "路由路径")
     val path: String
 
-    /**
-     * 路由名称（必须保持唯一）
-     */
     @Key
     @get:Schema(description = "路由名称")
     val name: String
 
-    /**
-     * 路由重定向（默认跳转地址）
-     */
     @get:Schema(description = "路由重定向")
     val redirect: String?
 
@@ -35,9 +27,6 @@ interface PageRouter : BaseModel {
     val meta: PageRouterMeta
         get() = PageRouterMeta(rank, showLink, icon, title, endpoints)
 
-    /**
-     * 菜单排序，值越高排的越后（只针对顶级路由）
-     */
     @get:Schema(description = "菜单排序，值越高排的越后（只针对顶级路由）")
     val rank: Int
 
@@ -63,6 +52,7 @@ interface PageRouter : BaseModel {
         joinColumnName = "router_id",
         inverseJoinColumnName = "endpoint_id"
     )
+    @get:Schema(description = "页面路由关联的接口权限")
     val endpoints: List<EndpointPerm>
 
     @ManyToOne

@@ -6,6 +6,9 @@ input UserAddInput{
     username
     password
     nickname
+    roles{
+        id
+    }
 }
 
 input UserUpdateInput{
@@ -13,6 +16,9 @@ input UserUpdateInput{
     username
     password
     nickname
+    roles{
+        id
+    }
 }
 
 specification UserQuerySpec {

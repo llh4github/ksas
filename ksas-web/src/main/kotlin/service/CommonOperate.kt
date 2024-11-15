@@ -26,7 +26,7 @@ interface UniqueDataChecker<E : BaseModel> {
 
     fun addUniqueData(entity: E, sqlClient: KSqlClient): E {
         checkUnique(entity)
-        val rs = sqlClient.update(entity)
+        val rs = sqlClient.insert(entity)
         testAddDbResult(rs)
         return rs.modifiedEntity
     }
