@@ -1,0 +1,7 @@
+{
+  "resources": [
+    {
+      "pattern": "build/generated/ksp/main/kotlin/"
+    }
+  ]
+}

@@ -2,9 +2,28 @@ plugins {
     id("common-conventions")
     id("spring-conventions")
     alias(libs.plugins.ksp)
+    id("org.graalvm.buildtools.native")
 }
 
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+//val graal by sourceSets.creating
+//
+//graal.kotlin {
+//    srcDir("src/main/kotlin")
+//    srcDir("build/generated/ksp/main/kotlin")
+//}
+//
+//configurations {
+//    nativeImageClasspath.extendsFrom(getByName(""))
+//}
+
 dependencies {
+//    "graalCompileOnly"("org.graalvm.nativeimage:svm:21.2.0")
+//    "graalCompileOnly"("org.graalvm.sdk:graal-sdk:21.2.0")
+//    nativeImageCompileOnly(graal.output.classesDirs)
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -28,3 +47,12 @@ dependencies {
     implementation(project(":ksas-commons"))
     implementation(project(":ksas-db-model"))
 }
+
+//graalvmNative {
+//    binaries {
+//        named("main") {
+//            configurationFileDirectories.from(file("build/generated/ksp/main/kotlin"))
+//        }
+//
+//    }
+//}
