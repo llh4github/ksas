@@ -5,12 +5,18 @@ import io.github.llh4github.ksas.commons.PageQueryParam
 input RoleAddInput{
     title
     code
+    pageRouters{
+        id
+    }
 }
 
 input RoleUpdateInput{
     id
     title
     code
+    pageRouters{
+        id
+    }
 }
 
 specification RoleQuerySpec {
