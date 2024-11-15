@@ -39,19 +39,11 @@ class PageRouterServiceImpl(
     @Transactional
     override fun addUnique(input: PageRouterAddInput): PageRouter {
         val entity = input.toEntity()
-        return checkUnique(entity) {
-            val rs = sqlClient.insert(entity)
-            testAddDbResult(rs)
-            rs.modifiedEntity
-        }
+        return addUniqueData(entity, sqlClient)
     }
 
     override fun updateUnique(input: PageRouterUpdateInput): PageRouter {
         val entity = input.toEntity()
-        return checkUnique(entity) {
-            val rs = sqlClient.update(entity)
-            testUpdateDbResult(rs)
-            rs.modifiedEntity
-        }
+        return updateUniqueData(entity, sqlClient)
     }
 }
