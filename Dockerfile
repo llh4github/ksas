@@ -8,7 +8,7 @@ WORKDIR $APP_HOME
 # 指定JVM参数，例如最小堆大小、最大堆大小等
 ENV JAVA_OPTS "-Xms512m -Xmx1024m"
 
-COPY ./ksas-web/build/libs/ksas-web.jar $APP_HOME/app.jar
+COPY ksas-web/build/libs/ksas-web.jar $APP_HOME/app.jar
 
 # 声明容器运行时监听的端口
 EXPOSE 8080
