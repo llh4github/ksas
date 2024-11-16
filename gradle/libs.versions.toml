@@ -25,6 +25,8 @@ dokka = "1.9.20"
 # 目前还没发1.0版本
 jimmer = "+"
 
+nacos-cloud = "2023.0.1.3"
+
 [libraries]
 kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin" }
 kotlin-noarg = { module = "org.jetbrains.kotlin:kotlin-noarg", version.ref = "kotlin" }
@@ -49,7 +51,7 @@ jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
 jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" } # use runtime
 jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" } # use runtime
 
-validator = {module = "org.hibernate.validator:hibernate-validator", version.ref = "validator" }
+validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "validator" }
 
 knife4j-openapi3 = { module = "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter", version.ref = "knife4j" }
 swagger-models = { module = "io.swagger.core.v3:swagger-models", version.ref = "swagger3" }
@@ -66,6 +68,8 @@ jimmer-starter = { module = "org.babyfish.jimmer:jimmer-spring-boot-starter", ve
 jimmer-core = { module = "org.babyfish.jimmer:jimmer-core", version.ref = "jimmer" }
 jimmer-sql-kotlin = { module = "org.babyfish.jimmer:jimmer-sql-kotlin", version.ref = "jimmer" }
 jimmer-ksp = { module = "org.babyfish.jimmer:jimmer-ksp", version.ref = "jimmer" }
+
+nacos-cloud-config = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config", version.ref = "nacos-cloud" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
