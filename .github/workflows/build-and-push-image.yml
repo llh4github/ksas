@@ -44,4 +44,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ksas-web:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/ksas-web:$KSAS_VERSION
+          tags: ${{ vars.DOCKER_HUB_USERNAME }}/ksas-web:latest, ${{ vars.DOCKER_HUB_USERNAME }}/ksas-web:$KSAS_VERSION
