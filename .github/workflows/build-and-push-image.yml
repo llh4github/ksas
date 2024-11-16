@@ -20,10 +20,11 @@ jobs:
           distribution: 'adopt'
 
       - name: Read file content into variable
+        id: read-version
         run: |
           app_version=$(head -n 1 "./project.version")
           echo "app_version is: $app_version"
-          echo "KSAS_VERSION=$app_version" >> $GITHUB_ENV
+          echo "KSAS_VERSION=$app_version" >> $GITHUB_OUTPUT
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
@@ -44,4 +45,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ vars.DOCKER_HUB_USERNAME }}/ksas-web:latest, ${{ vars.DOCKER_HUB_USERNAME }}/ksas-web:$KSAS_VERSION
+          tags: ${{ vars.DOCKER_HUB_USERNAME }}/ksas-web:latest, ${{ vars.DOCKER_HUB_USERNAME }}/ksas-web:${{ steps.read-version.outputs.KSAS_VERSION }}
+
+
