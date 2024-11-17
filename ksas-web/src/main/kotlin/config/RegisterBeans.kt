@@ -4,9 +4,12 @@ import io.github.llh4github.ksas.commons.IdGenerator
 import io.github.llh4github.ksas.commons.IdGeneratorProperty
 import io.github.llh4github.ksas.commons.LongIdGenerator
 import io.github.llh4github.ksas.commons.property.WebSecurityProperty
+import org.babyfish.jimmer.spring.SqlClients.kotlin
+import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.meta.DatabaseNamingStrategy
 import org.babyfish.jimmer.sql.runtime.DefaultDatabaseNamingStrategy
 import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -23,11 +26,21 @@ class RegisterBeans {
     @ConfigurationProperties(prefix = "ksas.id-generator")
     fun idGenerate() = IdGeneratorProperty()
 
+    /**
+     * 手动注入sqlClient，native-image编译时无法自动注入
+     */
+    @Bean(name = ["sqlClient"])
+    fun kotlinSqlClient(ctx: ApplicationContext): KSqlClient {
+        return kotlin(ctx)
+    }
+
     @Bean
     fun idGenerator(property: IdGeneratorProperty): LongIdGenerator {
         IdGenerator.configGenerator(property)
         return IdGenerator
     }
+
+
 
     @Bean
     fun databaseNamingStrategy(): DatabaseNamingStrategy =

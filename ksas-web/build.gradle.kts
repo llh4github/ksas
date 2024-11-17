@@ -50,11 +50,28 @@ dependencies {
     implementation(project(":ksas-db-model"))
 }
 
-//graalvmNative {
-//    binaries {
-//        named("main") {
-//            configurationFileDirectories.from(file("build/generated/ksp/main/kotlin"))
-//        }
-//
-//    }
-//}
+graalvmNative {
+    binaries {
+        named("main") {
+            configurationFileDirectories.from(file("build/generated/ksp/main/kotlin"))
+        }
+
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
+    // for ksp generated files
+    sourceSets.main {
+        kotlin.srcDir("build/generated/ksp/main/kotlin")
+    }
+}
+
+sourceSets {
+    val main by getting {
+//        java.srcDirs("src/main/java", "build/generated/ksp/main/kotlin")
+        kotlin.srcDirs("src/main/kotlin", "build/generated/ksp/main/kotlin")
+    }
+}
