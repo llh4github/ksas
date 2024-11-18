@@ -20,4 +20,8 @@ enum class RequestMethodEnum {
     OPTIONS,
     TRACE,
     ;
+
+    fun match(method: String): Boolean {
+        return this == ALL || this.name == method.uppercase()
+    }
 }

@@ -48,3 +48,18 @@ UserAuthView{
         }
     }
 }
+
+UserEndpointPermView{
+    id
+    username
+    roles{
+        code
+        pageRouters{
+           endpoints{
+               path
+               method
+           }
+        }
+    }
+
+}

@@ -1,8 +1,10 @@
 package io.github.llh4github.ksas.service.auth.impl
 
+import io.github.llh4github.ksas.bo.EndpointPermCheckBo
 import io.github.llh4github.ksas.bo.UserDetailBo
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserEndpointPermView
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.username
 import io.github.llh4github.ksas.exception.DbCommonException
@@ -21,6 +23,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.AntPathMatcher
 
 @Service
 class UserServiceImpl(private val sqlClient: KSqlClient) :
@@ -31,6 +34,7 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
 
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
+    private val pathMatcher by lazy { AntPathMatcher() }
 
     override fun checkUnique(entity: User) {
         createQuery {
@@ -66,4 +70,14 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
         return UserDetailBo(user)
     }
 
+    override fun endpointPermCheck(bo: EndpointPermCheckBo): Boolean {
+        val user = createQuery {
+            where(table.username eq bo.username)
+            select(table.fetch(UserEndpointPermView::class))
+        }.fetchOneOrNull() ?: return false
+        return user.roles.flatMap { it.pageRouters }.flatMap { it.endpoints }
+            .any {
+                it.method.match(bo.method) && pathMatcher.match(it.path, bo.uri)
+            }
+    }
 }
