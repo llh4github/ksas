@@ -7,14 +7,19 @@ import io.github.llh4github.ksas.filter.JwtFilter
 import io.github.llh4github.ksas.library.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
+import org.springframework.security.authorization.AuthorizationDecision
+import org.springframework.security.authorization.AuthorizationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.Authentication
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.AccessDeniedHandler
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.RegexRequestMatcher
 import org.springframework.stereotype.Component
+import java.util.function.Supplier
 
 @Component
 class SpringSecurityConfig(
@@ -34,7 +39,7 @@ class SpringSecurityConfig(
             .authorizeHttpRequests {
                 it.requestMatchers(*annoUrls).permitAll()
                     .requestMatchers(RegexRequestMatcher("^.*\\.(css|js)$", null)).permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().access(EndpointPermissionHandler())
             }
             .exceptionHandling {
                 it.accessDeniedHandler(jsonAccessDeniedHandler(objectMapper))
@@ -49,18 +54,11 @@ class SpringSecurityConfig(
         return http.build()
     }
 
-//    @Bean
-//    fun webSecurityCustomizer(): WebSecurityCustomizer {
-//        val annoUrls = property.anonUrls.toTypedArray()
-//        return WebSecurityCustomizer { web ->
-//            web.ignoring().requestMatchers(*annoUrls)
-//        }
-//    }
 }
 
 
 internal fun jsonAccessDeniedHandler(mapper: ObjectMapper): AccessDeniedHandler {
-    val json = JsonWrapper<Void>(msg = "用户无权访问", code = "ACCESS_DENIED")
+    val json = JsonWrapper<Void>(msg = "无权访问", code = "ACCESS_DENIED", module = "AUTH")
     return AccessDeniedHandler { _, response, _ ->
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.characterEncoding = "UTF-8"
@@ -70,7 +68,7 @@ internal fun jsonAccessDeniedHandler(mapper: ObjectMapper): AccessDeniedHandler 
 }
 
 internal fun jsonAuthenticationEntryPoint(mapper: ObjectMapper): AuthenticationEntryPoint {
-    val json = JsonWrapper<Void>(msg = "用户无权访问", code = "ACCESS_DENIED")
+    val json = JsonWrapper<Void>(msg = "未登录", code = "NOT_LOGIN", module = "AUTH")
     return AuthenticationEntryPoint { _, response, _ ->
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.characterEncoding = "UTF-8"
