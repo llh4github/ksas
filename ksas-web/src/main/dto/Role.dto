@@ -20,8 +20,8 @@ input RoleUpdateInput{
 }
 
 specification RoleQuerySpec {
-    like/i^$(title)
-    like/i^$(code)
+    like/i(title)
+    like/i(code)
     pageParam: PageQueryParam
 }
 

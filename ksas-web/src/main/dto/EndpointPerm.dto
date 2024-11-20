@@ -37,8 +37,8 @@ input EndpointPermUpdateInput{
 }
 
 specification EndpointPermQuerySpec{
-    like/i^$(path)
-    like/i^$(title)
-    like/i^$(permCode)
+    like/i(path)
+    like/i(title)
+    like/i(permCode)
     pageParam: PageQueryParam
 }

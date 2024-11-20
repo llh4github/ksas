@@ -44,9 +44,9 @@ input PageRouterUpdateInput{
 }
 
 specification PageRouterQuerySpec {
-    like/i^$(path)
-    like/i^$(name)
-    like/i^$(title)
+    like/i(path)
+    like/i(name)
+    like/i(title)
     pageParam: PageQueryParam
 }
 

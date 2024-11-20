@@ -22,8 +22,8 @@ input UserUpdateInput{
 }
 
 specification UserQuerySpec {
-    like/i^$(username)
-    like/i^$(nickname)
+    like/i(username)
+    like/i(nickname)
     pageParam: PageQueryParam
 }
 
