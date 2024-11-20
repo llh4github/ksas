@@ -36,7 +36,10 @@ class EndpointPermApi(
 
     @Operation(summary = "分页查询")
     @PostMapping("/page")
-    fun pageQuery(@RequestBody spec: EndpointPermQuerySpec): PageResult<EndpointPermBaseView> {
-        return endpointPermService.pageQuery(EndpointPermBaseView::class, spec, spec.pageParam)
+    fun pageQuery(
+        @RequestBody spec: EndpointPermQuerySpec
+    ): JsonWrapper<PageResult<EndpointPermBaseView>> {
+        val rs = endpointPermService.pageQuery(EndpointPermBaseView::class, spec, spec.pageParam)
+        return JsonWrapper.ok(rs)
     }
 }
