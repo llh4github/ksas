@@ -9,6 +9,8 @@ EndpointPermBaseView{
     method
     remark
     permCode
+    updatedTime
+    createdTime
     createdByUser{
         id
         username
