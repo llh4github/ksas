@@ -29,4 +29,6 @@ dependencies {
 
     implementation(project(":ksas-commons"))
     implementation(project(":ksas-db-model"))
+
+    implementation(libs.minio)
 }

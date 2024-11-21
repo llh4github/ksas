@@ -26,6 +26,7 @@ dokka = "1.9.20"
 jimmer = "0.9.15"
 
 nacos-cloud = "2023.0.1.3"
+minio = "8.5.13"
 
 [libraries]
 kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin" }
@@ -71,6 +72,7 @@ jimmer-ksp = { module = "org.babyfish.jimmer:jimmer-ksp", version.ref = "jimmer"
 
 nacos-cloud-config = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config", version.ref = "nacos-cloud" }
 
+minio = { module = "io.minio:minio", version.ref = "minio" }
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
