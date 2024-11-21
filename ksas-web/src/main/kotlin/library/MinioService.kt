@@ -14,7 +14,7 @@ import java.io.InputStream
 import java.time.LocalDate
 
 @Component
-class SsoService(private val client: MinioClient) {
+class MinioService(private val client: MinioClient) {
     private val logger = KotlinLogging.logger {}
 
     /**
