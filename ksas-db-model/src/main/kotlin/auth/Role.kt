@@ -12,12 +12,18 @@ interface Role : BaseModel {
 
     @get:Length(min = 1, max = 50, message = "角色名长度必须在{min}-{max}个字符之间")
     @get:NotBlank(message = "角色名称不能为空")
+    @get:Schema(description = "角色名称")
     val title: String
 
     @Key
     @get:Length(min = 1, max = 50, message = "角色码长度必须在{min}-{max}个字符之间")
     @get:NotBlank(message = "角色码不能为空")
+    @get:Schema(description = "角色码")
     val code: String
+
+    @get:Length(max = 200, message = "备注最多{max}个字符")
+    @get:Schema(description = "备注")
+    val remark: String
 
     @ManyToMany(mappedBy = "roles")
     val users: List<User>

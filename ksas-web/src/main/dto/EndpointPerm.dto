@@ -9,6 +9,8 @@ EndpointPermBaseView{
     method
     remark
     permCode
+    updatedTime
+    createdTime
     createdByUser{
         id
         username
@@ -37,8 +39,8 @@ input EndpointPermUpdateInput{
 }
 
 specification EndpointPermQuerySpec{
-    like/i^$(path)
-    like/i^$(title)
-    like/i^$(permCode)
+    like/i(path)
+    like/i(title)
+    like/i(permCode)
     pageParam: PageQueryParam
 }

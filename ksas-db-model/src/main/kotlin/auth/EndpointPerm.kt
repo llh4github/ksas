@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.dbmodel.auth
 
+import io.github.llh4github.ksas.commons.CommonRegex
 import io.github.llh4github.ksas.dbmodel.BaseModel
 import io.github.llh4github.ksas.dbmodel.enums.RequestMethodEnum
 import io.swagger.v3.oas.annotations.media.Schema
@@ -39,6 +40,7 @@ interface EndpointPerm : BaseModel {
     @Key
     @get:Length(min = 1, max = 50, message = "权限码长度必须在{min}-{max}个字符之间")
     @get:NotBlank(message = "权限码不能为空")
+    @get:Pattern(regexp = CommonRegex.PERMISSION_CODE, message = "权限码只能包含字母、数字、英文冒号和星号")
     @get:Schema(description = "权限码")
     val permCode: String
 }

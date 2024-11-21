@@ -5,6 +5,7 @@ import io.github.llh4github.ksas.commons.PageQueryParam
 input RoleAddInput{
     title
     code
+    remark
     pageRouters{
         id
     }
@@ -14,17 +15,27 @@ input RoleUpdateInput{
     id
     title
     code
+    remark
     pageRouters{
         id
     }
 }
 
 specification RoleQuerySpec {
-    like/i^$(title)
-    like/i^$(code)
+    like/i(title)
+    like/i(code)
     pageParam: PageQueryParam
 }
 
 RoleBaseView{
     #allScalars
+
+    createdByUser{
+        id
+        username
+    }
+    updatedByUser{
+        id
+        username
+    }
 }
