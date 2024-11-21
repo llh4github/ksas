@@ -30,6 +30,10 @@ specification UserQuerySpec {
 UserBaseView{
     #allScalars
     -password
+    roles{
+        code
+        title
+    }
     createdByUser{
         id
         username

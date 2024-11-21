@@ -47,7 +47,7 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
             if (it > 0) {
                 throw DbCommonException.dataExists(
                     message = "用户名已存在",
-                    fieldName = "code",
+                    fieldName = "username",
                     fieldValue = entity.username,
                 )
             }
