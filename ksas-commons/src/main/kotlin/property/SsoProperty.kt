@@ -10,11 +10,6 @@ class SsoProperty {
     var endpoint: String = "http://127.0.0.1:9000"
 
     /**
-     * 桶名
-     */
-    var bucket: String = "ksas"
-
-    /**
      * 访问密钥
      */
     var accessKey: String = ""
@@ -23,4 +18,9 @@ class SsoProperty {
      * 秘钥
      */
     var secretKey: String = ""
+
+    /**
+     * 资源访问基础路径
+     */
+    var baseUrl: String = "http://localhost:9000"
 }
