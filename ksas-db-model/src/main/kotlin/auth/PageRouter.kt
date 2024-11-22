@@ -15,6 +15,7 @@ import org.babyfish.jimmer.sql.*
 interface PageRouter : BaseModel {
 
     @get:Schema(title = "菜单类型", description = "0代表菜单、1代表iframe、2代表外链、3代表按钮")
+    @Column(name = "menu_type")
     val menuType: MenuType
 
     @get:Schema(title = "路由路径", description = "页面路由的路径")
