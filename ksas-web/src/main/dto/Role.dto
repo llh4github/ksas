@@ -6,9 +6,6 @@ input RoleAddInput{
     title
     code
     remark
-    pageRouters{
-        id
-    }
 }
 
 input RoleUpdateInput{
@@ -16,9 +13,6 @@ input RoleUpdateInput{
     title
     code
     remark
-    pageRouters{
-        id
-    }
 }
 
 specification RoleQuerySpec {
