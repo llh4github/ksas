@@ -5,6 +5,8 @@ import io.github.llh4github.ksas.dbmodel.enums.MenuType
 import io.github.llh4github.ksas.dbmodel.extra.PageRouterMeta
 import io.github.llh4github.ksas.dbmodel.extra.TransitionMeta
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 import org.babyfish.jimmer.Formula
 import org.babyfish.jimmer.sql.*
 
@@ -21,6 +23,8 @@ interface PageRouter : BaseModel {
     @Column(name = "menu_type")
     val menuType: MenuType
 
+    @get:NotBlank(message = "路由路径不能为空")
+    @get:Size(max = 150, message = "路由路径长度不能超过{max}个字符")
     @get:Schema(title = "路由路径", description = "页面路由的路径")
     val path: String
 
@@ -29,14 +33,18 @@ interface PageRouter : BaseModel {
         title = "路由名称",
         description = "必须唯一并且和当前路由component字段对应的页面里用defineOptions包起来的name保持一致"
     )
+    @get:NotBlank(message = "路由名称不能为空")
+    @get:Size(max = 50, message = "路由名称长度不能超过{max}个字符")
     val name: String
 
     @get:Schema(
         title = "组件路径",
         description = "传component组件路径，那么path可以随便写，如果不传，component组件路径会跟path保持一致"
     )
+    @get:Size(max = 150, message = "组件路径长度不能超过{max}个字符")
     val component: String?
 
+    @get:Size(max = 100, message = "路由重定向路径长度不能超过{max}个字符")
     @get:Schema(title = "路由重定向", description = "页面路由重定向的路径")
     val redirect: String?
 
@@ -50,6 +58,7 @@ interface PageRouter : BaseModel {
     @get:Schema(description = "是否在菜单中显示")
     val showLink: Boolean
 
+    @get:Size(max = 50, message = "菜单图标长度不能超过{max}个字符")
     @get:Schema(title = "菜单图标", description = "菜单项的图标")
     val icon: String?
 
@@ -57,24 +66,31 @@ interface PageRouter : BaseModel {
         title = "菜单名称",
         description = "兼容国际化、非国际化，如果用国际化的写法就必须在根目录的locales文件夹下对应添加"
     )
+    @get:NotBlank(message = "菜单名称不能为空")
+    @get:Size(max = 50, message = "菜单名称长度不能超过{max}个字符")
     val title: String
 
     @Column(name = "extra_icon")
+    @get:Size(max = 50, message = "右侧图标长度不能超过{max}个字符")
     @get:Schema(title = "右侧图标", description = "菜单项右侧的图标")
     val extraIcon: String?
 
+    @get:Size(max = 50, message = "进场动画长度不能超过{max}个字符")
     @Column(name = "enter_transition")
     @get:Schema(title = "进场动画", description = "页面加载时的进场动画")
     val enterTransition: String?
 
+    @get:Size(max = 50, message = "离场动画长度不能超过{max}个字符")
     @Column(name = "leave_transition")
     @get:Schema(title = "离场动画", description = "页面卸载时的离场动画")
     val leaveTransition: String?
 
+    @get:Size(max = 100, message = "菜单激活路径长度不能超过{max}个字符")
     @Column(name = "active_path")
     @get:Schema(title = "菜单激活")
     val activePath: String?
 
+    @get:Size(max = 255, message = "链接地址长度不能超过{max}个字符")
     @Column(name = "frame_src")
     @get:Schema(title = "链接地址", description = "需要内嵌的iframe链接地址")
     val frameSrc: String?
