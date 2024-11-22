@@ -3,12 +3,15 @@ package io.github.llh4github.ksas.dbmodel.auth
 import io.github.llh4github.ksas.dbmodel.BaseModel
 import io.github.llh4github.ksas.dbmodel.enums.MenuType
 import io.github.llh4github.ksas.dbmodel.extra.PageRouterMeta
+import io.github.llh4github.ksas.dbmodel.extra.TransitionMeta
 import io.swagger.v3.oas.annotations.media.Schema
 import org.babyfish.jimmer.Formula
 import org.babyfish.jimmer.sql.*
 
 /**
  * 页面路由表
+ *
+ * 前端的数据结构参见：RouteChildrenConfigsTable 接口
  */
 @Entity
 @Table(name = "auth_page_router")
@@ -37,10 +40,6 @@ interface PageRouter : BaseModel {
     @get:Schema(title = "路由重定向", description = "页面路由重定向的路径")
     val redirect: String?
 
-    @Formula(dependencies = ["rank", "showLink", "icon", "title", "endpoints"])
-    val meta: PageRouterMeta
-        get() = PageRouterMeta(rank, showLink, icon, title, endpoints)
-
     @get:Schema(
         title = "菜单排序",
         description = "平台规定只有home路由的rank才能为0，所以后端在返回rank的时候需要从非0开始"
@@ -60,6 +59,41 @@ interface PageRouter : BaseModel {
     )
     val title: String
 
+    @Column(name = "extra_icon")
+    @get:Schema(title = "右侧图标", description = "菜单项右侧的图标")
+    val extraIcon: String?
+
+    @Column(name = "enter_transition")
+    @get:Schema(title = "进场动画", description = "页面加载时的进场动画")
+    val enterTransition: String?
+
+    @Column(name = "leave_transition")
+    @get:Schema(title = "离场动画", description = "页面卸载时的离场动画")
+    val leaveTransition: String?
+
+    @Column(name = "active_path")
+    @get:Schema(title = "菜单激活")
+    val activePath: String?
+
+    @Column(name = "frame_src")
+    @get:Schema(title = "链接地址", description = "需要内嵌的iframe链接地址")
+    val frameSrc: String?
+
+    @Column(name = "frame_loading")
+    @get:Schema(title = "加载动画", description = "内嵌的iframe页面是否开启首次加载动画")
+    val frameLoading: Boolean?
+
+    @Column(name = "keep_alive")
+    @get:Schema(title = "缓存页面", description = "是否缓存该路由页面，开启后会保存该页面的整体状态，刷新后会清空状态")
+    val keepAlive: Boolean
+
+    @Column(name = "hidden_tag")
+    @get:Schema(title = "标签页", description = "当前菜单名称或自定义信息禁止添加到标签页")
+    val hiddenTag: Boolean
+
+    @Column(name = "fixed_tag")
+    @get:Schema(title = "固定标签页", description = "当前菜单名称是否固定显示在标签页且不可关闭")
+    val fixedTag: Boolean
 
     @ManyToMany
     @JoinTable(
@@ -69,6 +103,33 @@ interface PageRouter : BaseModel {
     )
     @get:Schema(description = "页面路由关联的接口权限")
     val endpoints: List<EndpointPerm>
+
+
+    @Formula(
+        dependencies = [
+            "rank", "showLink", "icon",
+            "title", "endpoints",
+            "extraIcon", "fixedTag", "frameSrc",
+            "frameLoading", "keepAlive", "hiddenTag",
+            "activePath", "enterTransition", "leaveTransition"
+        ]
+    )
+    val meta: PageRouterMeta
+        get() = PageRouterMeta(
+            rank,
+            showLink,
+            icon,
+            title,
+            endpoints,
+            extraIcon,
+            fixedTag,
+            frameSrc,
+            frameLoading,
+            keepAlive,
+            hiddenTag,
+            activePath,
+            TransitionMeta(enterTransition, leaveTransition)
+        )
 
     @ManyToOne
     val parent: PageRouter?
