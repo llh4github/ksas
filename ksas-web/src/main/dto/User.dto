@@ -66,11 +66,10 @@ UserEndpointPermView{
     username
     roles{
         code
-        pageRouters{
-           endpoints{
-               path
-               method
-           }
+        endpointPerms{
+            path
+            method
+
         }
     }
 
