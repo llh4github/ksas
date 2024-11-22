@@ -34,7 +34,6 @@ interface Role : BaseModel {
         joinColumnName = "role_id",
         inverseJoinColumnName = "endpoint_id"
     )
-    @Deprecated("暂只考虑角色-页面-接口权限的关联")
     val endpointPerms: List<EndpointPerm>
 
     @ManyToMany
@@ -44,5 +43,6 @@ interface Role : BaseModel {
         inverseJoinColumnName = "page_router_id"
     )
     @get:Schema(description = "角色关联的页面路由")
+    @Deprecated("应该只考虑角色与权限的关系，拥有的相同的权限即可进入对应的菜单,稍后删除")
     val pageRouters: List<PageRouter>
 }
