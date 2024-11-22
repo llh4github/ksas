@@ -37,6 +37,8 @@ specification PageRouterQuerySpec {
     like/i(path)
     like/i(name)
     like/i(title)
+    menuType
+    like/i(component)
     pageParam: PageQueryParam
 }
 
