@@ -28,8 +28,11 @@ class PageRouterApi(
 
     @Operation(summary = "分页查询")
     @PostMapping("/page")
-    fun pageQuery(@RequestBody spec: PageRouterQuerySpec): PageResult<PageRouterListView> {
-        return pageRouterService.pageQuery(PageRouterListView::class, spec, spec.pageParam)
+    fun pageQuery(
+        @RequestBody spec: PageRouterQuerySpec
+    ): JsonWrapper<PageResult<PageRouterListView>> {
+        val rs = pageRouterService.pageQuery(PageRouterListView::class, spec, spec.pageParam)
+        return JsonWrapper.ok(rs)
     }
 
     @Operation(summary = "新增页面路由")

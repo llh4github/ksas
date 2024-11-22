@@ -40,7 +40,7 @@ class RoleApi(private val roleService: RoleService) {
     fun update(
         @RequestBody @Validated input: RoleUpdateInput
     ): JsonWrapper<Role> {
-        val rs = roleService.checkAndUpdateById(input)
+        val rs = roleService.updateUnique(input)
         return JsonWrapper.ok(rs)
     }
 

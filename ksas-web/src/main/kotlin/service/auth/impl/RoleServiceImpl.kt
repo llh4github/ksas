@@ -47,7 +47,7 @@ class RoleServiceImpl(
     }
 
     @Transactional
-    override fun checkAndUpdateById(input: RoleUpdateInput): Role {
+    override fun updateUnique(input: RoleUpdateInput): Role {
         val entity = input.toEntity()
         return updateUniqueData(entity, sqlClient)
     }

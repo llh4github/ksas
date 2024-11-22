@@ -8,5 +8,6 @@ import io.github.llh4github.ksas.service.BaseService
 interface RoleService : BaseService<Role> {
 
     fun addUnique(input: RoleAddInput): Role
-    fun checkAndUpdateById(input: RoleUpdateInput): Role
+
+    fun updateUnique(input: RoleUpdateInput): Role
 }
