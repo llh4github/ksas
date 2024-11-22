@@ -16,15 +16,15 @@ enum class MenuType {
     /**
      * iframe
      */
-    IFrame,
+    IFRAME,
 
     /**
      * 外链
      */
-    Link,
+    LINK,
 
     /**
      * 按钮
      */
-    Button
+    BUTTON
 }
