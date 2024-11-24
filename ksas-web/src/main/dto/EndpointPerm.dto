@@ -29,6 +29,12 @@ input EndpointPermAddInput{
     permCode
 }
 
+EndpointPermSimpleView{
+    id
+    title
+    permCode
+}
+
 input EndpointPermUpdateInput{
     id
     title
