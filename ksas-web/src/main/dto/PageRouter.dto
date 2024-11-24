@@ -49,6 +49,7 @@ specification PageRouterQuerySpec {
 
 PageRouterListView{
     #allScalars
+    id(parent)
     createdByUser{
         id
         username
