@@ -75,7 +75,7 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
             where(table.username eq bo.username)
             select(table.fetch(UserEndpointPermView::class))
         }.fetchOneOrNull() ?: return false
-        return user.roles.flatMap { it.pageRouters }.flatMap { it.endpoints }
+        return user.roles.flatMap { it.endpointPerms }
             .any {
                 it.method.match(bo.method) && pathMatcher.match(it.path, bo.uri)
             }

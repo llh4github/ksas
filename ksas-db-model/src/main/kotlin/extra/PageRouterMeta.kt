@@ -20,7 +20,39 @@ data class PageRouterMeta(
 
     @get:JsonIgnore
     val endpoints: List<EndpointPerm> = emptyList(),
+
+    @get:Schema(title = "右侧图标", description = "菜单项右侧的图标")
+    val extraIcon: String?,
+
+    @get:Schema(title = "固定标签页")
+    val fixedTag: Boolean,
+
+    @get:Schema(title = "链接地址")
+    val frameSrc: String?,
+
+    @get:Schema(title = "加载动画")
+    val frameLoading: Boolean?,
+
+    @get:Schema(title = "缓存页面")
+    val keepAlive: Boolean,
+
+    @get:Schema(title = "标签页")
+    val hiddenTag: Boolean,
+
+    @get:Schema(title = "菜单激活")
+    val activePath: String?,
+
+    @get:Schema(title = "进出场动画")
+    val transition: TransitionMeta = TransitionMeta(null, null),
 ) {
     @get:Schema(description = "权限码集合")
     val auths = endpoints.map { it.permCode }
 }
+
+data class TransitionMeta(
+    @get:Schema(description = "进场动画")
+    val enterTransition: String?,
+
+    @get:Schema(description = "离场动画")
+    val leaveTransition: String?,
+)

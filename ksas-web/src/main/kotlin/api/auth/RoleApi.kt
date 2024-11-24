@@ -25,6 +25,9 @@ class RoleApi(private val roleService: RoleService) {
         return JsonWrapper.ok(rs)
     }
 
+    /**
+     * 只操作角色数据，关联数据操作使用其他接口
+     */
     @PostMapping
     @Operation(summary = "新增角色")
     fun add(@RequestBody @Validated input: RoleAddInput): JsonWrapper<Role> {
@@ -37,7 +40,7 @@ class RoleApi(private val roleService: RoleService) {
     fun update(
         @RequestBody @Validated input: RoleUpdateInput
     ): JsonWrapper<Role> {
-        val rs = roleService.checkAndUpdateById(input)
+        val rs = roleService.updateUnique(input)
         return JsonWrapper.ok(rs)
     }
 

@@ -14,10 +14,10 @@ data class PageResult<E>(
 
 @Schema(title = "分页参数")
 interface PageQueryParamTrait {
-    @get:Schema(title = "页码")
+    @get:Schema(title = "页码", example = "1")
     val pageIndex: Int
 
-    @get:Schema(title = "页大小")
+    @get:Schema(title = "页大小", example = "10")
     val pageSize: Int
 
     fun pageNum(): Int {

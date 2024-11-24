@@ -28,8 +28,11 @@ class PageRouterApi(
 
     @Operation(summary = "分页查询")
     @PostMapping("/page")
-    fun pageQuery(@RequestBody spec: PageRouterQuerySpec): PageResult<PageRouterListView> {
-        return pageRouterService.pageQuery(PageRouterListView::class, spec, spec.pageParam)
+    fun pageQuery(
+        @RequestBody spec: PageRouterQuerySpec
+    ): JsonWrapper<PageResult<PageRouterListView>> {
+        val rs = pageRouterService.pageQuery(PageRouterListView::class, spec, spec.pageParam)
+        return JsonWrapper.ok(rs)
     }
 
     @Operation(summary = "新增页面路由")
@@ -43,6 +46,13 @@ class PageRouterApi(
     @PutMapping
     fun update(@RequestBody @Valid input: PageRouterUpdateInput): JsonWrapper<PageRouter> {
         val rs = pageRouterService.updateUnique(input)
+        return JsonWrapper.ok(rs)
+    }
+
+    @Operation(summary = "级联选择数据接口")
+    @GetMapping("/cascader")
+    fun cascader(): JsonWrapper<List<PageRouterCascaderView>> {
+        val rs = pageRouterService.cascader()
         return JsonWrapper.ok(rs)
     }
 }

@@ -2,6 +2,11 @@ export io.github.llh4github.ksas.dbmodel.auth.PageRouter
 
 import io.github.llh4github.ksas.commons.PageQueryParam
 
+PageRouterCascaderView{
+    id
+    title
+    children*
+}
 PageRouterTreeView{
     id
     path
@@ -17,12 +22,7 @@ PageRouterTreeView{
 }
 
 input PageRouterAddInput{
-    title
-    path
-    name
-    rank
-    redirect
-    icon
+    #allScalars(this)
     id(parent)
     endpoints{
         id
@@ -30,13 +30,8 @@ input PageRouterAddInput{
 }
 
 input PageRouterUpdateInput{
-    id
-    title
-    path
-    name
-    rank
-    redirect
-    icon
+    #allScalars(this)
+    id!
     id(parent)
     endpoints{
         id
@@ -47,11 +42,14 @@ specification PageRouterQuerySpec {
     like/i(path)
     like/i(name)
     like/i(title)
+    menuType
+    like/i(component)
     pageParam: PageQueryParam
 }
 
 PageRouterListView{
     #allScalars
+    id(parent)
     createdByUser{
         id
         username
