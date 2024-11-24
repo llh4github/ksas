@@ -3,10 +3,7 @@ package io.github.llh4github.ksas.api.auth
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.EndpointPerm
-import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermBaseView
-import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermQuerySpec
-import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermUpdateInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.EndpointPermService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -40,6 +37,16 @@ class EndpointPermApi(
         @RequestBody spec: EndpointPermQuerySpec
     ): JsonWrapper<PageResult<EndpointPermBaseView>> {
         val rs = endpointPermService.pageQuery(EndpointPermBaseView::class, spec, spec.pageParam)
+        return JsonWrapper.ok(rs)
+    }
+
+    @GetMapping("/simpleData")
+    @Operation(summary = "查询简单数据", description = "查询所有数据，慎用。本接口返回少量字段。")
+    fun simple(): JsonWrapper<List<EndpointPermSimpleView>> {
+        val rs = endpointPermService.allData(
+            EndpointPermSimpleView::class,
+            sortField = "permCode desc"
+        )
         return JsonWrapper.ok(rs)
     }
 }
