@@ -29,7 +29,6 @@ specification RoleQuerySpec {
 
 RoleBaseView{
     #allScalars
-
     createdByUser{
         id
         username
