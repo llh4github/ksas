@@ -19,13 +19,13 @@ import org.hibernate.validator.constraints.Length
 @Table(name = "auth_endpoint_perm")
 interface EndpointPerm : BaseModel {
 
-    @get:Length(min = 1, max = 50, message = "标题长度必须在{min}-{max}个字符之间")
-    @get:NotBlank(message = "标题不能为空")
-    @get:Schema(description = "标题")
+    @get:Length(min = 1, max = 50, message = "接口名长度必须在{min}-{max}个字符之间")
+    @get:NotBlank(message = "接口名不能为空")
+    @get:Schema(description = "接口名")
     val title: String
 
     @get:Pattern(regexp = "^/.+", message = "路径必须以'/'开头")
-    @get:Length(min = 2, max = 50, message = "路径长度必须在{min}-{max}个字符之间")
+    @get:Length(min = 2, max = 100, message = "路径长度必须在{min}-{max}个字符之间")
     @get:NotBlank(message = "路径不能为空")
     @get:Schema(description = "路径")
     val path: String

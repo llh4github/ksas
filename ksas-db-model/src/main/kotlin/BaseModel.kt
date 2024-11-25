@@ -15,17 +15,16 @@ interface BaseModel {
     @GeneratedValue(generatorType = TableIdGenerator::class)
 //    @JsonConverter(LongToStringConverter::class)
     @get:Min(1, message = "id必须大于0")
+    @get:Schema(title = "数据ID", example = "114514")
     val id: Long
 
-    @get:Schema(
-        title = "创建时间", description = "创建时间", example = "2021-11-11 01:01:01"
-    )
+    @Column(name = "created_time")
+    @get:Schema(title = "创建时间", example = "2021-11-11 01:01:01")
     @get:JsonFormat(pattern = DatetimeConstant.DATE_TIME_FORMAT)
     val createdTime: LocalDateTime?
 
-    @get:Schema(
-        title = "更新时间", description = "更新时间", example = "2021-01-01 00:00:00"
-    )
+    @Column(name = "updated_time")
+    @get:Schema(title = "更新时间", example = "2021-01-01 00:00:00")
     @get:JsonFormat(pattern = DatetimeConstant.DATE_TIME_FORMAT)
     val updatedTime: LocalDateTime?
 
