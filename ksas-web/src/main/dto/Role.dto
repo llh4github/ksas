@@ -35,9 +35,7 @@ RoleBaseView{
 
 RolePermissionIdView{
     id
-    endpointPerms{
-        id
-    }
+    id(endpointPerms) as endpointPermsIds
 }
 
 input RolePermissionUpdateInput{
