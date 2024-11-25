@@ -8,6 +8,7 @@ import io.github.llh4github.ksas.service.auth.PageRouterService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -53,6 +54,24 @@ class PageRouterApi(
     @GetMapping("/cascader")
     fun cascader(): JsonWrapper<List<PageRouterCascaderView>> {
         val rs = pageRouterService.cascader()
+        return JsonWrapper.ok(rs)
+    }
+
+    @Operation(summary = "获取页面路由权限", description = "仅返回权限ID")
+    @GetMapping("permissions")
+    fun getPermissionIds(@RequestParam id: Long): JsonWrapper<List<Long>> {
+        val rs = pageRouterService.getById(PageRouterPermissionIdView::class, id)
+            ?.endpointIds
+            .orEmpty()
+        return JsonWrapper.ok(rs)
+    }
+
+    @Operation(summary = "更新页面路由权限")
+    @PutMapping("permissions")
+    fun updatePermissionIds(
+        @RequestBody @Validated input: PageRouterPermissionUpdateInput
+    ): JsonWrapper<Boolean> {
+        val rs = pageRouterService.updatePermission(input)
         return JsonWrapper.ok(rs)
     }
 }

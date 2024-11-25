@@ -54,8 +54,7 @@ class RoleApi(private val roleService: RoleService) {
     @GetMapping("permissions")
     fun getPermissionIds(@RequestParam id: Long): JsonWrapper<List<Long>> {
         val rs = roleService.getById(RolePermissionIdView::class, id)
-            ?.endpointPerms
-            ?.map { it.id }
+            ?.endpointPermsIds
             .orEmpty()
         return JsonWrapper.ok(rs)
     }

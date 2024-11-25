@@ -59,3 +59,12 @@ PageRouterListView{
         username
     }
 }
+PageRouterPermissionIdView{
+    id
+    id(endpoints) as endpointIds
+}
+
+input PageRouterPermissionUpdateInput{
+    id!
+    id(endpoints) as endpointIds
+}

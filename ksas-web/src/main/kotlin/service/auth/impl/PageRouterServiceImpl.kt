@@ -1,16 +1,14 @@
 package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.dbmodel.auth.PageRouter
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterCascaderView
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterTreeView
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterUpdateInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.name
 import io.github.llh4github.ksas.dbmodel.auth.parentId
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.auth.PageRouterService
+import io.github.llh4github.ksas.service.testAddDbResult
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -58,5 +56,12 @@ class PageRouterServiceImpl(
             where(table.parentId.isNull())
             select(table.fetch(PageRouterCascaderView::class))
         }.execute()
+    }
+
+    @Transactional
+    override fun updatePermission(input: PageRouterPermissionUpdateInput): Boolean {
+        val rs = sqlClient.save(input)
+        testAddDbResult(rs)
+        return rs.isModified
     }
 }
