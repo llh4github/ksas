@@ -2,16 +2,19 @@ package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.dbmodel.auth.PageRouter
 import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterCascaderView
 import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterTreeView
 import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterUpdateInput
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.name
+import io.github.llh4github.ksas.dbmodel.auth.parentId
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.auth.PageRouterService
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.isNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,7 +25,10 @@ class PageRouterServiceImpl(
     BaseServiceImpl<PageRouter>(PageRouter::class, sqlClient) {
 
     override fun allRouterTree(): List<PageRouterTreeView> {
-        return createQuery { select(table.fetch(PageRouterTreeView::class)) }.execute()
+        return createQuery {
+            where(table.parentId.isNull())
+            select(table.fetch(PageRouterTreeView::class))
+        }.execute()
     }
 
     override fun checkUnique(entity: PageRouter) {
@@ -45,5 +51,12 @@ class PageRouterServiceImpl(
     override fun updateUnique(input: PageRouterUpdateInput): PageRouter {
         val entity = input.toEntity()
         return updateUniqueData(entity, sqlClient)
+    }
+
+    override fun cascader(): List<PageRouterCascaderView> {
+        return createQuery {
+            where(table.parentId.isNull())
+            select(table.fetch(PageRouterCascaderView::class))
+        }.execute()
     }
 }

@@ -2,6 +2,11 @@ export io.github.llh4github.ksas.dbmodel.auth.PageRouter
 
 import io.github.llh4github.ksas.commons.PageQueryParam
 
+PageRouterCascaderView{
+    id
+    title
+    children*
+}
 PageRouterTreeView{
     id
     path

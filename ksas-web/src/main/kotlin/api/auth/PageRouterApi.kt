@@ -48,4 +48,11 @@ class PageRouterApi(
         val rs = pageRouterService.updateUnique(input)
         return JsonWrapper.ok(rs)
     }
+
+    @Operation(summary = "级联选择数据接口")
+    @GetMapping("/cascader")
+    fun cascader(): JsonWrapper<List<PageRouterCascaderView>> {
+        val rs = pageRouterService.cascader()
+        return JsonWrapper.ok(rs)
+    }
 }
