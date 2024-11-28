@@ -18,4 +18,18 @@ class OssServiceImpl(private val minioService: MinioService) : OssService {
             file, mapOf("userId" to userId.toString())
         )
     }
+
+    override fun uploadFile(userId: Long, file: MultipartFile): String {
+        return baseUrl + minioService.uploadFile(
+            BucketNames.ATTACHMENTS,
+            file, mapOf("userId" to userId.toString())
+        )
+    }
+
+    override fun uploadTempFile(userId: Long?, file: MultipartFile): String {
+        return baseUrl + minioService.uploadFile(
+            BucketNames.TEMP, file,
+            userId?.let { mapOf("userId" to userId.toString()) }.orEmpty()
+        )
+    }
 }

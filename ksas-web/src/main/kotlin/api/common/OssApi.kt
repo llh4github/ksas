@@ -24,4 +24,18 @@ class OssApi(private val service: OssService) {
         val rs = service.uploadAvatar(SecurityUtil.userId(), file)
         return JsonWrapper.ok(rs)
     }
+
+    @PostMapping("upload/files")
+    @Operation(summary = "上传文件")
+    fun uploadFiles(file: MultipartFile): JsonWrapper<String> {
+        val rs = service.uploadFile(SecurityUtil.userId(), file)
+        return JsonWrapper.ok(rs)
+    }
+
+    @PostMapping("upload/temp")
+    @Operation(summary = "上传临时文件")
+    fun uploadTempFiles(file: MultipartFile): JsonWrapper<String> {
+        val rs = service.uploadTempFile(SecurityUtil.userId(), file)
+        return JsonWrapper.ok(rs)
+    }
 }
