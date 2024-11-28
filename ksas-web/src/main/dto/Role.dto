@@ -23,7 +23,6 @@ specification RoleQuerySpec {
 
 RoleBaseView{
     #allScalars
-
     createdByUser{
         id
         username
@@ -32,4 +31,14 @@ RoleBaseView{
         id
         username
     }
+}
+
+RolePermissionIdView{
+    id
+    id(endpointPerms) as endpointPermsIds
+}
+
+input RolePermissionUpdateInput{
+    id!
+    id(endpointPerms) as endpointPermsIds
 }

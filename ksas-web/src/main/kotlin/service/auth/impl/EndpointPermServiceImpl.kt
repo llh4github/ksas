@@ -9,13 +9,16 @@ import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.UniqueDataChecker
 import io.github.llh4github.ksas.service.auth.EndpointPermService
+import org.babyfish.jimmer.View
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ne
+import org.babyfish.jimmer.sql.kt.ast.table.makeOrders
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.reflect.KClass
 
 @Service
 class EndpointPermServiceImpl(
@@ -54,5 +57,15 @@ class EndpointPermServiceImpl(
     override fun updateUnique(input: EndpointPermUpdateInput): EndpointPerm {
         val entity = input.toEntity()
         return updateUniqueData(entity, sqlClient)
+    }
+
+    override fun <S : View<EndpointPerm>> allData(
+        staticType: KClass<S>,
+        sortField: String,
+    ): List<S> {
+        return createQuery {
+            orderBy(table.makeOrders(sortField))
+            select(table.fetch(staticType))
+        }.execute()
     }
 }
