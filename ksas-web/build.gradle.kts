@@ -29,4 +29,7 @@ dependencies {
 
     implementation(project(":ksas-commons"))
     implementation(project(":ksas-db-model"))
+
+    implementation(libs.apache.io)
+    implementation(libs.minio)
 }
