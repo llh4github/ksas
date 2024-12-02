@@ -42,3 +42,9 @@ input RolePermissionUpdateInput{
     id!
     id(endpointPerms) as endpointPermsIds
 }
+RoleSimpleView{
+    id
+    title
+    code
+}
+

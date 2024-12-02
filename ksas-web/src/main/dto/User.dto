@@ -21,6 +21,10 @@ input UserUpdateInput{
     }
 }
 
+input UserUpdateRoleInput{
+    id
+   id(roles) as roleIds
+}
 specification UserQuerySpec {
     like/i(username)
     like/i(nickname)
@@ -31,6 +35,7 @@ UserBaseView{
     #allScalars
     -password
     roles{
+        id
         code
         title
     }
@@ -46,6 +51,11 @@ UserBaseView{
 
 UserLoginView{
     username
+    password
+}
+
+input UserUpdatePwdInput{
+    id!
     password
 }
 

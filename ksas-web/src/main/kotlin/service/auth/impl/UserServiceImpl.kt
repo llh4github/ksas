@@ -5,12 +5,14 @@ import io.github.llh4github.ksas.bo.UserDetailBo
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserEndpointPermView
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.username
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.CommonOperate
 import io.github.llh4github.ksas.service.auth.UserService
+import io.github.llh4github.ksas.service.testAddDbResult
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
@@ -60,6 +62,12 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
             password = passwordEncoder.encode(input.password)
         }
         return addUniqueData(entity, sqlClient)
+    }
+
+    override fun updateRole(input: UserUpdateRoleInput): Boolean {
+        val rs = sqlClient.save(input)
+        testAddDbResult(rs)
+        return rs.isModified
     }
 
     override fun loadUserByUsername(username: String): UserDetails {

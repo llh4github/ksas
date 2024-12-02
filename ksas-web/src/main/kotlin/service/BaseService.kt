@@ -45,7 +45,6 @@ interface BaseService<E : BaseModel> {
      * 通用列表查询
      * @param staticType 分页查询结果的静态类型，需要符合jimmer相关要求的类
      * @param querySpec 查询条件。jimmer 的 QBE类
-     * @param pageQueryParam 分页参数 详见 [PageQueryParam]
      * @param sortField 排序字段。默认按照更新时间倒序。格式为 "字段名 排序方式"，如 "updatedTime desc"。
      * 多个字段排序时用逗号分隔，如 "updatedTime desc, createdTime desc"。
      * 参考文档 [动态排序](https://babyfish-ct.github.io/jimmer-doc/zh/docs/query/dynamic-order)
@@ -54,8 +53,7 @@ interface BaseService<E : BaseModel> {
      */
     fun <S : View<E>> listQuery(
         staticType: KClass<S>,
-        querySpec: KSpecification<E>,
-        pageQueryParam: PageQueryParam,
+        querySpec: KSpecification<E>? = null,
         sortField: String = "updatedTime desc",
         limit: Int? = null,
     ): List<S>

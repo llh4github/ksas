@@ -59,6 +59,13 @@ class RoleApi(private val roleService: RoleService) {
         return JsonWrapper.ok(rs)
     }
 
+    @GetMapping("simpleData")
+    @Operation(summary = "查询简单数据", description = "查询所有数据，慎用。本接口返回少量字段。")
+    fun simpleData(): JsonWrapper<List<RoleSimpleView>> {
+        val rs = roleService.listQuery(RoleSimpleView::class)
+        return JsonWrapper.ok(rs)
+    }
+
     @Operation(summary = "更新角色权限")
     @PutMapping("permissions")
     fun updatePermissionIds(

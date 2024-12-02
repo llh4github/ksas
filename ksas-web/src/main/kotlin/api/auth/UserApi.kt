@@ -6,6 +6,7 @@ import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserBaseView
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserQuerySpec
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
 import io.github.llh4github.ksas.service.auth.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -28,6 +29,16 @@ class UserApi(private val userService: UserService) {
     @Operation(summary = "新增用户")
     fun add(@RequestBody @Validated input: UserAddInput): JsonWrapper<User> {
         val rs = userService.addUnique(input)
+        return JsonWrapper.ok(rs)
+    }
+    fun changePwd(){}
+
+    @PostMapping("update/roles")
+    @Operation(summary = "修改用户拥有角色关系")
+    fun updateRole(
+        @RequestBody @Validated input: UserUpdateRoleInput
+    ): JsonWrapper<Boolean> {
+        val rs = userService.updateRole(input)
         return JsonWrapper.ok(rs)
     }
 
