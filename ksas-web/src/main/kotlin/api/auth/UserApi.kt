@@ -31,9 +31,8 @@ class UserApi(private val userService: UserService) {
         val rs = userService.addUnique(input)
         return JsonWrapper.ok(rs)
     }
-    fun changePwd(){}
 
-    @PostMapping("update/roles")
+    @PutMapping("update/roles")
     @Operation(summary = "修改用户拥有角色关系")
     fun updateRole(
         @RequestBody @Validated input: UserUpdateRoleInput
