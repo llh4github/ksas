@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.service.auth
 import io.github.llh4github.ksas.bo.EndpointPermCheckBo
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserRestPwdInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
 import io.github.llh4github.ksas.service.BaseService
 
@@ -22,4 +23,6 @@ interface UserService : BaseService<User> {
      * @return true 有权限 false 无权限
      */
     fun endpointPermCheck(bo: EndpointPermCheckBo): Boolean
+
+    fun updatePwd(input: UserRestPwdInput): Boolean
 }

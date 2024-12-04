@@ -3,10 +3,7 @@ package io.github.llh4github.ksas.api.auth
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.User
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserBaseView
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserQuerySpec
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -47,6 +44,15 @@ class UserApi(private val userService: UserService) {
         @RequestBody query: UserQuerySpec
     ): JsonWrapper<PageResult<UserBaseView>> {
         val rs = userService.pageQuery(UserBaseView::class, query, query.pageParam)
+        return JsonWrapper.ok(rs)
+    }
+
+    @PutMapping("update/password")
+    @Operation(summary = "更新密码")
+    fun resetPwd(
+        @RequestBody @Validated input: UserRestPwdInput
+    ): JsonWrapper<Boolean> {
+        val rs = userService.updatePwd(input)
         return JsonWrapper.ok(rs)
     }
 }
