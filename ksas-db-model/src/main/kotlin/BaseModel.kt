@@ -1,7 +1,7 @@
 package io.github.llh4github.ksas.dbmodel
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import io.github.llh4github.ksas.commons.DatetimeConstant
+import io.github.llh4github.ksas.commons.consts.DatetimeConstant
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min

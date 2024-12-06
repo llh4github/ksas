@@ -29,7 +29,6 @@ abstract class BaseServiceImpl<E : BaseModel>(
     @Autowired
     protected lateinit var transactionTemplate: TransactionTemplate
 
-
     protected fun <R> createQuery(
         block: KMutableRootQuery<E>.() -> KConfigurableRootQuery<E, R>
     ): KConfigurableRootQuery<E, R> =
