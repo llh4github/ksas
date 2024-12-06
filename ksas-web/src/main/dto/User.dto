@@ -82,5 +82,9 @@ UserEndpointPermView{
 
         }
     }
+}
 
+input UserRestPwdInput{
+    id!
+    password
 }
