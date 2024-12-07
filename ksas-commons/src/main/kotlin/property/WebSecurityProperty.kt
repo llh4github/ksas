@@ -7,6 +7,10 @@ class WebSecurityProperty {
     var anonUrls: Set<String> = setOf()
 
     /**
+     * 通用URL。所有用户都不需要进行权限检查。
+     */
+    var commonUrls :Set<String> = setOf()
+    /**
      * JWT配置
      */
     var jwt = JwtProperty()
