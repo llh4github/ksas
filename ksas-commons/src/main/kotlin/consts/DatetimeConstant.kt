@@ -1,4 +1,4 @@
-package io.github.llh4github.ksas.commons
+package io.github.llh4github.ksas.commons.consts
 
 object DatetimeConstant {
     /**

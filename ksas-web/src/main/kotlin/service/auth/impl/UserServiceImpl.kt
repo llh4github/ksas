@@ -5,12 +5,16 @@ import io.github.llh4github.ksas.bo.UserDetailBo
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserEndpointPermView
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserRestPwdInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.username
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.CommonOperate
 import io.github.llh4github.ksas.service.auth.UserService
+import io.github.llh4github.ksas.service.testAddDbResult
+import io.github.llh4github.ksas.service.testUpdateDbResult
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
@@ -62,6 +66,12 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
         return addUniqueData(entity, sqlClient)
     }
 
+    override fun updateRole(input: UserUpdateRoleInput): Boolean {
+        val rs = sqlClient.save(input)
+        testAddDbResult(rs)
+        return rs.isModified
+    }
+
     override fun loadUserByUsername(username: String): UserDetails {
         val user = createQuery {
             where(table.username eq username)
@@ -79,5 +89,14 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
             .any {
                 it.method.match(bo.method) && pathMatcher.match(it.path, bo.uri)
             }
+    }
+
+    override fun updatePwd(input: UserRestPwdInput): Boolean {
+        val entity = input.toEntity {
+            password = passwordEncoder.encode(input.password)
+        }
+        val rs = sqlClient.update(entity)
+        testUpdateDbResult(rs)
+        return rs.isModified
     }
 }

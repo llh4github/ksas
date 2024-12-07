@@ -43,10 +43,7 @@ class EndpointPermApi(
     @GetMapping("/simpleData")
     @Operation(summary = "查询简单数据", description = "查询所有数据，慎用。本接口返回少量字段。")
     fun simple(): JsonWrapper<List<EndpointPermSimpleView>> {
-        val rs = endpointPermService.allData(
-            EndpointPermSimpleView::class,
-            sortField = "permCode desc"
-        )
+        val rs = endpointPermService.listQuery(EndpointPermSimpleView::class)
         return JsonWrapper.ok(rs)
     }
 }

@@ -1,6 +1,5 @@
 package io.github.llh4github.ksas.commons
 
-
 /**
  * 常用正则式
  */

@@ -29,7 +29,6 @@ abstract class BaseServiceImpl<E : BaseModel>(
     @Autowired
     protected lateinit var transactionTemplate: TransactionTemplate
 
-
     protected fun <R> createQuery(
         block: KMutableRootQuery<E>.() -> KConfigurableRootQuery<E, R>
     ): KConfigurableRootQuery<E, R> =
@@ -98,14 +97,15 @@ abstract class BaseServiceImpl<E : BaseModel>(
 
     override fun <S : View<E>> listQuery(
         staticType: KClass<S>,
-        querySpec: KSpecification<E>,
-        pageQueryParam: PageQueryParam,
+        querySpec: KSpecification<E>?,
         sortField: String,
         limit: Int?,
     ): List<S> {
         val condition = createQuery {
             orderBy(table.makeOrders(sortField))
-            where(querySpec)
+            querySpec?.let {
+                where(querySpec)
+            }
             select(table.fetch(staticType))
         }
         if (limit == null) {

@@ -13,9 +13,7 @@ interface EndpointPermService : BaseService<EndpointPerm> {
 
     fun updateUnique(input: EndpointPermUpdateInput): EndpointPerm
 
-    /**
-     * 查询所有数据。慎用。
-     */
+    @Deprecated("use listQuery instead", replaceWith = ReplaceWith("listQuery"))
     fun <S : View<EndpointPerm>> allData(
         staticType: KClass<S>,
         sortField: String = "updatedTime desc"
