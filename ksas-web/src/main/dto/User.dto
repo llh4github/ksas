@@ -79,7 +79,7 @@ UserEndpointPermView{
         endpointPerms{
             path
             method
-
+            permCode
         }
     }
 }
