@@ -6,9 +6,7 @@ import io.github.llh4github.ksas.dbmodel.enums.RequestMethodEnum
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
-import org.babyfish.jimmer.sql.Entity
-import org.babyfish.jimmer.sql.Key
-import org.babyfish.jimmer.sql.Table
+import org.babyfish.jimmer.sql.*
 import org.hibernate.validator.constraints.Length
 
 
@@ -43,4 +41,10 @@ interface EndpointPerm : BaseModel {
     @get:Pattern(regexp = CommonRegex.PERMISSION_CODE, message = "权限码只能包含字母、数字、英文冒号和星号")
     @get:Schema(description = "权限码")
     val permCode: String
+
+    @ManyToOne
+    val parent: EndpointPerm?
+
+    @OneToMany(mappedBy = "parent")
+    val children: List<EndpointPerm>
 }

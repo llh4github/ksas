@@ -9,7 +9,7 @@ interface PageRouterService : BaseService<PageRouter>, CommonOperate<PageRouter>
     /**
      * 获取所有路由树
      */
-    fun allRouterTree(): List<PageRouterTreeView>
+    fun allRouterTree(username:String): List<PageRouterTreeView>
 
     fun addUnique(input: PageRouterAddInput): PageRouter
     fun updateUnique(input: PageRouterUpdateInput): PageRouter

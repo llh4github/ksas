@@ -2,6 +2,7 @@ package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.bo.EndpointPermCheckBo
 import io.github.llh4github.ksas.bo.UserDetailBo
+import io.github.llh4github.ksas.commons.property.WebSecurityProperty
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserEndpointPermView
@@ -35,6 +36,8 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
     UserService,
     CommonOperate<User>,
     UserDetailsService {
+    @Autowired
+    private lateinit var property: WebSecurityProperty
 
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
@@ -80,7 +83,11 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
         return UserDetailBo(user)
     }
 
+    @Suppress("ReturnCount")
     override fun endpointPermCheck(bo: EndpointPermCheckBo): Boolean {
+        if (property.commonUrls.any { pathMatcher.match(it, bo.uri) }) {
+            return true
+        }
         val user = createQuery {
             where(table.username eq bo.username)
             select(table.fetch(UserEndpointPermView::class))

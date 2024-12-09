@@ -47,6 +47,7 @@ data class PageRouterMeta(
 ) {
     @get:Schema(description = "权限码集合")
     val auths = endpoints.map { it.permCode }
+    val roles = listOf("maintainer","visitors")
 }
 
 data class TransitionMeta(

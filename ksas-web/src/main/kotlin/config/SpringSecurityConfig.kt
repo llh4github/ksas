@@ -1,7 +1,6 @@
 package io.github.llh4github.ksas.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.llh4github.ksas.bo.EndpointPermCheckBo
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.llh4github.ksas.commons.property.WebSecurityProperty
 import io.github.llh4github.ksas.filter.JwtFilter
@@ -9,7 +8,6 @@ import io.github.llh4github.ksas.library.JwtService
 import io.github.llh4github.ksas.service.auth.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
-import org.springframework.security.authorization.AuthorizationDecision
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
@@ -38,15 +36,15 @@ class SpringSecurityConfig(
             .authorizeHttpRequests {
                 it.requestMatchers(*annoUrls).permitAll()
                     .requestMatchers(RegexRequestMatcher("^.*\\.(css|js)$", null)).permitAll()
-                    .anyRequest().access { authentication, context ->
-                        val bo = EndpointPermCheckBo(
-                            username = authentication.get().principal as String,
-                            method = context.request.method,
-                            uri = context.request.requestURI,
-                        )
-                        val hasPerm = userService.endpointPermCheck(bo)
-                        AuthorizationDecision(hasPerm)
-                    }
+//                    .anyRequest().access { authentication, context ->
+//                        val bo = EndpointPermCheckBo(
+//                            username = authentication.get().principal as String,
+//                            method = context.request.method,
+//                            uri = context.request.requestURI,
+//                        )
+//                        val hasPerm = userService.endpointPermCheck(bo)
+//                        AuthorizationDecision(hasPerm)
+//                    }
             }
             .exceptionHandling {
                 it.accessDeniedHandler(jsonAccessDeniedHandler(objectMapper))

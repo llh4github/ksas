@@ -1,18 +1,14 @@
 package io.github.llh4github.ksas.service.auth.impl
 
-import io.github.llh4github.ksas.dbmodel.auth.PageRouter
+import io.github.llh4github.ksas.dbmodel.auth.*
 import io.github.llh4github.ksas.dbmodel.auth.dto.*
-import io.github.llh4github.ksas.dbmodel.auth.id
-import io.github.llh4github.ksas.dbmodel.auth.name
-import io.github.llh4github.ksas.dbmodel.auth.parentId
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.auth.PageRouterService
 import io.github.llh4github.ksas.service.testAddDbResult
+import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.count
-import org.babyfish.jimmer.sql.kt.ast.expression.eq
-import org.babyfish.jimmer.sql.kt.ast.expression.isNull
+import org.babyfish.jimmer.sql.kt.ast.expression.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,15 +18,35 @@ class PageRouterServiceImpl(
 ) : PageRouterService,
     BaseServiceImpl<PageRouter>(PageRouter::class, sqlClient) {
 
-    override fun allRouterTree(): List<PageRouterTreeView> {
+    override fun allRouterTree(username: String): List<PageRouterTreeView> {
+        val perms = sqlClient.createQuery(User::class) {
+            where(table.username eq username)
+            select(table.fetch(UserEndpointPermView::class))
+        }.fetchOneOrNull()?.roles?.flatMap { it.endpointPerms }?.map { it.permCode }
+            ?: emptyList()
+
         return createQuery {
             where(table.parentId.isNull())
-            select(table.fetch(PageRouterTreeView::class))
-        }.execute()
+            select(table.fetchBy {
+                path()
+                name()
+                redirect()
+                meta()
+                endpoints {
+                    permCode()
+                }
+                `children*` {
+                    where += table.endpoints { permCode valueIn perms }
+                }
+            })
+        }.execute().map { PageRouterTreeView(it) }
     }
 
     override fun checkUnique(entity: PageRouter) {
         createQuery {
+            if (isLoaded(entity, PageRouter::id)) {
+                where(table.id ne entity.id)
+            }
             where(table.name eq entity.name)
             select(count(table.id))
         }.fetchOne().let {

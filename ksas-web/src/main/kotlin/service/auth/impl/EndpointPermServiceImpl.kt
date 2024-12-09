@@ -2,23 +2,22 @@ package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.dbmodel.auth.EndpointPerm
 import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermTreeView
 import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermUpdateInput
 import io.github.llh4github.ksas.dbmodel.auth.id
+import io.github.llh4github.ksas.dbmodel.auth.parentId
 import io.github.llh4github.ksas.dbmodel.auth.permCode
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.UniqueDataChecker
 import io.github.llh4github.ksas.service.auth.EndpointPermService
-import org.babyfish.jimmer.View
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ne
-import org.babyfish.jimmer.sql.kt.ast.table.makeOrders
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.reflect.KClass
 
 @Service
 class EndpointPermServiceImpl(
@@ -59,13 +58,15 @@ class EndpointPermServiceImpl(
         return updateUniqueData(entity, sqlClient)
     }
 
-    override fun <S : View<EndpointPerm>> allData(
-        staticType: KClass<S>,
-        sortField: String,
-    ): List<S> {
+    override fun fetchTree(id: Long?): EndpointPermTreeView? {
         return createQuery {
-            orderBy(table.makeOrders(sortField))
-            select(table.fetch(staticType))
-        }.execute()
+            if (id != null) {
+                where(table.id eq id)
+            } else {
+                // 根节点
+                where(table.parentId eq null)
+            }
+            select(table.fetch(EndpointPermTreeView::class))
+        }.fetchOneOrNull()
     }
 }
