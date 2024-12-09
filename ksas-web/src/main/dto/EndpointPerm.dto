@@ -27,12 +27,25 @@ input EndpointPermAddInput{
     method
     remark
     permCode
+    @jakarta.validation.constraints.Min(1, message = "parentId必须大于0")
+    @jakarta.validation.constraints.NotNull(message = "必须选择上级端点权限")
+    id(parent) as parentId
 }
 
 EndpointPermSimpleView{
     id
     title
     permCode
+}
+
+EndpointPermTreeView{
+    id
+    title
+    path
+    method
+    remark
+    permCode
+    children*
 }
 
 input EndpointPermUpdateInput{
@@ -42,6 +55,9 @@ input EndpointPermUpdateInput{
     method
     remark
     permCode
+    @jakarta.validation.constraints.Min(1, message = "parentId必须大于0")
+    @jakarta.validation.constraints.NotNull(message = "必须选择上级端点权限")
+    id(parent) as parentId
 }
 
 specification EndpointPermQuerySpec{
