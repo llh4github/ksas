@@ -15,6 +15,7 @@ import org.hibernate.validator.constraints.Length
  */
 @Entity
 @Table(name = "auth_endpoint_perm")
+@Deprecated("使用 Permission 替代", replaceWith = ReplaceWith("Permission"))
 interface EndpointPerm : BaseModel {
 
     @get:Length(min = 1, max = 50, message = "接口名长度必须在{min}-{max}个字符之间")

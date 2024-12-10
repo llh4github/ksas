@@ -34,7 +34,16 @@ interface Role : BaseModel {
         joinColumnName = "role_id",
         inverseJoinColumnName = "endpoint_id"
     )
+    @Deprecated("应该只考虑角色与权限的关系，拥有的相同的权限即可进入对应的菜单,稍后删除")
     val endpointPerms: List<EndpointPerm>
+
+    @ManyToMany
+    @JoinTable(
+        name = "link_role_permission",
+        joinColumnName = "role_id",
+        inverseJoinColumnName = "permission_id"
+    )
+    val permissions: List<Permission>
 
     @ManyToMany
     @JoinTable(
