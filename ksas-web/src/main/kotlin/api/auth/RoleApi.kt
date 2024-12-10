@@ -21,7 +21,7 @@ class RoleApi(private val roleService: RoleService) {
         description = "auth:role:view:id",
     )
     @GetMapping
-    @PreAuthorize("hasAuthority('auth:role:view:id')")
+    @PreAuthorize("@pc.hasPermission('auth:role:view:id')")
     fun getById(id: Long): JsonWrapper<Role> {
         val rs = roleService.getById(id)
         return JsonWrapper.ok(rs)
@@ -32,7 +32,7 @@ class RoleApi(private val roleService: RoleService) {
      */
     @PostMapping
     @Operation(summary = "新增角色", description = "auth:role:add")
-    @PreAuthorize("hasAuthority('auth:role:add')")
+    @PreAuthorize("@pc.hasPermission('auth:role:add')")
     fun add(@RequestBody @Validated input: RoleAddInput): JsonWrapper<Role> {
         val rs = roleService.addUnique(input)
         return JsonWrapper.ok(rs)
@@ -40,7 +40,7 @@ class RoleApi(private val roleService: RoleService) {
 
     @PutMapping
     @Operation(summary = "更新角色", description = "auth:role:update")
-    @PreAuthorize("hasAuthority('auth:role:update')")
+    @PreAuthorize("@pc.hasPermission('auth:role:update')")
     fun update(
         @RequestBody @Validated input: RoleUpdateInput
     ): JsonWrapper<Role> {
@@ -50,7 +50,7 @@ class RoleApi(private val roleService: RoleService) {
 
     @PostMapping("page")
     @Operation(summary = "分页查询", description = "auth:role:view:page")
-    @PreAuthorize("hasAuthority('auth:role:view:page')")
+    @PreAuthorize("@pc.hasPermission('auth:role:view:page')")
     fun page(
         @RequestBody query: RoleQuerySpec
     ): JsonWrapper<PageResult<RoleBaseView>> {
@@ -63,7 +63,7 @@ class RoleApi(private val roleService: RoleService) {
         description = "获取角色关联的权限，仅返回权限ID.\nauth:role:view:permissions"
     )
     @GetMapping("permissions")
-    @PreAuthorize("hasAuthority('auth:role:view:permissions')")
+    @PreAuthorize("@pc.hasPermission('auth:role:view:permissions')")
     fun getPermissionIds(@RequestParam id: Long): JsonWrapper<List<Long>> {
         val rs = roleService.getById(RolePermissionIdView::class, id)
             ?.endpointPermsIds
@@ -72,7 +72,7 @@ class RoleApi(private val roleService: RoleService) {
     }
 
     @GetMapping("simpleData")
-    @PreAuthorize("hasAuthority('auth:role:view:list')")
+    @PreAuthorize("@pc.hasPermission('auth:role:view:list')")
     @Operation(summary = "查询简单数据", description = "查询所有数据，慎用。本接口返回少量字段。")
     fun simpleData(): JsonWrapper<List<RoleSimpleView>> {
         val rs = roleService.listQuery(RoleSimpleView::class)
@@ -84,7 +84,7 @@ class RoleApi(private val roleService: RoleService) {
         description = "auth:role:update:permissions"
     )
     @PutMapping("permissions")
-    @PreAuthorize("hasAuthority('auth:role:update:permissions')")
+    @PreAuthorize("@pc.hasPermission('auth:role:update:permissions')")
     fun updatePermissionIds(
         @RequestBody @Validated input: RolePermissionUpdateInput
     ): JsonWrapper<Boolean> {

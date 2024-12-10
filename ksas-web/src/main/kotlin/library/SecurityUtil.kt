@@ -1,6 +1,7 @@
 package io.github.llh4github.ksas.library
 
 import io.github.llh4github.ksas.bo.AccountAuthBo
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 
 /**
@@ -32,5 +33,9 @@ object SecurityUtil {
      */
     fun username(): String {
         return authBo().principal as String
+    }
+
+    fun authorities(): Collection<GrantedAuthority> {
+        return authBo().authorities
     }
 }
