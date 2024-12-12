@@ -1,0 +1,48 @@
+export io.github.llh4github.ksas.dbmodel.auth.Permission
+
+import io.github.llh4github.ksas.commons.PageQueryParam
+
+input PermissionAddInput{
+    title
+    remark
+    code
+    @jakarta.validation.constraints.Min(1, message = "parentId必须大于0")
+    @jakarta.validation.constraints.NotNull(message = "必须选择上级端点权限")
+    id(parent) as parentId
+}
+input PermissionUpdateInput{
+    id!
+    title
+    remark
+    code
+    @jakarta.validation.constraints.Min(1, message = "parentId必须大于0")
+    @jakarta.validation.constraints.NotNull(message = "必须选择上级端点权限")
+    id(parent) as parentId
+}
+PermissionSimpleView{
+    id
+    title
+    code
+}
+
+PermissionBaseView{
+    id
+    title
+    code
+    updatedTime
+    createdTime
+    createdByUser{
+        id
+        username
+    }
+    updatedByUser{
+        id
+        username
+    }
+}
+
+specification PermissionQuerySpec{
+    like/i(title)
+    like/i(code)
+    pageParam: PageQueryParam
+}

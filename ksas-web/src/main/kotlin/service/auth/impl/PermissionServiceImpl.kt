@@ -2,6 +2,8 @@ package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.dbmodel.auth.Permission
 import io.github.llh4github.ksas.dbmodel.auth.code
+import io.github.llh4github.ksas.dbmodel.auth.dto.PermissionAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.PermissionUpdateInput
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
@@ -39,4 +41,13 @@ class PermissionServiceImpl(
         }
     }
 
+    override fun addUnique(input: PermissionAddInput): Permission {
+        val entity = input.toEntity()
+        return addUniqueData(entity, sqlClient)
+    }
+
+    override fun updateUnique(input: PermissionUpdateInput): Permission {
+        val entity = input.toEntity()
+        return updateUniqueData(entity, sqlClient)
+    }
 }
