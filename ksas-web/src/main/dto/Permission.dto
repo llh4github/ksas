@@ -10,6 +10,7 @@ input PermissionAddInput{
     @jakarta.validation.constraints.NotNull(message = "必须选择上级端点权限")
     id(parent) as parentId
 }
+@io.github.llh4github.ksas.dbmodel.validator.NoSameWithId
 input PermissionUpdateInput{
     id!
     title
@@ -34,8 +35,10 @@ PermissionBaseView{
     id
     title
     code
+    remark
     updatedTime
     createdTime
+    id(parent) as parentId
     createdByUser{
         id
         username
