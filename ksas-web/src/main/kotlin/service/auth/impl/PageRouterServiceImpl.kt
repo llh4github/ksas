@@ -8,7 +8,10 @@ import io.github.llh4github.ksas.service.auth.PageRouterService
 import io.github.llh4github.ksas.service.testAddDbResult
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.*
+import org.babyfish.jimmer.sql.kt.ast.expression.count
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.isNull
+import org.babyfish.jimmer.sql.kt.ast.expression.ne
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -32,11 +35,11 @@ class PageRouterServiceImpl(
                 name()
                 redirect()
                 meta()
-                endpoints {
-                    permCode()
+                permissions {
+                    code()
                 }
                 `children*` {
-                    where += table.endpoints { permCode valueIn perms }
+//                    where += table.permissions { code valueIn perms }
                 }
             })
         }.execute().map { PageRouterTreeView(it) }

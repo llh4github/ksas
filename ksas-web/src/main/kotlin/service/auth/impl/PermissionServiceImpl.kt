@@ -54,10 +54,15 @@ class PermissionServiceImpl(
         return updateUniqueData(entity, sqlClient)
     }
 
-    override fun casecaderData(): PermissionCasecaderView? {
+    override fun treeData(id: Long?): PermissionCasecaderView? {
         return createQuery {
-            where(table.parentId.isNull())
+            if (id != null) {
+                where(table.id eq id)
+            } else {
+                where(table.parentId.isNull())
+            }
             select(table.fetch(PermissionCasecaderView::class))
         }.fetchOneOrNull()
     }
+
 }

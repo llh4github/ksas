@@ -10,5 +10,9 @@ interface PermissionService : BaseService<Permission> {
     fun addUnique(input: PermissionAddInput): Permission
     fun updateUnique(input: PermissionUpdateInput): Permission
 
-    fun casecaderData(): PermissionCasecaderView?
+    /**
+     * 单节点的树形数据。
+     */
+    fun treeData(id: Long? = null): PermissionCasecaderView?
+
 }

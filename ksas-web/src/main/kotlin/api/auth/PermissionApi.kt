@@ -6,6 +6,8 @@ import io.github.llh4github.ksas.dbmodel.auth.Permission
 import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.PermissionService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.Parameters
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
@@ -57,11 +59,16 @@ class PermissionApi(private val permissionService: PermissionService) {
         return JsonWrapper.ok(rs)
     }
 
-    @Operation(summary = "级联数据查询", description = "auth:permission:view:cascader")
+    @Operation(summary = "级联(树形)数据查询", description = "auth:permission:view:cascader")
     @GetMapping("cascader")
     @PreAuthorize("@pc.hasPermission('auth:permission:view:cascader')")
-    fun cascader(): JsonWrapper<PermissionCasecaderView> {
-        val root = permissionService.casecaderData()
+    @Parameters(
+        Parameter(name = "id", description = "节点ID", required = false, example = "114514")
+    )
+    fun cascader(
+        @RequestParam("id") id: Long? = null
+    ): JsonWrapper<PermissionCasecaderView> {
+        val root = permissionService.treeData(id)
         return JsonWrapper.ok(root)
     }
 }

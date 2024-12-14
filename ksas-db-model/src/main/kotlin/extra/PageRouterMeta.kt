@@ -1,7 +1,7 @@
 package io.github.llh4github.ksas.dbmodel.extra
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import io.github.llh4github.ksas.dbmodel.auth.EndpointPerm
+import io.github.llh4github.ksas.dbmodel.auth.Permission
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class PageRouterMeta(
@@ -19,7 +19,7 @@ data class PageRouterMeta(
     val title: String,
 
     @get:JsonIgnore
-    val endpoints: List<EndpointPerm> = emptyList(),
+    val permissions: List<Permission> = emptyList(),
 
     @get:Schema(title = "右侧图标", description = "菜单项右侧的图标")
     val extraIcon: String?,
@@ -46,8 +46,8 @@ data class PageRouterMeta(
     val transition: TransitionMeta = TransitionMeta(null, null),
 ) {
     @get:Schema(description = "权限码集合")
-    val auths = endpoints.map { it.permCode }
-    val roles = listOf("maintainer","visitors")
+    val auths = permissions.map { it.code }
+    val roles = listOf<String>()
 }
 
 data class TransitionMeta(
