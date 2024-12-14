@@ -28,6 +28,7 @@ class NoSameWithIdValidator : ConstraintValidator<NoSameWithId, Any> {
         this.parentField = constraintAnnotation.parentIdField
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun isValid(value: Any, context: ConstraintValidatorContext?): Boolean {
         val idField = value::class.memberProperties.find { it.name == idField } ?: return true
         // 类型推断有问题，需要强转
