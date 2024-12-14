@@ -2,6 +2,7 @@ package io.github.llh4github.ksas.library
 
 import io.github.llh4github.ksas.bo.AccountAuthBo
 import io.github.llh4github.ksas.commons.LongIdGenerator
+import io.github.llh4github.ksas.commons.consts.PermCodeConstant
 import io.github.llh4github.ksas.commons.property.JwtType
 import io.github.llh4github.ksas.commons.property.WebSecurityProperty
 import io.github.llh4github.ksas.dbmodel.auth.User
@@ -139,8 +140,10 @@ class JwtService(
         val permissions = sqlClient.createQuery(User::class) {
             where(table.id eq userId)
             select(table.fetch(UserAuthView::class))
-        }.fetchOneOrNull()?.roles?.flatMap { it.permissions }?.map { it.code }.orEmpty()
+        }.fetchOneOrNull()?.roles?.flatMap { it.permissions }?.map { it.code }
+            ?.toMutableList() ?: mutableListOf()
 
+        permissions.add(PermCodeConstant.COMMON)
         val bo = AccountAuthBo(
             userId,
             claims.subject,
