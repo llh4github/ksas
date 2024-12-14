@@ -65,8 +65,8 @@ UserAuthView{
     password
     roles{
         code
-        endpointPerms{
-           permCode
+        permissions{
+           code
         }
     }
 }
@@ -76,10 +76,9 @@ UserEndpointPermView{
     username
     roles{
         code
-        endpointPerms{
-            path
-            method
-            permCode
+        permissions{
+            code
+            title
         }
     }
 }

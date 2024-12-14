@@ -24,7 +24,12 @@ PermissionSimpleView{
     title
     code
 }
-
+PermissionCasecaderView{
+    id
+    title
+    code
+    children*
+}
 PermissionBaseView{
     id
     title
