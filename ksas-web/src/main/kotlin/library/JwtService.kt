@@ -4,6 +4,9 @@ import io.github.llh4github.ksas.bo.AccountAuthBo
 import io.github.llh4github.ksas.commons.LongIdGenerator
 import io.github.llh4github.ksas.commons.property.JwtType
 import io.github.llh4github.ksas.commons.property.WebSecurityProperty
+import io.github.llh4github.ksas.dbmodel.auth.User
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserAuthView
+import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.impl.DefaultClaims
@@ -11,6 +14,8 @@ import io.jsonwebtoken.impl.lang.Parameter
 import io.jsonwebtoken.impl.lang.Parameters
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Component
 import java.util.*
@@ -22,6 +27,7 @@ class JwtService(
     private val webProperty: WebSecurityProperty,
     private val idGenerator: LongIdGenerator,
     private val redisTemplate: StringRedisTemplate,
+    private val sqlClient: KSqlClient,
 ) {
     private val logger = KotlinLogging.logger {}
     private val jwtProperty by lazy { webProperty.jwt }
@@ -129,9 +135,16 @@ class JwtService(
 
     fun validAndAuthBo(jwt: String): AccountAuthBo? {
         val claims = validAndClaims(jwt) ?: return null
+        val userId = claims.get(userIdParameter).toLong()
+        val permissions = sqlClient.createQuery(User::class) {
+            where(table.id eq userId)
+            select(table.fetch(UserAuthView::class))
+        }.fetchOneOrNull()?.roles?.flatMap { it.permissions }?.map { it.code }.orEmpty()
+
         val bo = AccountAuthBo(
-            claims.get(userIdParameter).toLong(),
-            claims.subject
+            userId,
+            claims.subject,
+            permissions
         )
         bo.isAuthenticated = true
         return bo
