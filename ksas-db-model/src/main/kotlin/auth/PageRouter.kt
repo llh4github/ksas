@@ -111,20 +111,20 @@ interface PageRouter : BaseModel {
     @get:Schema(title = "固定标签页", description = "当前菜单名称是否固定显示在标签页且不可关闭")
     val fixedTag: Boolean
 
+
     @ManyToMany
     @JoinTable(
-        name = "link_router_endpoint",
+        name = "link_router_permission",
         joinColumnName = "router_id",
-        inverseJoinColumnName = "endpoint_id"
+        inverseJoinColumnName = "permission_id"
     )
     @get:Schema(description = "页面路由关联的接口权限")
-    val endpoints: List<EndpointPerm>
-
+    val permissions: List<Permission>
 
     @Formula(
         dependencies = [
             "rank", "showLink", "icon",
-            "title", "endpoints",
+            "title", "permissions",
             "extraIcon", "fixedTag", "frameSrc",
             "frameLoading", "keepAlive", "hiddenTag",
             "activePath", "enterTransition", "leaveTransition"
@@ -136,7 +136,7 @@ interface PageRouter : BaseModel {
             showLink,
             icon,
             title,
-            endpoints,
+            permissions,
             extraIcon,
             fixedTag,
             frameSrc,
