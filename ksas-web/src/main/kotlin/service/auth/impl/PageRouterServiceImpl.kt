@@ -22,7 +22,7 @@ class PageRouterServiceImpl(
         val perms = sqlClient.createQuery(User::class) {
             where(table.username eq username)
             select(table.fetch(UserEndpointPermView::class))
-        }.fetchOneOrNull()?.roles?.flatMap { it.endpointPerms }?.map { it.permCode }
+        }.fetchOneOrNull()?.roles?.flatMap { it.permissions }?.map { it.code }
             ?: emptyList()
 
         return createQuery {

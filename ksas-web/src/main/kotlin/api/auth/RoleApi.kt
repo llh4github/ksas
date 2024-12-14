@@ -66,7 +66,7 @@ class RoleApi(private val roleService: RoleService) {
     @PreAuthorize("@pc.hasPermission('auth:role:view:permissions')")
     fun getPermissionIds(@RequestParam id: Long): JsonWrapper<List<Long>> {
         val rs = roleService.getById(RolePermissionIdView::class, id)
-            ?.endpointPermsIds
+            ?.permissionIds
             .orEmpty()
         return JsonWrapper.ok(rs)
     }
