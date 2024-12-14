@@ -56,4 +56,12 @@ class PermissionApi(private val permissionService: PermissionService) {
         val rs = permissionService.updateUnique(input)
         return JsonWrapper.ok(rs)
     }
+
+    @Operation(summary = "级联数据查询", description = "auth:permission:view:cascader")
+    @GetMapping("cascader")
+    @PreAuthorize("@pc.hasPermission('auth:permission:view:cascader')")
+    fun cascader(): JsonWrapper<PermissionCasecaderView> {
+        val root = permissionService.casecaderData()
+        return JsonWrapper.ok(root)
+    }
 }
