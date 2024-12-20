@@ -65,7 +65,7 @@ UserAuthView{
     }
 }
 
-UserEndpointPermView{
+UsePermissionView{
     id
     username
     roles{
