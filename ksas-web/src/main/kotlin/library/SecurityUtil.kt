@@ -38,4 +38,7 @@ object SecurityUtil {
     fun authorities(): Collection<GrantedAuthority> {
         return authBo().authorities
     }
+    fun permissions(): List<String> {
+        return authBo().authorities.map { it.authority }
+    }
 }

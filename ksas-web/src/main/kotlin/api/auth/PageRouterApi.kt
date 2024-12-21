@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.api.auth
 
+import io.github.llh4github.ksas.bo.PageRouterTreeBo
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.llh4github.ksas.commons.PageResult
 import io.github.llh4github.ksas.commons.consts.PermCodeConstant
@@ -29,8 +30,8 @@ class PageRouterApi(
     )
     @GetMapping("/allTree")
     @PreAuthorize("@pc.hasAnyPermission('auth:pageRouter:view:tree','${PermCodeConstant.COMMON}')")
-    fun allRouterTree(): JsonWrapper<List<PageRouterTreeView>> {
-        val rs = pageRouterService.allRouterTree(SecurityUtil.username())
+    fun allRouterTree(): JsonWrapper<List<PageRouterTreeBo>> {
+        val rs = pageRouterService.allRouterTree(SecurityUtil.permissions())
         return JsonWrapper.ok(rs)
     }
 

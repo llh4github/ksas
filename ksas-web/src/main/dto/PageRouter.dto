@@ -17,8 +17,20 @@ PageRouterTreeView{
     permissions{
         code
     }
-
     children*
+}
+
+PageRouterWithPermissionView{
+    id
+    path
+    name
+    redirect
+    id(parent)
+    meta
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    permissions{
+        code
+    }
 }
 
 input PageRouterAddInput{
