@@ -48,7 +48,7 @@ class PageRouterServiceImpl(
                 }
                 .values.toList()
         }
-        return  list.filter { it.parentId == null }.filter { it.children.isNotEmpty() }
+        return list.filter { it.parentId == null }.filter { it.children.isNotEmpty() }
     }
 
     override fun checkUnique(entity: PageRouter) {
