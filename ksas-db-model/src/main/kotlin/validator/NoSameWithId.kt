@@ -28,12 +28,13 @@ class NoSameWithIdValidator : ConstraintValidator<NoSameWithId, Any> {
         this.parentField = constraintAnnotation.parentIdField
     }
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress(names = ["UNCHECKED_CAST"])
     override fun isValid(value: Any, context: ConstraintValidatorContext?): Boolean {
         val idField = value::class.memberProperties.find { it.name == idField } ?: return true
         // 类型推断有问题，需要强转
         val idFieldValue = (idField as KProperty1<Any, *>).get(value)
-        val parentField = value::class.memberProperties.find { it.name == parentField } ?: return true
+        val parentField = value::class.memberProperties.find { it.name == parentField }
+            ?: return true
         val parentFieldValue = (parentField as KProperty1<Any, *>).get(value)
 
         val isValid = idFieldValue != parentFieldValue

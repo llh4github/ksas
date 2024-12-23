@@ -27,6 +27,9 @@ style:
   MaxLineLength:
     active: true
     maxLineLength: 100
+  ReturnCount:
+    active: true
+    max: 5
 
 complexity:
   active: true
