@@ -1,0 +1,50 @@
+export io.github.llh4github.ksas.dbmodel.auth.Role
+
+import io.github.llh4github.ksas.commons.PageQueryParam
+
+input RoleAddInput{
+    title
+    code
+    remark
+}
+
+input RoleUpdateInput{
+    id
+    title
+    code
+    remark
+}
+
+specification RoleQuerySpec {
+    like/i(title)
+    like/i(code)
+    pageParam: PageQueryParam
+}
+
+RoleBaseView{
+    #allScalars
+    createdByUser{
+        id
+        username
+    }
+    updatedByUser{
+        id
+        username
+    }
+}
+
+RolePermissionIdView{
+    id
+    id(permissions) as permissionIds
+}
+
+input RolePermissionUpdateInput{
+    id!
+    id(permissions) as permissionIds
+}
+RoleSimpleView{
+    id
+    title
+    code
+}
+
