@@ -6,9 +6,6 @@ input UserAddInput{
     username
     password
     nickname
-    roles{
-        id
-    }
 }
 
 input UserUpdateInput{
@@ -16,9 +13,6 @@ input UserUpdateInput{
     username
     password
     nickname
-    roles{
-        id
-    }
 }
 
 input UserUpdateRoleInput{
@@ -65,21 +59,20 @@ UserAuthView{
     password
     roles{
         code
-        endpointPerms{
-           permCode
+        permissions{
+           code
         }
     }
 }
 
-UserEndpointPermView{
+UsePermissionView{
     id
     username
     roles{
         code
-        endpointPerms{
-            path
-            method
-            permCode
+        permissions{
+            code
+            title
         }
     }
 }

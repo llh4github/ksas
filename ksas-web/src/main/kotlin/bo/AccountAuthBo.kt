@@ -1,6 +1,7 @@
 package io.github.llh4github.ksas.bo
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 /**
  * 账户认证业务对象
@@ -8,7 +9,8 @@ import org.springframework.security.authentication.AbstractAuthenticationToken
 class AccountAuthBo(
     private val userId: Long,
     private val username: String,
-) : AbstractAuthenticationToken(emptyList()) {
+    permissions: List<String>,
+) : AbstractAuthenticationToken(permissions.map { SimpleGrantedAuthority(it) }) {
 
     fun getUserId(): Long {
         return userId

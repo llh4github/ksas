@@ -9,5 +9,10 @@ object PermCodeConstant {
     /**
      * 超级权限码
      */
-    const val SUPER_PERM = "*"
+    const val SUPER_PERM = "**"
+
+    /**
+     * 公共权限码
+     */
+    const val COMMON = "common"
 }

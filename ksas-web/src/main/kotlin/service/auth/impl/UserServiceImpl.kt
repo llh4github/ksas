@@ -4,8 +4,8 @@ import io.github.llh4github.ksas.bo.EndpointPermCheckBo
 import io.github.llh4github.ksas.bo.UserDetailBo
 import io.github.llh4github.ksas.commons.property.WebSecurityProperty
 import io.github.llh4github.ksas.dbmodel.auth.User
+import io.github.llh4github.ksas.dbmodel.auth.dto.UsePermissionView
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserEndpointPermView
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserRestPwdInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
 import io.github.llh4github.ksas.dbmodel.auth.id
@@ -90,12 +90,10 @@ class UserServiceImpl(private val sqlClient: KSqlClient) :
         }
         val user = createQuery {
             where(table.username eq bo.username)
-            select(table.fetch(UserEndpointPermView::class))
+            select(table.fetch(UsePermissionView::class))
         }.fetchOneOrNull() ?: return false
-        return user.roles.flatMap { it.endpointPerms }
-            .any {
-                it.method.match(bo.method) && pathMatcher.match(it.path, bo.uri)
-            }
+        return false
+//        return user.roles.flatMap { it.permissions }
     }
 
     override fun updatePwd(input: UserRestPwdInput): Boolean {

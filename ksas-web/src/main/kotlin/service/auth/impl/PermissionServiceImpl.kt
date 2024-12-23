@@ -1,35 +1,35 @@
 package io.github.llh4github.ksas.service.auth.impl
 
-import io.github.llh4github.ksas.dbmodel.auth.EndpointPerm
-import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermTreeView
-import io.github.llh4github.ksas.dbmodel.auth.dto.EndpointPermUpdateInput
+import io.github.llh4github.ksas.dbmodel.auth.Permission
+import io.github.llh4github.ksas.dbmodel.auth.code
+import io.github.llh4github.ksas.dbmodel.auth.dto.PermissionAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.PermissionCasecaderView
+import io.github.llh4github.ksas.dbmodel.auth.dto.PermissionUpdateInput
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.parentId
-import io.github.llh4github.ksas.dbmodel.auth.permCode
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.UniqueDataChecker
-import io.github.llh4github.ksas.service.auth.EndpointPermService
+import io.github.llh4github.ksas.service.auth.PermissionService
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.isNull
 import org.babyfish.jimmer.sql.kt.ast.expression.ne
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
-class EndpointPermServiceImpl(
+class PermissionServiceImpl(
     private val sqlClient: KSqlClient
-) : EndpointPermService,
-    UniqueDataChecker<EndpointPerm>,
-    BaseServiceImpl<EndpointPerm>(EndpointPerm::class, sqlClient) {
+) : PermissionService,
+    UniqueDataChecker<Permission>,
+    BaseServiceImpl<Permission>(Permission::class, sqlClient) {
 
-    override fun checkUnique(entity: EndpointPerm) {
+    override fun checkUnique(entity: Permission) {
         createQuery {
-            where(table.permCode eq entity.permCode)
-            if (isLoaded(entity, EndpointPerm::id)) {
+            where(table.code eq entity.code)
+            if (isLoaded(entity, Permission::id)) {
                 where(table.id ne entity.id)
             }
             select(count(table.id))
@@ -37,36 +37,32 @@ class EndpointPermServiceImpl(
             if (count > 0) {
                 throw DbCommonException.dataExists(
                     message = "权限编码已存在",
-                    fieldName = "permCode",
-                    fieldValue = entity.permCode,
+                    fieldName = "code",
+                    fieldValue = entity.code,
                 )
             }
         }
     }
 
-
-    @Transactional
-    override fun addUnique(input: EndpointPermAddInput): EndpointPerm {
+    override fun addUnique(input: PermissionAddInput): Permission {
         val entity = input.toEntity()
         return addUniqueData(entity, sqlClient)
-
     }
 
-    @Transactional
-    override fun updateUnique(input: EndpointPermUpdateInput): EndpointPerm {
+    override fun updateUnique(input: PermissionUpdateInput): Permission {
         val entity = input.toEntity()
         return updateUniqueData(entity, sqlClient)
     }
 
-    override fun fetchTree(id: Long?): EndpointPermTreeView? {
+    override fun treeData(id: Long?): PermissionCasecaderView? {
         return createQuery {
             if (id != null) {
                 where(table.id eq id)
             } else {
-                // 根节点
-                where(table.parentId eq null)
+                where(table.parentId.isNull())
             }
-            select(table.fetch(EndpointPermTreeView::class))
+            select(table.fetch(PermissionCasecaderView::class))
         }.fetchOneOrNull()
     }
+
 }

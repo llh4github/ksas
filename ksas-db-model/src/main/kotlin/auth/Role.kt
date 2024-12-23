@@ -30,11 +30,11 @@ interface Role : BaseModel {
 
     @ManyToMany
     @JoinTable(
-        name = "link_role_endpoint",
+        name = "link_role_permission",
         joinColumnName = "role_id",
-        inverseJoinColumnName = "endpoint_id"
+        inverseJoinColumnName = "permission_id"
     )
-    val endpointPerms: List<EndpointPerm>
+    val permissions: List<Permission>
 
     @ManyToMany
     @JoinTable(

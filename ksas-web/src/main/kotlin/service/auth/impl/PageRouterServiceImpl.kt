@@ -1,12 +1,15 @@
 package io.github.llh4github.ksas.service.auth.impl
 
+import io.github.llh4github.ksas.bo.PageRouterTreeBo
 import io.github.llh4github.ksas.dbmodel.auth.*
 import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.exception.DbCommonException
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.auth.PageRouterService
+import io.github.llh4github.ksas.service.common.PermissionCheckService
 import io.github.llh4github.ksas.service.testAddDbResult
 import org.babyfish.jimmer.kt.isLoaded
+import org.babyfish.jimmer.sql.ast.LikeMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.*
 import org.springframework.stereotype.Service
@@ -14,32 +17,38 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PageRouterServiceImpl(
-    private val sqlClient: KSqlClient
+    private val sqlClient: KSqlClient,
+    private val permissionCheckService: PermissionCheckService,
 ) : PageRouterService,
     BaseServiceImpl<PageRouter>(PageRouter::class, sqlClient) {
 
-    override fun allRouterTree(username: String): List<PageRouterTreeView> {
-        val perms = sqlClient.createQuery(User::class) {
-            where(table.username eq username)
-            select(table.fetch(UserEndpointPermView::class))
-        }.fetchOneOrNull()?.roles?.flatMap { it.endpointPerms }?.map { it.permCode }
-            ?: emptyList()
-
-        return createQuery {
-            where(table.parentId.isNull())
-            select(table.fetchBy {
-                path()
-                name()
-                redirect()
-                meta()
-                endpoints {
-                    permCode()
+    override fun allRouterTree(permissions: List<String>): List<PageRouterTreeBo> {
+        val list = createQuery {
+            where(
+                or(
+                    table.parentId.isNull(),
+                    table.permissions {
+                        or(
+                            code valueIn permissions,
+                            code.like("*", LikeMode.END)
+                        )
+                    }
+                )
+            )
+            select(table.fetch(PageRouterWithPermissionView::class))
+        }.execute().map { PageRouterTreeBo.from(it) }
+        val map = list.associateBy { it.id }
+        for (item in list) {
+            item.children += map.filter { it.value.parentId == item.id }
+                .filter {
+                    permissionCheckService.checkHasPermission(
+                        permissions,
+                        it.value.permissionCodes
+                    )
                 }
-                `children*` {
-                    where += table.endpoints { permCode valueIn perms }
-                }
-            })
-        }.execute().map { PageRouterTreeView(it) }
+                .values.toList()
+        }
+        return list.filter { it.parentId == null }.filter { it.children.isNotEmpty() }
     }
 
     override fun checkUnique(entity: PageRouter) {

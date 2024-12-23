@@ -14,28 +14,36 @@ PageRouterTreeView{
     redirect
     meta
     @com.fasterxml.jackson.annotation.JsonIgnore
-    endpoints{
-        permCode
+    permissions{
+        code
     }
-
     children*
+}
+
+PageRouterWithPermissionView{
+    id
+    path
+    name
+    redirect
+    id(parent)
+    meta
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    permissions{
+        code
+    }
 }
 
 input PageRouterAddInput{
     #allScalars(this)
     id(parent)
-    endpoints{
-        id
-    }
+    id(permissions) as permissionIds
 }
 
 input PageRouterUpdateInput{
     #allScalars(this)
     id!
     id(parent)
-    endpoints{
-        id
-    }
+    id(permissions) as permissionIds
 }
 
 specification PageRouterQuerySpec {
@@ -50,6 +58,7 @@ specification PageRouterQuerySpec {
 PageRouterListView{
     #allScalars
     id(parent)
+    id(permissions) as permissionIds
     createdByUser{
         id
         username
@@ -61,10 +70,10 @@ PageRouterListView{
 }
 PageRouterPermissionIdView{
     id
-    id(endpoints) as endpointIds
+    id(permissions) as permissionIds
 }
 
 input PageRouterPermissionUpdateInput{
     id!
-    id(endpoints) as endpointIds
+    id(permissions) as permissionIds
 }
