@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat
+import java.util.*
+
 plugins {
     id("common-conventions")
     id("spring-conventions")
@@ -33,4 +36,23 @@ dependencies {
     ksp(libs.jimmer.ksp)
     implementation(libs.apache.io)
     implementation(libs.minio)
+}
+
+tasks.bootJar {
+    archiveBaseName.set("ksas-web")
+    archiveVersion.set("")
+    archiveClassifier.set("")
+    archiveExtension.set("jar")
+}
+
+tasks.register("writeBuildTime") {
+    doLast {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val buildTime = dateFormat.format(Date())
+        file("build-time.").writeText(buildTime)
+    }
+}
+
+tasks.build {
+    finalizedBy(tasks.named("writeBuildTime"))
 }
