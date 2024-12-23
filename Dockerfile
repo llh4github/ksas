@@ -13,7 +13,7 @@ ENV NACOS_USERNAME="nacos"
 ENV NACOS_PASSWORD="nacos"
 ENV PROFILE="prod"
 
-COPY ksas-web/build/libs/ksas-web.jar $APP_HOME/app.jar
+COPY ./build/libs/ksas-web.jar $APP_HOME/app.jar
 
 # 声明容器运行时监听的端口
 EXPOSE 8080
