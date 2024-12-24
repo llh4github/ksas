@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.exception
 import io.github.llh4github.ksas.commons.JsonWrapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.babyfish.jimmer.error.CodeBasedRuntimeException
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authorization.AuthorizationDeniedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -13,11 +14,16 @@ import org.springframework.web.servlet.resource.NoResourceFoundException
 class GlobalExpHandler {
     private val logger = KotlinLogging.logger {}
 
+    @ExceptionHandler(AccessDeniedException::class)
+    fun handleException(e: AccessDeniedException): JsonWrapper<Void> {
+        logger.debug(e) { "禁止访问 ${e.message}" }
+        return JsonWrapper(msg = "无权访问", code = "ACCESS_DENIED", module = "AUTH")
+    }
 
     @ExceptionHandler(AuthorizationDeniedException::class)
     fun handleException(e: AuthorizationDeniedException): JsonWrapper<Void> {
         logger.debug(e) { "无权访问 ${e.message}" }
-        return JsonWrapper(msg = "无权访问", code = "ACCESS_DENIED", module = "AUTH")
+        return JsonWrapper(msg = "无权访问", code = "AUTHORIZATION_DENIED", module = "AUTH")
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)

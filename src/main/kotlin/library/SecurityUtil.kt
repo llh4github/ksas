@@ -1,6 +1,7 @@
 package io.github.llh4github.ksas.library
 
 import io.github.llh4github.ksas.bo.AccountAuthBo
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 
@@ -11,7 +12,11 @@ object SecurityUtil {
 
     @Suppress("MaxLineLength")
     private fun authBo(): AccountAuthBo {
-        return (SecurityContextHolder.getContext().authentication) as AccountAuthBo
+        return try {
+            (SecurityContextHolder.getContext().authentication) as AccountAuthBo
+        } catch (e: Exception) {
+            throw AccessDeniedException("无法获取当前用户信息")
+        }
     }
 
     /**
